@@ -65,6 +65,8 @@ and a non-dyadic tangency. It records `unknown` outcomes alongside empirical cos
 
 See the [research plan and literature ledger](docs/research-plan.md) for the scope
 of this foundation and the work required before making a research claim.
+The [validation record](docs/validation.md) maps the original acceptance criteria
+to the checks and experiments actually completed, including their limits.
 
 ## Local commit history
 
