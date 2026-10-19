@@ -7,6 +7,8 @@ continuous-trajectory safety, and viability. It starts with analytically solvabl
 wall braking and planar acceleration-controlled robots. There is no claim of a
 new safety controller or publication-level novelty.
 
+![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
+
 The implementation uses the Python standard library and Python 3.11+. To run
 without installing anything:
 
@@ -20,7 +22,7 @@ PYTHONPATH=src python -m tick_trap learn --config configs/learning.json
 PYTHONPATH=src python -m tick_trap benchmark --config configs/certification.json
 ```
 
-Or install with `uv sync`, then use `uv run tick-trap counterexample` and the
+Or install with `uv sync`, then use `.venv/bin/tick-trap counterexample` and the
 other commands above. A run writes JSON records, CSV metrics, a Markdown report,
 and a provenance manifest under `results/`. The counterexample also produces a
 standalone SVG figure. Use `--output DIRECTORY` to choose the artifact directory.
@@ -60,6 +62,9 @@ uncertainty bounds.
 The certification benchmark varies minimum-enclosure precision and subdivision
 budget on six analytical trajectories, including tiny positive/negative margins
 and a non-dyadic tangency. It records `unknown` outcomes alongside empirical cost.
+
+See the [research plan and literature ledger](docs/research-plan.md) for the scope
+of this foundation and the work required before making a research claim.
 
 ## Local commit history
 
