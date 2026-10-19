@@ -96,8 +96,8 @@ def _plan(plan, expected_state, obstacles, period, a_max, quantum, tolerance, ca
              "Remaining step count is inconsistent")
 
 
-def _sampling_aware(record, config, state, action, obstacles, period, totals):
-    """Replay the accepted condition, then independently check its auxiliary path."""
+def _sampling_condition(record, config, state, action, obstacles, period):
+    """Validate the actual published sufficient condition and its initial domain."""
     checked = record["details"]["checked"]
     _require(checked and checked[-1]["accepted"] is True, "Missing accepted SACBF candidate")
     selected = checked[-1]
@@ -108,6 +108,11 @@ def _sampling_aware(record, config, state, action, obstacles, period, totals):
     _require(selected["sampling_assessments"] == expected and all(a["accepted"] for a in expected),
              "Saved SACBF condition does not match exact replay")
     _require(selected["margins_exact"] == [a["margin_exact"] for a in expected], "SACBF margin evidence is wrong")
+
+
+def _sampling_aware(record, config, state, action, obstacles, period, totals):
+    """Replay the accepted condition, then separately check its auxiliary path."""
+    _sampling_condition(record, config, state, action, obstacles, period)
     lambda1 = positive(config["lambda1"], "lambda1")
     for obstacle in obstacles:
         h = obstacle.polynomial(state, action)
@@ -159,11 +164,37 @@ def _auxiliary_reference(record, config, state, action, obstacles, period, cache
         expected = {"rule": "linear_comparison", "initial_h_exact": str(h[0]), "lambda1_exact": str(lambda1),
                     "duration_exact": str(period), "status": "safe"}
         _require(implication == expected, "Geometric comparison assumptions or conclusion are wrong")
-        offline = record["obstacles"][index]["continuous_status"]
-        _require(offline != "unsafe", "Comparison proof contradicts a negative offline geometric witness")
-        totals["derived_safe_offline_unknown"] += offline == "unknown"
+        if "obstacles" in record:
+            offline = record["obstacles"][index]["continuous_status"]
+            _require(offline != "unsafe", "Comparison proof contradicts a negative offline geometric witness")
+            totals["derived_safe_offline_unknown"] += offline == "unknown"
         totals["auxiliary_reference_certificates"] += 1
     totals["auxiliary_reference_holds"] += 1
+
+
+def validate_online_comparison(record, config, state, action, obstacles, period, cache=None):
+    """Offline audit of an existing online proof; never infer it from a label.
+
+    Return its geometric proof source, or None when no recognized comparison
+    evidence is available. Invalid evidence raises, including when the geometric
+    oracle happens to be safe. This replay is instrumentation, outside solve_ns.
+    It does not invoke the algebraic reference or add a new control predicate.
+    """
+    cache = {} if cache is None else cache
+    method = config["method"]
+    if method == "auxiliary_sign_candidates":
+        totals = {"derived_safe_offline_unknown": 0, "auxiliary_reference_certificates": 0,
+                  "auxiliary_reference_holds": 0}
+        _auxiliary_reference(record, config, state, action, obstacles, period, cache, totals)
+        return "online_auxiliary_comparison"
+    if method in ("high_order_sign_candidates", "high_order_trajectory_candidates"):
+        totals = {"high_order_reference_certificates": 0, "high_order_reference_holds": 0}
+        _high_order_reference(record, config, state, action, obstacles, period, cache, totals)
+        return "online_high_order_path"
+    if method in ("sacbf_candidates", "sacbf_relaxed_candidates"):
+        _sampling_condition(record, config, state, action, obstacles, period)
+        return "online_sampling_comparison"
+    return None
 
 
 def verify_planar_runs(runs):
@@ -188,7 +219,7 @@ def verify_planar_runs(runs):
             if backup and run["controller_initialization_status"] == "ready":
                 _require(previous is not None, "Missing certified initialization plan")
                 _plan(previous, state, obstacles, period, a_max, quantum, config["tolerance"], cache)
-            statuses, sampled = [], []
+            statuses, execution_statuses, sampled = [], [], []
             for index, record in enumerate(run["records"]):
                 _require(record["step"] == index and q(record["time_exact"]) == index*period,
                          "Recorded control update order or time is wrong")
@@ -215,6 +246,20 @@ def verify_planar_runs(runs):
                          "Recorded safety classifications disagree with replay")
                 statuses.append(status)
                 sampled.append(all(interval_sampled))
+                source = validate_online_comparison(record, config, state, action, obstacles, period, cache)
+                _require(not (source and status == "unsafe"), "Online proof contradicts a negative offline witness")
+                execution_status = "safe" if status == "safe" or source else status
+                basis = ("offline_geometric" if status == "safe" else
+                         (source or "unresolved") if status == "unknown" else "negative_witness")
+                if "execution_status" in record:
+                    _require(record["execution_status"] == execution_status and record["execution_basis"] == basis
+                             and record["online_proof_source"] == source, "Incorrect execution proof or status")
+                    execution_statuses.append(execution_status)
+                else:
+                    # Preserve the meaning of historical records made before the separation.
+                    execution_statuses.append(status)
+                _require(execution_statuses[-1] == "safe" or index == len(run["records"])-1,
+                         "Execution continued after a genuinely uncertified or unsafe hold")
                 if config["method"] in ("sacbf_candidates", "sacbf_relaxed_candidates"):
                     _sampling_aware(record, config, state, action, obstacles, period, totals)
                 if config["method"] in ("high_order_trajectory_candidates", "high_order_sign_candidates"):
@@ -248,9 +293,16 @@ def verify_planar_runs(runs):
             _require(_state(run["final_state"]) == state and run["executed_steps"] == len(statuses), "Final state or executed step count is wrong")
             _require(run["collision_observed"] == ("unsafe" in statuses), "Collision summary disagrees with interval evidence")
             expected_safe = (run["termination"] == "horizon" and initial_safe and len(statuses)*period == q(config["horizon"])
-                             and all(s == "safe" for s in statuses))
+                             and all(s == "safe" for s in execution_statuses))
             _require(run["completed_safe_horizon"] == expected_safe, "Safe completion summary is wrong")
             _require(run["sampled_safe_observed"] == (initial_safe and all(sampled)), "Sampled safety summary is wrong")
+            observed = "unsafe" if "unsafe" in statuses else "unknown" if "unknown" in statuses else "safe" if statuses else "not_executed"
+            _require(run["observed_continuous_status"] == observed, "Offline oracle summary is wrong")
+            if "oracle_confirmed_horizon" in run:
+                _require(run["oracle_confirmed_horizon"] == (expected_safe and all(s == "safe" for s in statuses)),
+                         "Oracle-confirmed horizon summary is wrong")
+                execution = "unsafe" if "unsafe" in execution_statuses else "unknown" if "unknown" in execution_statuses else "safe" if execution_statuses else "not_executed"
+                _require(run["certified_execution_status"] == execution, "Execution certificate summary is wrong")
             if backup:
                 _require(run["final_retained_plan"] == previous, "Final retained plan is inconsistent")
                 _require(run["retained_continuation_after_every_update"] == (True if statuses else None), "Retained-plan summary is wrong")

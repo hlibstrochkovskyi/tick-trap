@@ -12,6 +12,7 @@ from .numbers import nonnegative, positive, q, vector2
 from .oracle import circle_interval
 from .planar_control import PLANAR_METHODS, decide_planar, hocbf_constraints
 from .qp import dot
+from .verification import validate_online_comparison
 
 
 def _encode(value):
@@ -156,10 +157,20 @@ def run_planar(config: PlanarConfig):
                 termination = decision.status
                 break
             action = decision.action
+            # Replay only evidence already produced by the measured controller.
+            # This is an offline artifact audit, not additional online filtering.
+            start = perf_counter_ns()
+            proof_source = validate_online_comparison(record, config.record(), state, action, obstacles, duration)
+            proof_replay_ns = perf_counter_ns()-start
             checks = [circle_interval(state, action, o, duration, config.oracle_tolerance,
                                       config.oracle_max_subdivisions) for o in obstacles]
             statuses = [r["continuous_status"] for r in checks]
             continuous = "unsafe" if "unsafe" in statuses else "unknown" if "unknown" in statuses else "safe"
+            if proof_source and continuous == "unsafe":
+                raise ArithmeticError("Online certificate contradicts a negative offline geometric witness")
+            execution = "safe" if continuous == "safe" or proof_source else continuous
+            basis = ("offline_geometric" if continuous == "safe" else
+                     (proof_source or "unresolved") if continuous == "unknown" else "negative_witness")
             end = state.at(action, duration)
             retained_certified = None
             if controller is not None:
@@ -173,6 +184,8 @@ def run_planar(config: PlanarConfig):
             record.update({"action_exact": [str(x) for x in action], "action": [float(x) for x in action],
                            "end_state": _state_record(end), "obstacles": checks,
                            "sampled_safe": all(r["sampled_safe"] for r in checks), "continuous_status": continuous,
+                           "execution_status": execution, "execution_basis": basis,
+                           "online_proof_source": proof_source, "offline_proof_replay_ns": proof_replay_ns,
                            "certification_ns": sum(r["certification_ns"] for r in checks),
                            "estimation_ns": sum(r["estimation_ns"] for r in checks),
                            "continuation": continuation, "continuation_check_ns": continuation_ns,
@@ -181,13 +194,14 @@ def run_planar(config: PlanarConfig):
             state = end
             if at_goal(state) and goal_first_time is None:
                 goal_first_time = str((index+1)*duration)
-            if continuous != "safe":
-                termination = "collision_interval" if continuous == "unsafe" else "oracle_unresolved"
+            if execution != "safe":
+                termination = "collision_interval" if execution == "unsafe" else "oracle_unresolved"
                 break
     executed = [r for r in records if "action_exact" in r]
     all_checks = [check for r in executed for check in r["obstacles"]]
     collision = any(r["continuous_status"] == "unsafe" for r in executed)
     observed = "unsafe" if collision else "unknown" if any(r["continuous_status"] == "unknown" for r in executed) else "safe" if executed else "not_executed"
+    certified = "unsafe" if collision else "unknown" if any(r["execution_status"] == "unknown" for r in executed) else "safe" if executed else "not_executed"
     stored_steps = sum(r["control_source"] == "stored_continuation" for r in executed)
     terminal_steps = sum(r["control_source"] == "terminal_hold" for r in executed)
     return {"config": config.record(), "initial_geometric_safe": initial_safe,
@@ -199,7 +213,9 @@ def run_planar(config: PlanarConfig):
             "controller_initial_plan": initial_plan,
             "viability_scope": "sufficient admissible stopping-plan check, not the full planar viability kernel",
             "termination": termination, "executed_steps": len(executed),
-            "completed_safe_horizon": termination == "horizon" and observed == "safe",
+            "completed_safe_horizon": termination == "horizon" and certified == "safe",
+            "oracle_confirmed_horizon": termination == "horizon" and observed == "safe",
+            "certified_execution_status": certified,
             "sampled_safe_observed": initial_safe and all(r["sampled_safe"] for r in executed),
             "observed_continuous_status": observed, "collision_observed": collision,
             "minimum_barrier_lower_exact": str(min(q(c["minimum_lower_exact"]) for c in all_checks)) if all_checks else None,

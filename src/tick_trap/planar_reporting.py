@@ -58,7 +58,7 @@ def trajectory_svg(run):
     sx, sy = transform(initial)
     lines += [f'<circle cx="{sx:.6f}" cy="{sy:.6f}" r="5" fill="#345c88"/>',
               f'<path d="M {gx-6:.6f},{gy:.6f} H {gx+6:.6f} M {gx:.6f},{gy-6:.6f} V {gy+6:.6f}" stroke="#345c88" stroke-width="2"/>',
-              '<text x="40" y="605">Green: safe. Red: collision. Amber: unknown. Dashed: stored plan.</text>',
+              '<text x="40" y="605">Offline oracle: green safe, red unsafe, amber unknown. Dashed: plan.</text>',
               '<text x="40" y="625">Dots: control updates. Cross: goal. Equal spatial scale; metres.</text>',
               '<text x="40" y="645">A failed decision ends the simulation; it does not physically stop the robot.</text>',
               '</g></svg>']
@@ -72,7 +72,8 @@ def write_planar_runs(output, runs, spec):
     write_json(output/"metadata.json", provenance(spec))
     write_json(output/"runs.json", runs)
     columns = ["run", "method", "duration", "horizon", "p", "initial_viability", "initial_hocbf_domain", "termination",
-               "executed_steps", "completed_safe_horizon", "sampled_safe_observed", "observed_continuous_status",
+               "executed_steps", "completed_safe_horizon", "oracle_confirmed_horizon", "certified_execution_status",
+               "sampled_safe_observed", "observed_continuous_status",
                "collision_observed", "goal_reached_at_end", "minimum_clearance_estimate", "minimum_barrier_lower_exact",
                "minimum_barrier_upper_exact", "solve_us_median", "oracle_us_median", "deadline_misses",
                "max_candidates", "controller_initialization_status", "initialization_us", "renewed_continuations",
@@ -109,10 +110,14 @@ def write_planar_runs(output, runs, spec):
         lines.append(f"| [{index}](trajectories/run-{index:03d}.svg) | {config['method']} | {config['duration']} | {config.get('max_candidates')} | "
                      f"{config['p']} | {run['initial_viability']} | {run['termination']} | {run['goal_reached_at_end']} | {run.get('stored_plan_steps', 0)} |")
     lines += ["", "`certified` initial viability means a particular admissible stopping plan was certified safe.",
+              "A safe completed horizon can use a validated online comparison proof while the separate offline geometric oracle remains unknown.",
+              "`oracle_confirmed_horizon` requires every offline geometric check to be safe; `observed_continuous_status` always retains its raw answer.",
+              "An unknown offline result without a recognized valid online proof stops execution. Negative witnesses always stop; contradictory proofs raise an error.",
               "`unknown` does not mean nonviable. The complete planar viability kernel is not computed.",
               "Finite candidate exhaustion does not prove continuous-input infeasibility.",
               "Endpoint and segment checks certify different properties from continuous-path checks.",
               "Controller timings include any online trajectory certificates; the offline oracle is measured separately.",
+              "`offline_proof_replay_ns` audits the existing controller evidence and is separate from solve time and deadline checks.",
               "The stateless methods use stopping-plan checks as offline diagnostics only.",
               "backup_candidates performs its replacement checks online and reports reuse of the stored certified plan explicitly.",
               "Controller initialization cost is recorded separately before simulated execution.",
