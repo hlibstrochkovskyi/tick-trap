@@ -25,6 +25,12 @@ is a later extension requiring its own validity argument.
    claiming safety under those conditions.
    A restricted stored-continuation reference and exact saved-evidence replay are
    now implemented; see [the continuation validation](validation-continuations.md).
+   The [sampling-aware comparison](validation-sampling.md) now includes a stronger
+   modern condition and its permitted relaxation. The audit distinguishes
+   geometric safety from auxiliary-set preservation and identifies specific
+   controls preserving both properties that the Taylor test excludes. A next
+   experiment must preserve this same property when comparing precision and cost;
+   a geometric-only reference cannot by itself measure every high-order exclusion.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.

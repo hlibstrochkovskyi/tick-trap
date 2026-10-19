@@ -98,6 +98,9 @@ The [validation record](docs/validation.md) maps the original acceptance criteri
 to the checks and experiments actually completed, including their limits.
 The [stored-continuation results](docs/validation-continuations.md) include the
 matched search-budget comparison and saved-evidence replay.
+The [sampling-aware results](docs/validation-sampling.md) compare 48 matched tasks,
+separate geometric and auxiliary-set exclusions, and reproduce a safe stationary
+case with feasible steering. The accompanying compact study data is versioned.
 
 An ordinary Git checkout uses standard Git commands. Notes for the restricted
 development workspace and its portable history are in [workspace setup](docs/workspace.md).

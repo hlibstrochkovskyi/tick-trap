@@ -1,0 +1,2217 @@
+{
+  "scope": "Finite matched study; exact-model evidence, not a general method ranking or novelty claim",
+  "source_artifacts": {
+    "runs": {
+      "path": "results/sampling-baselines/runs.json",
+      "sha256": "7fef010cb66176c6d772e894636cc305b26aa6d13ecf6f1a18a39b2bf90b4ce6"
+    },
+    "audit": {
+      "path": "results/sampling-audit/audit.json",
+      "sha256": "1df93b9260c2f19344ef973b696c31f6089ed88dfd10bbc4600815fe552cc085"
+    },
+    "verification": {
+      "path": "results/sampling-verification/verification.json",
+      "sha256": "691f8d71c738cd53a9e1b24a9f264b92d1e2928053071c22d74579e4fa02a36f"
+    }
+  },
+  "provenance": {
+    "runs": {
+      "schema_version": 1,
+      "project": "tick-trap",
+      "version": "0.2.0",
+      "created_utc": "2026-10-19T21:42:43.267607+00:00",
+      "python": "3.12.13 (main, Jun 11 2026, 04:03:26) [Clang 22.1.3 ]",
+      "platform": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+      "machine": "x86_64",
+      "processor": "",
+      "logical_cpu_count": 12,
+      "dependencies": "Python standard library only",
+      "argv": [
+        "/home/hlibstrochkovskyi/Projects/Tick-Trap/tick-trap/src/tick_trap/__main__.py",
+        "planar-sweep",
+        "--config",
+        "configs/sampling-baselines.json",
+        "--output",
+        "results/sampling-baselines"
+      ],
+      "source_sha256": "d957d70dd3b7247200161f1cb9897dcc43c657c29ec3f03355fc834a86186359",
+      "git_commit": "33424e5b72d94eefdb6562e5b9b9b3508d9ba1c8",
+      "git_status": "",
+      "configuration_sha256": "c6429bf003a78fdc58ac5aae6dd4c10e6ddb8093b3488c0887ebcada3c0b825c",
+      "configuration": {
+        "base": {
+          "p": [
+            "-2",
+            "0.7"
+          ],
+          "v": [
+            "1",
+            "0"
+          ],
+          "goal": [
+            "2",
+            "0.7"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "0.5"
+            },
+            {
+              "center": [
+                "1.2",
+                "-0.7"
+              ],
+              "radius": "0.4"
+            }
+          ],
+          "a_max": "2",
+          "horizon": "8",
+          "grid_points": 5,
+          "command_quantum": "1e-6"
+        },
+        "grid": {
+          "method": [
+            "hocbf",
+            "zocbf_candidates",
+            "sacbf_candidates",
+            "sacbf_relaxed_candidates",
+            "trajectory_candidates",
+            "backup_candidates"
+          ],
+          "duration": [
+            "0.05",
+            "0.1",
+            "0.2",
+            "0.4"
+          ],
+          "p": [
+            [
+              "-2",
+              "0.3"
+            ],
+            [
+              "-2",
+              "0.7"
+            ]
+          ]
+        }
+      },
+      "clock": {
+        "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+        "resolution_seconds": "1e-09",
+        "monotonic": true
+      },
+      "arithmetic": "exact rational inputs and dynamics; floats are display/learning estimates",
+      "safety_boundary": "nonnegative clearance; contact at zero is permitted",
+      "timing_scope": "empirical controller runtime; offline certification measured separately"
+    },
+    "audit": {
+      "schema_version": 1,
+      "project": "tick-trap",
+      "version": "0.2.0",
+      "created_utc": "2026-10-19T21:47:09.574909+00:00",
+      "python": "3.12.13 (main, Jun 11 2026, 04:03:26) [Clang 22.1.3 ]",
+      "platform": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+      "machine": "x86_64",
+      "processor": "",
+      "logical_cpu_count": 12,
+      "dependencies": "Python standard library only",
+      "argv": [
+        "/home/hlibstrochkovskyi/Projects/Tick-Trap/tick-trap/src/tick_trap/__main__.py",
+        "planar-audit",
+        "--config",
+        "configs/sampling-audit.json",
+        "--output",
+        "results/sampling-audit"
+      ],
+      "source_sha256": "d816c9cc3f4ae1cdc894acfa1d541f6c7c26b683119f1df2388c5fe4f65386af",
+      "git_commit": "ea646a9c897d6f5d22546ff4b4de2e21ddf672a4",
+      "git_status": "",
+      "configuration_sha256": "09946922dbce116148644cfc225a0cad74757e5221cce33a56835b8f3d5f1376",
+      "configuration": {
+        "base": {
+          "grid_points": 5,
+          "command_quantum": "1e-6",
+          "tolerance": "1e-12",
+          "max_subdivisions": 4096
+        },
+        "cases": [
+          {
+            "name": "curved_hidden_collision",
+            "p": [
+              "0.04",
+              "0"
+            ],
+            "v": [
+              "-1",
+              "0"
+            ],
+            "nominal": [
+              "10",
+              "0"
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  "-1",
+                  "0"
+                ],
+                "radius": "1"
+              }
+            ],
+            "duration": "0.2",
+            "a_max": "10"
+          },
+          {
+            "name": "viable_straight_crossing",
+            "p": [
+              "-2",
+              "0"
+            ],
+            "v": [
+              "4",
+              "0"
+            ],
+            "nominal": [
+              "0",
+              "0"
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  "0",
+                  "0"
+                ],
+                "radius": "0.5"
+              }
+            ],
+            "duration": "1",
+            "a_max": "10"
+          },
+          {
+            "name": "short_safe_near_obstacle",
+            "p": [
+              "1.2",
+              "0"
+            ],
+            "v": [
+              "-0.1",
+              "0"
+            ],
+            "nominal": [
+              "0",
+              "0"
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  "0",
+                  "0"
+                ],
+                "radius": "1"
+              }
+            ],
+            "duration": "0.1",
+            "a_max": "2"
+          },
+          {
+            "name": "multiple_obstacle_approach",
+            "p": [
+              "-2",
+              "0.3"
+            ],
+            "v": [
+              "1",
+              "0"
+            ],
+            "nominal": [
+              "2",
+              "0"
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  "0",
+                  "0"
+                ],
+                "radius": "0.5"
+              },
+              {
+                "center": [
+                  "1.2",
+                  "-0.7"
+                ],
+                "radius": "0.4"
+              }
+            ],
+            "duration": "0.4",
+            "a_max": "2"
+          },
+          {
+            "name": "uncertain_tangent_sign",
+            "p": [
+              "-0.3",
+              "1"
+            ],
+            "v": [
+              "1",
+              "0"
+            ],
+            "nominal": [
+              "0",
+              "0"
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  "0",
+                  "0"
+                ],
+                "radius": "1"
+              }
+            ],
+            "duration": "1",
+            "a_max": "1"
+          },
+          {
+            "name": "unrelaxed_stationary_state",
+            "p": [
+              "-0.6",
+              "0.3"
+            ],
+            "v": [
+              "0",
+              "0"
+            ],
+            "nominal": [
+              "2.6",
+              "0.4"
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  "0",
+                  "0"
+                ],
+                "radius": "0.5"
+              },
+              {
+                "center": [
+                  "1.2",
+                  "-0.7"
+                ],
+                "radius": "0.4"
+              }
+            ],
+            "duration": "0.4",
+            "a_max": "2"
+          },
+          {
+            "name": "relaxed_stationary_state",
+            "p": [
+              "-0.52",
+              "0.3"
+            ],
+            "v": [
+              "0",
+              "0"
+            ],
+            "nominal": [
+              "2.52",
+              "0.4"
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  "0",
+                  "0"
+                ],
+                "radius": "0.5"
+              },
+              {
+                "center": [
+                  "1.2",
+                  "-0.7"
+                ],
+                "radius": "0.4"
+              }
+            ],
+            "duration": "0.4",
+            "a_max": "2"
+          }
+        ]
+      },
+      "clock": {
+        "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+        "resolution_seconds": "1e-09",
+        "monotonic": true
+      },
+      "arithmetic": "exact rational inputs and dynamics; floats are display/learning estimates",
+      "safety_boundary": "nonnegative clearance; contact at zero is permitted",
+      "timing_scope": "empirical controller runtime; offline certification measured separately"
+    },
+    "verification": {
+      "schema_version": 1,
+      "project": "tick-trap",
+      "version": "0.2.0",
+      "created_utc": "2026-10-19T21:43:39.003456+00:00",
+      "python": "3.12.13 (main, Jun 11 2026, 04:03:26) [Clang 22.1.3 ]",
+      "platform": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+      "machine": "x86_64",
+      "processor": "",
+      "logical_cpu_count": 12,
+      "dependencies": "Python standard library only",
+      "argv": [
+        "/home/hlibstrochkovskyi/Projects/Tick-Trap/tick-trap/src/tick_trap/__main__.py",
+        "verify",
+        "--runs",
+        "results/sampling-baselines/runs.json",
+        "--output",
+        "results/sampling-verification"
+      ],
+      "source_sha256": "554343327556f3c82c48484b8100fbba7533e84b92428d54522ed6c0dd39875d",
+      "git_commit": "7639ddb977ab9b464e6bb3b02f7d2dab8cb9576d",
+      "git_status": "",
+      "configuration_sha256": "41ec95ff1a331ec0e444833212ad026e0682aa40aebdfb291d5c0fc132761b1c",
+      "configuration": {
+        "runs_file": "/home/hlibstrochkovskyi/Projects/Tick-Trap/tick-trap/results/sampling-baselines/runs.json",
+        "runs_sha256": "7fef010cb66176c6d772e894636cc305b26aa6d13ecf6f1a18a39b2bf90b4ce6"
+      },
+      "clock": {
+        "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+        "resolution_seconds": "1e-09",
+        "monotonic": true
+      },
+      "arithmetic": "exact rational inputs and dynamics; floats are display/learning estimates",
+      "safety_boundary": "nonnegative clearance; contact at zero is permitted",
+      "timing_scope": "empirical controller runtime; offline certification measured separately"
+    }
+  },
+  "verification": {
+    "runs": 48,
+    "executed_holds": 2857,
+    "retained_plans": 600,
+    "unsafe_intervals": 0,
+    "unknown_intervals": 0,
+    "sampling_aware_holds": 1200,
+    "auxiliary_safe_checks": 2400,
+    "auxiliary_unknown_checks": 0,
+    "status": "verified",
+    "unique_certificate_replays": 8302,
+    "scope": "artifact consistency under the reported exact model; uses the existing polynomial certifier"
+  },
+  "method_totals": [
+    {
+      "method": "backup_candidates",
+      "runs": 8,
+      "safe_full_horizons": 8,
+      "goals_at_end": 8,
+      "collisions": 0,
+      "initial_stopping_certified": 8,
+      "initial_high_order_domain": 8,
+      "terminations": {
+        "horizon": 8
+      },
+      "deadline_misses": 0
+    },
+    {
+      "method": "hocbf",
+      "runs": 8,
+      "safe_full_horizons": 8,
+      "goals_at_end": 8,
+      "collisions": 0,
+      "initial_stopping_certified": 8,
+      "initial_high_order_domain": 8,
+      "terminations": {
+        "horizon": 8
+      },
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "runs": 8,
+      "safe_full_horizons": 8,
+      "goals_at_end": 6,
+      "collisions": 0,
+      "initial_stopping_certified": 8,
+      "initial_high_order_domain": 8,
+      "terminations": {
+        "horizon": 8
+      },
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "runs": 8,
+      "safe_full_horizons": 8,
+      "goals_at_end": 6,
+      "collisions": 0,
+      "initial_stopping_certified": 8,
+      "initial_high_order_domain": 8,
+      "terminations": {
+        "horizon": 8
+      },
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "runs": 8,
+      "safe_full_horizons": 6,
+      "goals_at_end": 6,
+      "collisions": 0,
+      "initial_stopping_certified": 8,
+      "initial_high_order_domain": 8,
+      "terminations": {
+        "search_exhausted": 2,
+        "horizon": 6
+      },
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "runs": 8,
+      "safe_full_horizons": 0,
+      "goals_at_end": 0,
+      "collisions": 0,
+      "initial_stopping_certified": 8,
+      "initial_high_order_domain": 8,
+      "terminations": {
+        "search_exhausted": 8
+      },
+      "deadline_misses": 0
+    }
+  ],
+  "per_run": [
+    {
+      "method": "hocbf",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "1584704779/800000000",
+          "561693241/800000000"
+        ],
+        "v_exact": [
+          "324649/20000000",
+          "-35033/20000000"
+        ]
+      },
+      "solve_ns_median": 1251322.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "hocbf",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "1588588619/800000000",
+          "7022797/10000000"
+        ],
+        "v_exact": [
+          "48653/4000000",
+          "-3837/2000000"
+        ]
+      },
+      "solve_ns_median": 1248166.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "hocbf",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "396002193/200000000",
+          "17551763/25000000"
+        ],
+        "v_exact": [
+          "32961/2000000",
+          "-8411/5000000"
+        ]
+      },
+      "solve_ns_median": 1224086.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "hocbf",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "396983007/200000000",
+          "140461331/200000000"
+        ],
+        "v_exact": [
+          "124661/10000000",
+          "-18929/10000000"
+        ]
+      },
+      "solve_ns_median": 1228389.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "hocbf",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "3956997/2000000",
+          "35097721/50000000"
+        ],
+        "v_exact": [
+          "84503/5000000",
+          "-7653/5000000"
+        ]
+      },
+      "solve_ns_median": 1233092.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "hocbf",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "19834227/10000000",
+          "35119733/50000000"
+        ],
+        "v_exact": [
+          "13037/1000000",
+          "-9401/5000000"
+        ]
+      },
+      "solve_ns_median": 1221872.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "hocbf",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "246999/125000",
+          "4387589/6250000"
+        ],
+        "v_exact": [
+          "11047/625000",
+          "-927/625000"
+        ]
+      },
+      "solve_ns_median": 1213912.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "hocbf",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "4952851/2500000",
+          "1756307/2500000"
+        ],
+        "v_exact": [
+          "34713/2500000",
+          "-4643/2500000"
+        ]
+      },
+      "solve_ns_median": 1232892.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 19,
+      "final_state": {
+        "p_exact": [
+          "-504949143/800000000",
+          "32106301/80000000"
+        ],
+        "v_exact": [
+          "30090201/20000000",
+          "187119/1250000"
+        ]
+      },
+      "solve_ns_median": 560541.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 26,
+      "final_state": {
+        "p_exact": [
+          "-1313759/10000000",
+          "7/10"
+        ],
+        "v_exact": [
+          "3352531/2500000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 529377,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 6,
+      "final_state": {
+        "p_exact": [
+          "-232139707/200000000",
+          "70483643/200000000"
+        ],
+        "v_exact": [
+          "15867263/10000000",
+          "1400531/10000000"
+        ]
+      },
+      "solve_ns_median": 563391,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 8,
+      "final_state": {
+        "p_exact": [
+          "-168877729/200000000",
+          "7/10"
+        ],
+        "v_exact": [
+          "15685697/10000000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 518957,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 1,
+      "final_state": {
+        "p_exact": [
+          "-44/25",
+          "8/25"
+        ],
+        "v_exact": [
+          "7/5",
+          "1/5"
+        ]
+      },
+      "solve_ns_median": 1567002.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 1,
+      "final_state": {
+        "p_exact": [
+          "-44/25",
+          "7/10"
+        ],
+        "v_exact": [
+          "7/5",
+          "0"
+        ]
+      },
+      "solve_ns_median": 1418286.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 0,
+      "final_state": {
+        "p_exact": [
+          "-2",
+          "3/10"
+        ],
+        "v_exact": [
+          "1",
+          "0"
+        ]
+      },
+      "solve_ns_median": 2231383,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "zocbf_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 0,
+      "final_state": {
+        "p_exact": [
+          "-2",
+          "7/10"
+        ],
+        "v_exact": [
+          "1",
+          "0"
+        ]
+      },
+      "solve_ns_median": 2183533,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "1585061641/800000000",
+          "112483679/160000000"
+        ],
+        "v_exact": [
+          "63437/4000000",
+          "-50417/20000000"
+        ]
+      },
+      "solve_ns_median": 1070626.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "49521891/25000000",
+          "281121317/400000000"
+        ],
+        "v_exact": [
+          "162343/10000000",
+          "-23467/10000000"
+        ]
+      },
+      "solve_ns_median": 1068458.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "395940867/200000000",
+          "8788577/12500000"
+        ],
+        "v_exact": [
+          "167289/10000000",
+          "-3151/1250000"
+        ]
+      },
+      "solve_ns_median": 1095914.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "396049987/200000000",
+          "2813923/4000000"
+        ],
+        "v_exact": [
+          "162849/10000000",
+          "-14243/5000000"
+        ]
+      },
+      "solve_ns_median": 1096330.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "98402793/50000000",
+          "17615343/25000000"
+        ],
+        "v_exact": [
+          "125399/5000000",
+          "-9029/2500000"
+        ]
+      },
+      "solve_ns_median": 1147341.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "24718949/12500000",
+          "35152271/50000000"
+        ],
+        "v_exact": [
+          "2761/156250",
+          "-2391/1000000"
+        ]
+      },
+      "solve_ns_median": 1154705.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": false,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "-3/5",
+          "3/10"
+        ],
+        "v_exact": [
+          "0",
+          "0"
+        ]
+      },
+      "solve_ns_median": 8183956.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": false,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "14072/15625",
+          "7/10"
+        ],
+        "v_exact": [
+          "2247/3125",
+          "0"
+        ]
+      },
+      "solve_ns_median": 6195009.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "198415541/100000000",
+          "280509681/400000000"
+        ],
+        "v_exact": [
+          "134791/10000000",
+          "-5253/5000000"
+        ]
+      },
+      "solve_ns_median": 725717.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "1590593851/800000000",
+          "561148061/800000000"
+        ],
+        "v_exact": [
+          "200979/20000000",
+          "-24133/20000000"
+        ]
+      },
+      "solve_ns_median": 720096.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "395655317/200000000",
+          "70091257/100000000"
+        ],
+        "v_exact": [
+          "178859/10000000",
+          "-57/78125"
+        ]
+      },
+      "solve_ns_median": 712943.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "397276873/200000000",
+          "35071897/50000000"
+        ],
+        "v_exact": [
+          "112577/10000000",
+          "-589/500000"
+        ]
+      },
+      "solve_ns_median": 715592.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "49425207/25000000",
+          "17570261/25000000"
+        ],
+        "v_exact": [
+          "11293/625000",
+          "-1099/500000"
+        ]
+      },
+      "solve_ns_median": 712652.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "24797887/12500000",
+          "2194033/3125000"
+        ],
+        "v_exact": [
+          "31789/2500000",
+          "-2051/1250000"
+        ]
+      },
+      "solve_ns_median": 713123.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": false,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "-13/25",
+          "3/10"
+        ],
+        "v_exact": [
+          "0",
+          "0"
+        ]
+      },
+      "solve_ns_median": 2779606.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "sacbf_relaxed_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": false,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "24351841/12500000",
+          "7/10"
+        ],
+        "v_exact": [
+          "95433/2500000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 689399.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 24,
+      "final_state": {
+        "p_exact": [
+          "-53627741/200000000",
+          "350776359/800000000"
+        ],
+        "v_exact": [
+          "3484541/2500000",
+          "2923427/20000000"
+        ]
+      },
+      "solve_ns_median": 562429,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "397966601/200000000",
+          "7/10"
+        ],
+        "v_exact": [
+          "10889/1250000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 546093.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "search_exhausted",
+      "safe_full_horizon": false,
+      "goal_reached_at_end": false,
+      "executed_holds": 12,
+      "final_state": {
+        "p_exact": [
+          "-12324747/50000000",
+          "88420147/200000000"
+        ],
+        "v_exact": [
+          "219079/156250",
+          "1477771/10000000"
+        ]
+      },
+      "solve_ns_median": 574192,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "49728003/25000000",
+          "7/10"
+        ],
+        "v_exact": [
+          "9013/1000000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 540828.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "49682193/25000000",
+          "699957/1000000"
+        ],
+        "v_exact": [
+          "12501/1250000",
+          "93/2500000"
+        ]
+      },
+      "solve_ns_median": 571987.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "49696791/25000000",
+          "7/10"
+        ],
+        "v_exact": [
+          "23857/2500000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 543113.0,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "24817291/12500000",
+          "2190709/3125000"
+        ],
+        "v_exact": [
+          "26903/2500000",
+          "-189/250000"
+        ]
+      },
+      "solve_ns_median": 572057.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "trajectory_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "4965059/2500000",
+          "7/10"
+        ],
+        "v_exact": [
+          "1029/100000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 551348.5,
+      "initialization_ns": 0,
+      "deadline_misses": 0
+    },
+    {
+      "method": "backup_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "1588787729/800000000",
+          "17500117/25000000"
+        ],
+        "v_exact": [
+          "9547/800000",
+          "101/5000000"
+        ]
+      },
+      "solve_ns_median": 1582155.0,
+      "initialization_ns": 551098,
+      "deadline_misses": 0
+    },
+    {
+      "method": "backup_candidates",
+      "period_exact": "0.05",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 160,
+      "final_state": {
+        "p_exact": [
+          "397966601/200000000",
+          "7/10"
+        ],
+        "v_exact": [
+          "10889/1250000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 1289935.0,
+      "initialization_ns": 571036,
+      "deadline_misses": 0
+    },
+    {
+      "method": "backup_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "79350559/40000000",
+          "139907079/200000000"
+        ],
+        "v_exact": [
+          "133941/10000000",
+          "3943/10000000"
+        ]
+      },
+      "solve_ns_median": 1335070.0,
+      "initialization_ns": 564073,
+      "deadline_misses": 0
+    },
+    {
+      "method": "backup_candidates",
+      "period_exact": "0.1",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 80,
+      "final_state": {
+        "p_exact": [
+          "49728003/25000000",
+          "7/10"
+        ],
+        "v_exact": [
+          "9013/1000000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 1235477.0,
+      "initialization_ns": 555867,
+      "deadline_misses": 0
+    },
+    {
+      "method": "backup_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "99355973/50000000",
+          "17499301/25000000"
+        ],
+        "v_exact": [
+          "50667/5000000",
+          "61/2500000"
+        ]
+      },
+      "solve_ns_median": 1122519.5,
+      "initialization_ns": 555787,
+      "deadline_misses": 0
+    },
+    {
+      "method": "backup_candidates",
+      "period_exact": "0.2",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 40,
+      "final_state": {
+        "p_exact": [
+          "49696791/25000000",
+          "7/10"
+        ],
+        "v_exact": [
+          "23857/2500000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 1102893.0,
+      "initialization_ns": 572538,
+      "deadline_misses": 0
+    },
+    {
+      "method": "backup_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "3/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "24806131/12500000",
+          "4380223/6250000"
+        ],
+        "v_exact": [
+          "28547/2500000",
+          "-769/1250000"
+        ]
+      },
+      "solve_ns_median": 1121052.0,
+      "initialization_ns": 561047,
+      "deadline_misses": 0
+    },
+    {
+      "method": "backup_candidates",
+      "period_exact": "0.4",
+      "initial_p_exact": [
+        "-2",
+        "7/10"
+      ],
+      "termination": "horizon",
+      "safe_full_horizon": true,
+      "goal_reached_at_end": true,
+      "executed_holds": 20,
+      "final_state": {
+        "p_exact": [
+          "4965059/2500000",
+          "7/10"
+        ],
+        "v_exact": [
+          "1029/100000",
+          "0"
+        ]
+      },
+      "solve_ns_median": 1082850.0,
+      "initialization_ns": 566097,
+      "deadline_misses": 0
+    }
+  ],
+  "matched_control_audits": [
+    {
+      "name": "curved_hidden_collision",
+      "candidate_count": 25,
+      "high_order_applicable": false,
+      "truth_counts": {
+        "safe": 0,
+        "unsafe": 25,
+        "unknown": 0
+      },
+      "high_order_truth_counts": {
+        "safe": 0,
+        "unsafe": 25,
+        "unknown": 0
+      },
+      "counts": {
+        "hocbf": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "endpoint": {
+          "applicable": 25,
+          "accepted": 5,
+          "safe_admitted": 0,
+          "unsafe_admitted": 5,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "segment": {
+          "applicable": 25,
+          "accepted": 5,
+          "safe_admitted": 0,
+          "unsafe_admitted": 5,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "zocbf": {
+          "applicable": 25,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "sacbf": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 0,
+          "geometrically_safe_auxiliary_unsafe_excluded": 0,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        },
+        "sacbf_relaxed": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 0,
+          "geometrically_safe_auxiliary_unsafe_excluded": 0,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        }
+      }
+    },
+    {
+      "name": "viable_straight_crossing",
+      "candidate_count": 26,
+      "high_order_applicable": false,
+      "truth_counts": {
+        "safe": 17,
+        "unsafe": 9,
+        "unknown": 0
+      },
+      "high_order_truth_counts": {
+        "safe": 0,
+        "unsafe": 26,
+        "unknown": 0
+      },
+      "counts": {
+        "hocbf": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "endpoint": {
+          "applicable": 26,
+          "accepted": 25,
+          "safe_admitted": 17,
+          "unsafe_admitted": 8,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "segment": {
+          "applicable": 26,
+          "accepted": 22,
+          "safe_admitted": 17,
+          "unsafe_admitted": 5,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "zocbf": {
+          "applicable": 26,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 17,
+          "accepted_truth_unknown": 0
+        },
+        "sacbf": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 0,
+          "geometrically_safe_auxiliary_unsafe_excluded": 0,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        },
+        "sacbf_relaxed": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 0,
+          "geometrically_safe_auxiliary_unsafe_excluded": 0,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        }
+      }
+    },
+    {
+      "name": "short_safe_near_obstacle",
+      "candidate_count": 25,
+      "high_order_applicable": true,
+      "truth_counts": {
+        "safe": 25,
+        "unsafe": 0,
+        "unknown": 0
+      },
+      "high_order_truth_counts": {
+        "safe": 25,
+        "unsafe": 0,
+        "unknown": 0
+      },
+      "counts": {
+        "hocbf": {
+          "applicable": 25,
+          "accepted": 15,
+          "safe_admitted": 15,
+          "unsafe_admitted": 0,
+          "safe_excluded": 10,
+          "accepted_truth_unknown": 0
+        },
+        "endpoint": {
+          "applicable": 25,
+          "accepted": 25,
+          "safe_admitted": 25,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "segment": {
+          "applicable": 25,
+          "accepted": 25,
+          "safe_admitted": 25,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "zocbf": {
+          "applicable": 25,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 25,
+          "accepted_truth_unknown": 0
+        },
+        "sacbf": {
+          "applicable": 25,
+          "accepted": 15,
+          "safe_admitted": 15,
+          "unsafe_admitted": 0,
+          "safe_excluded": 10,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 10,
+          "geometrically_safe_auxiliary_unsafe_excluded": 0,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        },
+        "sacbf_relaxed": {
+          "applicable": 25,
+          "accepted": 25,
+          "safe_admitted": 25,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 0,
+          "geometrically_safe_auxiliary_unsafe_excluded": 0,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        }
+      }
+    },
+    {
+      "name": "multiple_obstacle_approach",
+      "candidate_count": 25,
+      "high_order_applicable": true,
+      "truth_counts": {
+        "safe": 25,
+        "unsafe": 0,
+        "unknown": 0
+      },
+      "high_order_truth_counts": {
+        "safe": 18,
+        "unsafe": 7,
+        "unknown": 0
+      },
+      "counts": {
+        "hocbf": {
+          "applicable": 25,
+          "accepted": 15,
+          "safe_admitted": 15,
+          "unsafe_admitted": 0,
+          "safe_excluded": 10,
+          "accepted_truth_unknown": 0
+        },
+        "endpoint": {
+          "applicable": 25,
+          "accepted": 25,
+          "safe_admitted": 25,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "segment": {
+          "applicable": 25,
+          "accepted": 25,
+          "safe_admitted": 25,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "zocbf": {
+          "applicable": 25,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 25,
+          "accepted_truth_unknown": 0
+        },
+        "sacbf": {
+          "applicable": 25,
+          "accepted": 9,
+          "safe_admitted": 9,
+          "unsafe_admitted": 0,
+          "safe_excluded": 16,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 9,
+          "geometrically_safe_auxiliary_unsafe_excluded": 7,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        },
+        "sacbf_relaxed": {
+          "applicable": 25,
+          "accepted": 14,
+          "safe_admitted": 14,
+          "unsafe_admitted": 0,
+          "safe_excluded": 11,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 4,
+          "geometrically_safe_auxiliary_unsafe_excluded": 7,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        }
+      }
+    },
+    {
+      "name": "uncertain_tangent_sign",
+      "candidate_count": 25,
+      "high_order_applicable": false,
+      "truth_counts": {
+        "safe": 10,
+        "unsafe": 10,
+        "unknown": 5
+      },
+      "high_order_truth_counts": {
+        "safe": 0,
+        "unsafe": 25,
+        "unknown": 0
+      },
+      "counts": {
+        "hocbf": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "endpoint": {
+          "applicable": 25,
+          "accepted": 20,
+          "safe_admitted": 10,
+          "unsafe_admitted": 5,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 5
+        },
+        "segment": {
+          "applicable": 25,
+          "accepted": 15,
+          "safe_admitted": 10,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 5
+        },
+        "zocbf": {
+          "applicable": 25,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 10,
+          "accepted_truth_unknown": 0
+        },
+        "sacbf": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 0,
+          "geometrically_safe_auxiliary_unsafe_excluded": 0,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        },
+        "sacbf_relaxed": {
+          "applicable": 0,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 0,
+          "geometrically_safe_auxiliary_unsafe_excluded": 0,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        }
+      }
+    },
+    {
+      "name": "unrelaxed_stationary_state",
+      "candidate_count": 26,
+      "high_order_applicable": true,
+      "truth_counts": {
+        "safe": 24,
+        "unsafe": 2,
+        "unknown": 0
+      },
+      "high_order_truth_counts": {
+        "safe": 18,
+        "unsafe": 8,
+        "unknown": 0
+      },
+      "counts": {
+        "hocbf": {
+          "applicable": 26,
+          "accepted": 16,
+          "safe_admitted": 16,
+          "unsafe_admitted": 0,
+          "safe_excluded": 8,
+          "accepted_truth_unknown": 0
+        },
+        "endpoint": {
+          "applicable": 26,
+          "accepted": 24,
+          "safe_admitted": 24,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "segment": {
+          "applicable": 26,
+          "accepted": 24,
+          "safe_admitted": 24,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "zocbf": {
+          "applicable": 26,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 24,
+          "accepted_truth_unknown": 0
+        },
+        "sacbf": {
+          "applicable": 26,
+          "accepted": 4,
+          "safe_admitted": 4,
+          "unsafe_admitted": 0,
+          "safe_excluded": 20,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 14,
+          "geometrically_safe_auxiliary_unsafe_excluded": 6,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        },
+        "sacbf_relaxed": {
+          "applicable": 26,
+          "accepted": 5,
+          "safe_admitted": 5,
+          "unsafe_admitted": 0,
+          "safe_excluded": 19,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 13,
+          "geometrically_safe_auxiliary_unsafe_excluded": 6,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        }
+      }
+    },
+    {
+      "name": "relaxed_stationary_state",
+      "candidate_count": 26,
+      "high_order_applicable": true,
+      "truth_counts": {
+        "safe": 20,
+        "unsafe": 6,
+        "unknown": 0
+      },
+      "high_order_truth_counts": {
+        "safe": 16,
+        "unsafe": 10,
+        "unknown": 0
+      },
+      "counts": {
+        "hocbf": {
+          "applicable": 26,
+          "accepted": 15,
+          "safe_admitted": 15,
+          "unsafe_admitted": 0,
+          "safe_excluded": 5,
+          "accepted_truth_unknown": 0
+        },
+        "endpoint": {
+          "applicable": 26,
+          "accepted": 20,
+          "safe_admitted": 20,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "segment": {
+          "applicable": 26,
+          "accepted": 20,
+          "safe_admitted": 20,
+          "unsafe_admitted": 0,
+          "safe_excluded": 0,
+          "accepted_truth_unknown": 0
+        },
+        "zocbf": {
+          "applicable": 26,
+          "accepted": 0,
+          "safe_admitted": 0,
+          "unsafe_admitted": 0,
+          "safe_excluded": 20,
+          "accepted_truth_unknown": 0
+        },
+        "sacbf": {
+          "applicable": 26,
+          "accepted": 2,
+          "safe_admitted": 2,
+          "unsafe_admitted": 0,
+          "safe_excluded": 18,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 14,
+          "geometrically_safe_auxiliary_unsafe_excluded": 4,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        },
+        "sacbf_relaxed": {
+          "applicable": 26,
+          "accepted": 4,
+          "safe_admitted": 4,
+          "unsafe_admitted": 0,
+          "safe_excluded": 16,
+          "accepted_truth_unknown": 0,
+          "safe_high_order_paths_excluded": 12,
+          "geometrically_safe_auxiliary_unsafe_excluded": 4,
+          "geometrically_safe_auxiliary_unknown_excluded": 0,
+          "unsafe_high_order_paths_admitted": 0,
+          "accepted_high_order_truth_unknown": 0
+        }
+      }
+    }
+  ]
+}
