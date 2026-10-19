@@ -3,6 +3,7 @@ import io
 import json
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from tick_trap.cli import main
@@ -71,6 +72,22 @@ class CliTests(unittest.TestCase):
             self.assertEqual(len(results), 2)
             self.assertEqual(results[0]["result"]["continuous_status"], "safe")
             self.assertEqual(len(results[0]["all_certification_ns"]), 2)
+
+    def test_planar_run_and_sweep_artifacts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            config = Path(folder)/"config.json"
+            base = {"horizon": "0.1", "p": [-2, "0.7"], "v": [0, 0], "goal": [-2, "0.7"],
+                    "obstacles": [{"center": ["0.2", "0.1"], "radius": "0.5"}]}
+            for command, spec in [("planar-run", base),
+                                  ("planar-sweep", {"base": base, "grid": {"method": ["hocbf", "trajectory_candidates"]}})]:
+                config.write_text(json.dumps(spec))
+                output = Path(folder)/command
+                self.assertEqual(self.invoke(command, "--config", str(config), "--output", str(output)), 0)
+                runs = read_json(output/"runs.json")
+                self.assertTrue(all(r["completed_safe_horizon"] for r in runs))
+                self.assertIn("initial_viability", (output/"summary.csv").read_text())
+                ET.parse(output/"trajectories"/"run-000.svg")
+                self.assertIn("initial viability", (output/"report.md").read_text())
 
 
 if __name__ == "__main__":

@@ -8,6 +8,8 @@ from .dynamics import Circle, PlanarState, WallState
 from .experiments import RunConfig, load_grid, run
 from .learning import learning_study
 from .oracle import circle_interval, wall_interval
+from .planar_experiments import PlanarConfig, load_planar_grid, run_planar
+from .planar_reporting import write_planar_runs
 from .reporting import counterexample_svg, provenance, read_json, write_json, write_runs
 
 
@@ -22,6 +24,8 @@ def main(argv=None):
         ("certify", "Analyze a planar held trajectory against a circle", "configs/planar.json"),
         ("learn", "Fit a small actuator model and test changed dynamics", "configs/learning.json"),
         ("benchmark", "Measure trajectory certificate precision and cost", "configs/certification.json"),
+        ("planar-run", "Run a controlled planar scene", "configs/planar-control.json"),
+        ("planar-sweep", "Compare planar filters on matched scenes", "configs/planar-baselines.json"),
     ]:
         item = sub.add_parser(command, help=help_text)
         item.add_argument("--config", default=default)
@@ -43,7 +47,13 @@ def main(argv=None):
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
         else:
             spec = read_json(args.config)
-            if args.command == "benchmark":
+            if args.command in ("planar-run", "planar-sweep"):
+                configs = list(load_planar_grid(spec)) if args.command == "planar-sweep" else [PlanarConfig(**spec)]
+                results = [run_planar(config) for config in configs]
+                write_planar_runs(output, results, spec)
+                print(f"{len(results)} planar runs; {sum(r['completed_safe_horizon'] for r in results)} safe completed horizons; "
+                      f"{sum(r['collision_observed'] for r in results)} observed collisions.")
+            elif args.command == "benchmark":
                 results = benchmark(spec)
                 output.mkdir(parents=True, exist_ok=True)
                 write_json(output/"benchmark.json", results)
