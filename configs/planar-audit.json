@@ -1,0 +1,10 @@
+{
+  "base": {"grid_points": 5, "command_quantum": "1e-6", "tolerance": "1e-12", "max_subdivisions": 4096},
+  "cases": [
+    {"name": "curved_hidden_collision", "p": ["0.04", "0"], "v": ["-1", "0"], "nominal": ["10", "0"], "obstacles": [{"center": ["-1", "0"], "radius": "1"}], "duration": "0.2", "a_max": "10"},
+    {"name": "viable_straight_crossing", "p": ["-2", "0"], "v": ["4", "0"], "nominal": ["0", "0"], "obstacles": [{"center": ["0", "0"], "radius": "0.5"}], "duration": "1", "a_max": "10"},
+    {"name": "short_safe_near_obstacle", "p": ["1.2", "0"], "v": ["-0.1", "0"], "nominal": ["0", "0"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "0.1", "a_max": "2"},
+    {"name": "multiple_obstacle_approach", "p": ["-2", "0.3"], "v": ["1", "0"], "nominal": ["2", "0"], "obstacles": [{"center": ["0", "0"], "radius": "0.5"}, {"center": ["1.2", "-0.7"], "radius": "0.4"}], "duration": "0.4", "a_max": "2"},
+    {"name": "uncertain_tangent_sign", "p": ["-0.3", "1"], "v": ["1", "0"], "nominal": ["0", "0"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "1"}
+  ]
+}

@@ -8,6 +8,7 @@ from .dynamics import Circle, PlanarState, WallState
 from .experiments import RunConfig, load_grid, run
 from .learning import learning_study
 from .oracle import circle_interval, wall_interval
+from .planar_audit import audit_cases
 from .planar_experiments import PlanarConfig, load_planar_grid, run_planar
 from .planar_reporting import write_planar_runs
 from .reporting import counterexample_svg, provenance, read_json, write_json, write_runs
@@ -26,6 +27,7 @@ def main(argv=None):
         ("benchmark", "Measure trajectory certificate precision and cost", "configs/certification.json"),
         ("planar-run", "Run a controlled planar scene", "configs/planar-control.json"),
         ("planar-sweep", "Compare planar filters on matched scenes", "configs/planar-baselines.json"),
+        ("planar-audit", "Audit admitted controls against the trajectory certificates", "configs/planar-audit.json"),
     ]:
         item = sub.add_parser(command, help=help_text)
         item.add_argument("--config", default=default)
@@ -47,7 +49,26 @@ def main(argv=None):
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
         else:
             spec = read_json(args.config)
-            if args.command in ("planar-run", "planar-sweep"):
+            if args.command == "planar-audit":
+                results = audit_cases(spec)
+                output.mkdir(parents=True, exist_ok=True)
+                write_json(output/"audit.json", results)
+                write_json(output/"metadata.json", provenance(spec))
+                lines = ["# tick-trap matched-control audit", "",
+                         "Counts concern declared finite candidate sets and a single hold. Unknown truth is kept separate.", "",
+                         "| Case | Predicate | Applicable controls | Safe admitted | Unsafe admitted | Safe excluded | Admitted / truth unknown |",
+                         "| --- | --- | ---: | ---: | ---: | ---: | ---: |"]
+                for case in results:
+                    for predicate, counts in case["counts"].items():
+                        lines.append(f"| {case['name']} | {predicate} | {counts['applicable']} | {counts['safe_admitted']} | "
+                                     f"{counts['unsafe_admitted']} | {counts['safe_excluded']} | {counts['accepted_truth_unknown']} |")
+                lines += ["", "HOCBF initial-domain exclusions are not counted as rejected controls.",
+                          "Endpoint and chord acceptance do not assert a physical hold guarantee.",
+                          "Safe-control exclusion by a sufficient condition is not a theorem violation.",
+                          "[Exact per-control evidence and timings](audit.json).", ""]
+                (output/"report.md").write_text("\n".join(lines))
+                print(f"{len(results)} matched states; {sum(c['candidate_count'] for c in results)} controls audited.")
+            elif args.command in ("planar-run", "planar-sweep"):
                 configs = list(load_planar_grid(spec)) if args.command == "planar-sweep" else [PlanarConfig(**spec)]
                 results = [run_planar(config) for config in configs]
                 write_planar_runs(output, results, spec)

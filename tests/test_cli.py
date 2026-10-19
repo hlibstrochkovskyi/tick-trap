@@ -89,6 +89,16 @@ class CliTests(unittest.TestCase):
                 ET.parse(output/"trajectories"/"run-000.svg")
                 self.assertIn("initial viability", (output/"report.md").read_text())
 
+    def test_planar_audit_artifacts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            config = Path(folder)/"config.json"
+            case = dict(name="safe", p=[2, 0], v=[0, 0], nominal=[0, 0],
+                        obstacles=[dict(center=[0, 0], radius=1)], duration="0.1", a_max=1)
+            config.write_text(json.dumps({"cases": [case]}))
+            self.assertEqual(self.invoke("planar-audit", "--config", str(config), "--output", folder), 0)
+            self.assertEqual(len(read_json(Path(folder)/"audit.json")), 1)
+            self.assertIn("Unsafe admitted", (Path(folder)/"report.md").read_text())
+
 
 if __name__ == "__main__":
     unittest.main()
