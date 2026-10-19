@@ -80,6 +80,15 @@ class VerificationTests(unittest.TestCase):
             altered["records"][0]["details"]["checked"][-1]["auxiliary_certificates"][0][field] = value
             with self.assertRaises(VerificationError):
                 verify_planar_runs([altered])
+        for change in (
+            lambda c: c.__setitem__("auxiliary_certificates", []),
+            lambda c: c["auxiliary_certificates"][0].__setitem__("status", "unknown"),
+            lambda c: c.__setitem__("accepted", False),
+        ):
+            altered = copy.deepcopy(runs[1])
+            change(altered["records"][0]["details"]["checked"][-1])
+            with self.assertRaises(VerificationError):
+                verify_planar_runs([altered])
 
 
 if __name__ == "__main__":

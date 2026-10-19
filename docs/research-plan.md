@@ -34,6 +34,12 @@ is a later extension requiring its own validity argument.
    Two high-order polynomial references now preserve both properties and compare
    minimum refinement with sign stopping on the same ordered candidates. They
    remain one-hold checks with no recursive-feasibility claim.
+   The [paired cost experiment](validation-certification.md) now measures 208
+   fixed commands, including controlled auxiliary tangencies, with interleaved
+   repetitions. Sign stopping preserves every paired decision while avoiding
+   unnecessary minimum refinement. This is established numerical engineering,
+   not an original algorithm. Remaining work includes broader algebra/CCD
+   baselines, full selected paper reproductions, and robust learning assumptions.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.
@@ -66,6 +72,13 @@ test synthesis, safety-control benchmarks, validated polynomial optimization,
 continuous collision detection, and barrier verification software. The original
 audit's references on those topics remain a reading queue; this implementation
 does not claim to replace them.
+
+The Bernstein cost work explicitly checks
+[Tang et al., *Fast and Exact Continuous Collision Detection with Bernstein Sign
+Classification*](https://wangzhendong619.github.io/papers/BSC.pdf). Its introductory
+formulation and geometric sign/Boolean-query distinction were examined. Its full
+mesh algorithm, floating-point filters and performance benchmarks remain separate
+comparators, not methods reproduced by tick-trap's rational polynomial query.
 
 ## Gates for a research claim
 

@@ -102,5 +102,15 @@ The [sampling-aware results](docs/validation-sampling.md) compare 48 matched tas
 separate geometric and auxiliary-set exclusions, and reproduce a safe stationary
 case with feasible steering. The accompanying compact study data is versioned.
 
+The [high-order certification study](docs/validation-certification.md) compares
+the same two trajectory properties at fixed states and commands. It measures
+minimum refinement versus sign stopping, includes controlled tangencies, and
+checks matched controller action sequences:
+
+```sh
+PYTHONPATH=src python -m tick_trap certification-study
+PYTHONPATH=src python -m tick_trap planar-sweep --config configs/high-order-baselines.json --output results/high-order-baselines
+```
+
 An ordinary Git checkout uses standard Git commands. Notes for the restricted
 development workspace and its portable history are in [workspace setup](docs/workspace.md).
