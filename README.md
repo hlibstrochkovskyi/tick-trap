@@ -7,11 +7,21 @@ continuous-trajectory safety, and viability. It starts with analytically solvabl
 wall braking and planar acceleration-controlled robots. There is no claim of a
 new safety controller or publication-level novelty.
 
-The implementation uses the Python standard library. Run the reference checks:
+The implementation uses the Python standard library and Python 3.11+. To run
+without installing anything:
 
 ```sh
 PYTHONPATH=src python -m unittest discover -s tests -v
+PYTHONPATH=src python -m tick_trap counterexample
+PYTHONPATH=src python -m tick_trap run
+PYTHONPATH=src python -m tick_trap sweep --config configs/baselines.json
+PYTHONPATH=src python -m tick_trap certify --config configs/planar.json
 ```
+
+Or install with `uv sync`, then use `uv run tick-trap counterexample` and the
+other commands above. A run writes JSON records, CSV metrics, a Markdown report,
+and a provenance manifest under `results/`. The counterexample also produces a
+standalone SVG figure. Use `--output DIRECTORY` to choose the artifact directory.
 
 Exact rational wall trajectories reproduce the 4 cm → −1 cm → 4 cm counterexample.
 Planar circle checks combine a numerical stationary-point estimate with a separate
@@ -20,3 +30,38 @@ validated Bernstein polynomial minimum enclosure. Unresolved certificates return
 
 All guarantees concern the declared mathematical model and input values. They do
 not cover contact dynamics, unmodelled disturbances, or physical hardware.
+
+Six baseline/reference filters are available: unfiltered nominal input,
+continuous-time CBF emulation, endpoint-only checking, Breeden's sampled-data
+condition, Tan's zero-order barrier condition, and an exact wall reference.
+Published methods are documented specializations, not replications of complete
+published experiments. Read the [equations and assumptions](docs/methods.md) and
+[experiment semantics](docs/experiments.md) before interpreting comparisons.
+
+The stress grid varies initial feasibility, update period, actuation mismatch,
+measurement noise, and fixed delay:
+
+```sh
+PYTHONPATH=src python -m tick_trap sweep --config configs/stress.json --output results/stress
+```
+
+Infeasibility stops execution explicitly. Safe completion is reported separately
+from absence of an observed collision. Empirical computation timings do not
+establish real-time guarantees; configured delay and measured runtime are separate.
+
+## Local commit history
+
+This managed workspace mounts `.git` read-only for normal Git writes. The local
+history is therefore stored in `.tick-trap-git`. Use the wrapper to inspect it:
+
+```sh
+sh scripts/git-local log --oneline
+sh scripts/git-local status --short
+```
+
+`tick-trap-history.bundle` is a portable copy of the completed history. Outside
+this restricted workspace, restore an ordinary checkout with:
+
+```sh
+git clone tick-trap-history.bundle tick-trap-restored
+```

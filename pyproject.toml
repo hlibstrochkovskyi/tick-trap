@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tick-trap"
+version = "0.1.0"
+description = "Reproducible continuous-time safety analysis for sampled robot control"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+tick-trap = "tick_trap.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
