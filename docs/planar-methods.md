@@ -97,3 +97,27 @@ that another safe input can be found at the next update. The wall's exact
 viability formula is not applied to planar robots. Planar viability is recorded
 as unknown unless a separate sufficient continuation certificate is supplied.
 There is no guarantee of task convergence from the safety filter alone.
+
+The runner now checks a particular stopping continuation: brake each component
+at its actuator bound, use a residual command at an update boundary, then hold
+zero after rest. At most five constant-input pieces are required. Each piece is
+certified against every obstacle. The plan respects the same update period,
+actuator box and command quantum as the controller. If exact rest is unreachable
+on that lattice, or any part cannot be certified, viability remains unknown.
+These diagnostics do not silently become fallback actions when a filter fails.
+
+## Matched-control audit
+
+`planar-audit` evaluates every declared candidate at exactly the same initial
+state. It records safe controls admitted, unsafe controls admitted, safe controls
+excluded, and accepted controls whose continuous status is unknown. HOCBF
+initial-set exclusions are marked not applicable rather than counted as rejected
+controls. A finite audit is evidence about those controls, not the volume of the
+continuous feasible set. It does not establish that the standard constructions
+used here are the strongest versions of their respective papers.
+
+Audit timing fields separate per-control predicate work from shared endpoint and
+buffer construction. The zero-order margin uses the endpoint computation already
+recorded for the endpoint predicate. These components must be combined before
+comparing complete evaluation expense; per-predicate timings alone are not an
+end-to-end runtime ranking. Controller rollouts measure the complete filter call.

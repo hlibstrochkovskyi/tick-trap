@@ -16,8 +16,9 @@ is a later extension requiring its own validity argument.
    This repository implements that foundation for wall control and planar
    trajectory evaluation, plus a small offline identification experiment.
 2. Complete the theorem-assumption comparison below and reproduce selected paper
-   experiments. Add planar controller synthesis; currently only planar held
-   trajectories are evaluated. Add multiple-obstacle scenarios and matched tasks.
+   experiments. Planar HOCBF synthesis, finite-candidate filters, multiple-obstacle
+   rollouts, matched tasks and a matched-control audit are now implemented. Full
+   paper experiment reproduction and the complete theorem comparison remain open.
 3. Measure where sufficient conditions exclude safe controls, lose recursive
    feasibility, or cost too much. Separate initial-set restrictions from actual
    safety violations. Extend uncertainty/delay models with justified bounds before

@@ -20,6 +20,9 @@ PYTHONPATH=src python -m tick_trap sweep --config configs/baselines.json
 PYTHONPATH=src python -m tick_trap certify --config configs/planar.json
 PYTHONPATH=src python -m tick_trap learn --config configs/learning.json
 PYTHONPATH=src python -m tick_trap benchmark --config configs/certification.json
+PYTHONPATH=src python -m tick_trap planar-run
+PYTHONPATH=src python -m tick_trap planar-sweep --output results/planar-baselines
+PYTHONPATH=src python -m tick_trap planar-audit
 ```
 
 Or install with `uv sync`, then use `.venv/bin/tick-trap counterexample` and the
@@ -63,24 +66,18 @@ The certification benchmark varies minimum-enclosure precision and subdivision
 budget on six analytical trajectories, including tiny positive/negative margins
 and a non-dyadic tangency. It records `unknown` outcomes alongside empirical cost.
 
+Planar experiments compare a conventional HOCBF QP with endpoint, chord,
+zero-order barrier, and validated trajectory checks against multiple circles.
+Reports include exact quadratic trajectory SVGs and sufficient stopping-plan
+certificates. Candidate-search exhaustion, proven QP infeasibility, unresolved
+certificates, and task progress remain separate outcomes. The matched-control
+audit measures which safe controls a condition excludes and which unsafe curves
+an endpoint or chord check admits. Read the [planar method assumptions](docs/planar-methods.md).
+
 See the [research plan and literature ledger](docs/research-plan.md) for the scope
 of this foundation and the work required before making a research claim.
 The [validation record](docs/validation.md) maps the original acceptance criteria
 to the checks and experiments actually completed, including their limits.
 
-## Local commit history
-
-This managed workspace mounts `.git` read-only for normal Git writes. The local
-history is therefore stored in `.tick-trap-git`. Use the wrapper to inspect it:
-
-```sh
-sh scripts/git-local log --oneline
-sh scripts/git-local status --short
-```
-
-`tick-trap-history.bundle` is a portable copy of the completed history. Outside
-this restricted workspace, restore an ordinary checkout with:
-
-```sh
-git clone tick-trap-history.bundle tick-trap-restored
-```
+An ordinary Git checkout uses standard Git commands. Notes for the restricted
+development workspace and its portable history are in [workspace setup](docs/workspace.md).

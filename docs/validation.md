@@ -63,10 +63,13 @@ prediction error therefore cannot be reported as a robust safety certificate.
 | Quantify computational overhead | Controller and offline certification timed separately; empirical deadline misses recorded; no real-time guarantee |
 | Preserve reproducibility | Embedded configs, seeds, exact values, tolerances, source/config hashes, version, platform, Git revision, and raw observations |
 
-Planar controller synthesis, delay-aware viability, calibrated learned uncertainty,
+At this first snapshot, planar controller synthesis, delay-aware viability, calibrated learned uncertainty,
 iterative QP tolerance experiments, and publication-level comparisons are not
 implemented. These are explicit next research stages, not silently assumed
 capabilities of this foundation.
+
+The subsequent planar control milestone is documented separately in
+[planar validation](validation-planar.md).
 
 ## Reproduce locally
 
