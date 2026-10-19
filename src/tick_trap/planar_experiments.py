@@ -5,11 +5,11 @@ from fractions import Fraction
 from itertools import product
 from time import perf_counter_ns
 
+from .continuation import assess_stopping
 from .dynamics import Circle, PlanarState
 from .numbers import nonnegative, positive, q, vector2
 from .oracle import circle_interval
 from .planar_control import PLANAR_METHODS, decide_planar, hocbf_constraints
-from .polynomial import certify_minimum
 from .qp import dot
 
 
@@ -30,47 +30,9 @@ def _state_record(state):
 
 def braking_continuation(state, obstacles, duration, a_max, tolerance="1e-12", max_subdivisions=4096,
                          command_quantum="1e-6"):
-    """Certify a particular admissible plan to rest on a future update boundary.
-
-    Failure of this plan does not establish nonviability. Saturated componentwise
-    braking, residual commands at update boundaries, and then zero define a future
-    plan. It respects both actuator bounds and the declared command quantum.
-    """
-    duration, a_max = positive(duration, "duration"), positive(a_max, "a_max")
-    quantum = positive(command_quantum, "command_quantum")
-    limit = a_max/quantum
-    if limit.denominator != 1:
-        raise ValueError("a_max must be an integer multiple of command_quantum")
-    velocity_units = tuple(v/(duration*quantum) for v in state.v)
-    if any(n.denominator != 1 for n in velocity_units):
-        return {"viability": "unknown", "plan_status": "not_constructed", "pieces": [],
-                "reason": "Velocity cannot reach exact rest on this update/command lattice"}
-    stop_steps = tuple((abs(n.numerator)+int(limit)-1)//int(limit) for n in velocity_units)
-    steps = max(stop_steps)
-    if not steps:
-        safe = all(o.polynomial(state, (0, 0))[0] >= 0 for o in obstacles)
-        return {"viability": "certified" if safe else "unknown", "plan_status": "safe" if safe else "unsafe",
-                "steps": 0, "pieces": [], "certificates": []}
-    # At most five constant-input pieces, even for very large stopping horizons.
-    boundaries = sorted({0, *stop_steps, *(n-1 for n in stop_steps if n)})
-    current, certificates, pieces = state, [], []
-    for start, end in zip(boundaries, boundaries[1:]):
-        action = tuple(-min(a_max, abs(v)/duration)*(1 if v > 0 else -1 if v < 0 else 0) for v in current.v)
-        dt = (end-start)*duration
-        segment = [certify_minimum(o.polynomial(current, action), dt, tolerance, max_subdivisions) for o in obstacles]
-        certificates.extend(segment)
-        pieces.append({"steps": end-start, "duration_exact": str(dt), "action_exact": [str(x) for x in action],
-                       "statuses": [c.status for c in segment]})
-        current = current.at(action, dt)
-    if current.v != (0, 0):
-        raise ArithmeticError("Stopping-plan construction did not reach rest")
-    statuses = [c.status for c in certificates]
-    status = "unsafe" if "unsafe" in statuses else "unknown" if "unknown" in statuses else "safe"
-    return {"viability": "certified" if status == "safe" else "unknown", "plan_status": status,
-            "steps": steps, "duration_exact": str(steps*duration), "pieces": pieces,
-            "certificates": [{"status": c.status, "lower_exact": str(c.lower), "upper_exact": str(c.upper),
-                              "witness_time_exact": str(c.witness_time)} for c in certificates],
-            "command_scope": "configured actuator bounds, update period and command quantum"}
+    """Serializable sufficient viability diagnostic, backed by reusable proofs."""
+    return assess_stopping(state, obstacles, duration, a_max, tolerance,
+                           max_subdivisions, command_quantum).record()
 
 
 @dataclass(frozen=True)
