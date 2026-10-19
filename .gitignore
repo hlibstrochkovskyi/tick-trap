@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+results/*
+!results/.gitkeep
+.tick-trap-git/
+tick-trap-history.bundle
