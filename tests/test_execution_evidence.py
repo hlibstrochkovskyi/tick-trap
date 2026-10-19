@@ -73,6 +73,18 @@ class ExecutionEvidenceTests(unittest.TestCase):
             with self.assertRaises(VerificationError):
                 run_planar(self.config())
 
+    def test_offline_replay_checks_its_own_budget_and_goal(self):
+        original = run_planar(self.config(oracle_max_subdivisions=4096))
+        self.assertGreater(original["records"][0]["obstacles"][0]["subdivisions"], 0)
+        altered = copy.deepcopy(original)
+        altered["config"]["oracle_max_subdivisions"] = 0
+        with self.assertRaisesRegex(VerificationError, "Offline certificate exceeds"):
+            verify_planar_runs([altered])
+        altered = copy.deepcopy(original)
+        altered["records"][0]["obstacles"][0]["goal"] = "sign"
+        with self.assertRaisesRegex(VerificationError, "Incorrect certificate goal"):
+            verify_planar_runs([altered])
+
     def test_a_negative_witness_cannot_be_overridden(self):
         # Deliberately inconsistent mocked proof authority tests the explicit guard.
         config = self.config(method="nominal", max_candidates=None, p=(2, 0), v=(-1, 0),

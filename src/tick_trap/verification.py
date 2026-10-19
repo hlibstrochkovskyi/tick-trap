@@ -237,7 +237,11 @@ def verify_planar_runs(runs):
                 for obstacle, evidence in zip(obstacles, record["obstacles"]):
                     polynomial = obstacle.polynomial(state, action)
                     _require(tuple(map(q, evidence["polynomial_exact"])) == polynomial, "Recorded polynomial is wrong")
-                    interval_status.append(_certificate(polynomial, period, evidence, config["oracle_tolerance"], cache, True))
+                    _require(_integer(evidence["subdivisions"], "offline subdivisions") <=
+                             _integer(config["oracle_max_subdivisions"], "offline subdivision budget"),
+                             "Offline certificate exceeds its declared budget")
+                    interval_status.append(_certificate(polynomial, period, evidence, config["oracle_tolerance"], cache,
+                                                        True, expected_goal="minimum"))
                     sample_safe = polynomial[0] >= 0 and evaluate(polynomial, period) >= 0
                     _require(evidence["sampled_safe"] == sample_safe, "Obstacle sampled-safety evidence is wrong")
                     interval_sampled.append(sample_safe)
