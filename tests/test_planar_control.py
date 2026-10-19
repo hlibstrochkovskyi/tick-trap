@@ -132,6 +132,19 @@ class PlanarControlTests(unittest.TestCase):
         self.assertEqual(result.status, "budget_exhausted")
         self.assertFalse(result.details["candidate_set_constructed"])
 
+    def test_relaxed_safe_stationary_choice_is_not_infeasibility(self):
+        state = PlanarState(("-0.52", "0.3"), (0, 0))
+        obstacles = (Circle((0, 0), "0.5"), Circle(("1.2", "-0.7"), "0.4"))
+        decision = decide_planar("sacbf_relaxed_candidates", state, ("2.52", "0.4"), obstacles, "0.4", 2)
+        self.assertEqual(decision.action, (0, 0))
+        self.assertEqual(state.at(decision.action, "0.4"), state)
+        # A feasible steering command exists but costs 0.2 more than holding.
+        from tick_trap.sampling import sacbf_assessment
+        self.assertTrue(all(sacbf_assessment(state, (0, 1), o, "0.4", relaxed=True)["accepted"] for o in obstacles))
+        nominal = (F("2.52"), F("0.4"))
+        cost = lambda u: sum((x-y)**2 for x, y in zip(u, nominal))
+        self.assertEqual(cost((0, 1))-cost((0, 0)), F("0.2"))
+
 
 if __name__ == "__main__":
     unittest.main()
