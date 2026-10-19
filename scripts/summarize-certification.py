@@ -48,6 +48,7 @@ def main():
     sources = {name: read(path.parent/"metadata.json") for name, path in paths.items()}
     require(all(p["git_status"] == "" for p in sources.values()), "Artifacts must identify clean source snapshots")
     study, runs, verification = read(args.study), read(args.runs), read(args.verification)
+    per_polynomial = study.get("budget_scope", "per_polynomial") == "per_polynomial"
     require(verification["status"] == "verified" and sources["verification"]["configuration"]["runs_sha256"] == digest(args.runs),
             "Rollout verification is missing or belongs to another input")
     require(verification["runs"] == len(runs) and verification["executed_holds"] == sum(r["executed_steps"] for r in runs),
@@ -106,11 +107,15 @@ def main():
         ratios = []
         for key in matched[0]:
             a, b = (rows[key] for rows in matched)
-            require(a["result"]["subdivisions"] >= b["result"]["subdivisions"], "Comparison increased the subdivision count")
+            if per_polynomial:
+                require(a["result"]["subdivisions"] >= b["result"]["subdivisions"], "Comparison increased the subdivision count")
             if auxiliary:
-                require((a["result"]["status"], b["result"]["status"]) in {
+                allowed = {
                     ("accepted", "accepted"), ("rejected", "rejected"), ("rejected", "unknown"),
-                    ("unknown", "unknown"), ("unknown", "accepted")}, "Contradictory auxiliary implication or proof subset")
+                    ("unknown", "unknown"), ("unknown", "accepted")}
+                if not per_polynomial:
+                    allowed.add(("unknown", "rejected"))
+                require((a["result"]["status"], b["result"]["status"]) in allowed, "Contradictory auxiliary implication or proof subset")
             else:
                 require(a["result"]["status"] == b["result"]["status"], "Paired property proof-prefix consistency failed")
             ratios.append(a["predicate_ns_median"]/b["predicate_ns_median"])
@@ -121,6 +126,8 @@ def main():
             pair["median_paired_minimum_over_sign_time"] = median(ratios)
         pairs.append(pair)
     cases = [{"name": c["name"], "candidate_count": c["candidate_count"], "high_order_truth_counts": c["high_order_truth_counts"],
+              "independent_truth_counts": dict(Counter(r["independent_high_order_status"] for r in c["candidates"]
+                                                        if "independent_high_order_status" in r)),
               "first_ordered_action_exact": c["candidates"][0]["action_exact"],
               "first_reference_status": c["candidates"][0]["high_order_path_status"],
               "first_action_sign_queries": [{"strategy": r["strategy"], "tolerance_exact": r["tolerance_exact"], "budget": r["budget"],
