@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .dynamics import Circle, PlanarState, WallState
 from .experiments import RunConfig, load_grid, run
+from .learning import learning_study
 from .oracle import circle_interval, wall_interval
 from .reporting import counterexample_svg, provenance, read_json, write_json, write_runs
 
@@ -18,6 +19,7 @@ def main(argv=None):
         ("run", "Run a single wall configuration", "configs/wall.json"),
         ("sweep", "Run a reproducible Cartesian experiment grid", "configs/baselines.json"),
         ("certify", "Analyze a planar held trajectory against a circle", "configs/planar.json"),
+        ("learn", "Fit a small actuator model and test changed dynamics", "configs/learning.json"),
     ]:
         item = sub.add_parser(command, help=help_text)
         item.add_argument("--config", default=default)
@@ -39,7 +41,16 @@ def main(argv=None):
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
         else:
             spec = read_json(args.config)
-            if args.command == "certify":
+            if args.command == "learn":
+                result = learning_study(**spec)
+                runs = result.pop("runs")
+                write_runs(output, runs, spec)
+                write_json(output/"learning.json", result)
+                with (output/"report.md").open("a") as report:
+                    report.write("\n[Learned model, training data, and held-out prediction errors](learning.json).\n\n"
+                                 "Prediction errors do not establish a valid uncertainty bound or safety guarantee.\n")
+                print(f"Learned actuator gain {result['model']['gain']:.6f}, bias {result['model']['bias']:.6f}; {len(runs)} control runs.")
+            elif args.command == "certify":
                 allowed = {"p", "v", "u", "center", "radius", "duration", "tolerance", "max_subdivisions"}
                 if set(spec)-allowed:
                     raise ValueError(f"Unknown planar configuration keys: {set(spec)-allowed}")

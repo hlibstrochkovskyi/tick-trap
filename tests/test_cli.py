@@ -53,6 +53,14 @@ class CliTests(unittest.TestCase):
             config.write_text('{"d": 0.04, "steps": 1}')
             self.assertEqual(read_json(config)["d"], "0.04")
 
+    def test_learning_artifacts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            config = Path(folder)/"config.json"
+            config.write_text(json.dumps({"samples": 8, "methods": ["exact_hold"], "run_config": {"steps": 1}}))
+            self.assertEqual(self.invoke("learn", "--config", str(config), "--output", folder), 0)
+            self.assertEqual(len(read_json(Path(folder)/"learning.json")["evaluation"]), 4)
+            self.assertEqual(len(read_json(Path(folder)/"runs.json")), 4)
+
 
 if __name__ == "__main__":
     unittest.main()

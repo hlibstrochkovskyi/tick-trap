@@ -52,3 +52,19 @@ The intervention metric sums absolute changes from nominal acceleration at contr
 updates, without time weighting; it is not a performance objective or an integral.
 Neither intervention nor collision counts alone establish conservatism. Inspect
 feasible sets and use matched initial conditions and horizons for that question.
+
+## Learned actuator model
+
+`learn --config configs/learning.json` fits an affine model by ordinary least
+squares to seeded command/acceleration observations with Gaussian measurement
+noise. It saves commands, observations, coefficients, and training error.
+Separate seeded held-out commands evaluate prediction of the true conditional
+mean acceleration, first under the training dynamics and then under changed
+dynamics. The held-out error does not include observation noise.
+
+Both the unit model and learned model are used inside the same wall filters under
+both plants. This tests how identification changes closed-loop results without
+changing the safety condition. Any nonzero parameter mismatch is marked as an
+assumption violation, even if empirical prediction error is small. There is no
+claim of valid uncertainty coverage, online safe exploration, robustification,
+or a safe-learning theorem. This experiment uses offline identification data.

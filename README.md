@@ -16,6 +16,7 @@ PYTHONPATH=src python -m tick_trap counterexample
 PYTHONPATH=src python -m tick_trap run
 PYTHONPATH=src python -m tick_trap sweep --config configs/baselines.json
 PYTHONPATH=src python -m tick_trap certify --config configs/planar.json
+PYTHONPATH=src python -m tick_trap learn --config configs/learning.json
 ```
 
 Or install with `uv sync`, then use `uv run tick-trap counterexample` and the
@@ -48,6 +49,12 @@ PYTHONPATH=src python -m tick_trap sweep --config configs/stress.json --output r
 Infeasibility stops execution explicitly. Safe completion is reported separately
 from absence of an observed collision. Empirical computation timings do not
 establish real-time guarantees; configured delay and measured runtime are separate.
+
+The learning study fits an affine actuator model from noisy supervised data,
+measures held-out prediction error, and runs the filters under original and
+changed dynamics. Fitted parameters and all training data are saved. This is a
+small model-identification experiment; prediction errors are not calibrated
+uncertainty bounds.
 
 ## Local commit history
 

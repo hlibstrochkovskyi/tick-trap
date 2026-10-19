@@ -3,6 +3,7 @@
 import csv
 import hashlib
 import json
+import os
 import platform
 import subprocess
 import sys
@@ -43,6 +44,7 @@ def provenance(spec):
     return {"schema_version": 1, "project": "tick-trap", "version": __version__,
             "created_utc": datetime.now(timezone.utc).isoformat(),
             "python": sys.version, "platform": platform.platform(), "machine": platform.machine(),
+            "processor": platform.processor(), "logical_cpu_count": os.cpu_count(),
             "dependencies": "Python standard library only", "argv": sys.argv,
             "source_sha256": digest.hexdigest(), "git_commit": git("rev-parse", "HEAD"),
             "git_status": git("status", "--porcelain"),
@@ -64,7 +66,7 @@ def write_runs(output, runs, spec):
                "model_gain", "model_bias", "measurement_d", "measurement_v", "delay", "termination",
                "initial_viable", "initial_controller_domain", "assumption_violations", "executed_steps",
                "completed_safe_horizon", "sampled_safe_observed", "collision_observed", "minimum_clearance",
-               "intervention_l1", "solve_us_median", "oracle_us_median", "deadline_misses"]
+               "intervention_l1", "solve_us_median", "oracle_us_median", "deadline_misses", "study_plant", "study_model"]
     with (output/"summary.csv").open("w", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=columns)
         writer.writeheader()
@@ -74,12 +76,17 @@ def write_runs(output, runs, spec):
             solve = [r["solve_ns"]/1000 for r in run["records"]]
             oracle = [r["certification_ns"]/1000 for r in run["records"] if "certification_ns" in r]
             row.update({"run": index, "assumption_violations": ";".join(run["assumption_violations"]),
+                        "study_plant": run.get("study_labels", {}).get("plant", ""),
+                        "study_model": run.get("study_labels", {}).get("model", ""),
                         "solve_us_median": median(solve) if solve else "",
                         "oracle_us_median": median(oracle) if oracle else ""})
             writer.writerow(row)
     groups = defaultdict(list)
     for run in runs:
-        groups[(run["config"]["method"], run["initial_viable"],
+        label = run["config"]["method"]
+        if "study_labels" in run:
+            label += " / "+run["study_labels"]["plant"]+" / "+run["study_labels"]["model"]
+        groups[(label, run["initial_viable"],
                 ", ".join(run["assumption_violations"]) or "nominal model")].append(run)
     lines = ["# tick-trap experiment", "",
              "Counts describe these configurations only. A stopped run is not a safe completed horizon.", "",
