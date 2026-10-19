@@ -78,3 +78,6 @@ Next scientific work includes preserving a certified continuation during control
 selection, tightening and comparing published sampled-data bounds, full paper
 experiment reproduction, and testing actual task progress over matched horizons.
 Delay-aware planar guarantees and calibrated learned uncertainty remain open.
+
+The subsequent stored-plan and saved-evidence replay milestone is recorded in
+[continuation validation](validation-continuations.md).

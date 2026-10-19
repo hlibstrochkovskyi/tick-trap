@@ -23,6 +23,8 @@ is a later extension requiring its own validity argument.
    feasibility, or cost too much. Separate initial-set restrictions from actual
    safety violations. Extend uncertainty/delay models with justified bounds before
    claiming safety under those conditions.
+   A restricted stored-continuation reference and exact saved-evidence replay are
+   now implemented; see [the continuation validation](validation-continuations.md).
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.
@@ -42,6 +44,7 @@ abstract-level reading from becoming a claim of proof reconstruction.
 | [Pagnini, Malis (2026)](https://www.sciencedirect.com/science/article/abs/pii/S0947358026001354) | Publisher abstract and accessible sections checked; full proof pending | Segment guarantees versus curved physical trajectories |
 | [Ambadkar et al. (ICLR 2026)](https://proceedings.iclr.cc/paper_files/paper/2026/hash/c1233cb30ef11a3fe6ab10aa96beabaf-Abstract-Conference.html) | Proceedings abstract verified; not reproduced | Predictive shielding under model error and delay |
 | [Begzadic et al. (ACC 2026)](https://portal.fis.tum.de/en/publications/safe-event-triggered-learning-for-sampled-data-systems/) | Institutional publication record and abstract verified; not reproduced | GP validity conditions, event triggers, inter-sample bounds |
+| [Wabersich, Zeilinger, 1812.05506v4 (2021)](https://arxiv.org/html/1812.05506v4) | Nominal construction, model/terminal assumptions and shrinking-plan argument examined in Section 4.1; restricted stored-plan reference implemented | Full MPC problem, uncertain-model theorem and original experiments are not reproduced |
 
 Taylor's practical-safety formulation must not be scored as though it asserted
 the same unrelaxed continuous safe-set invariance as every other method. The

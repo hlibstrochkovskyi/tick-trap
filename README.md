@@ -87,6 +87,8 @@ See the [research plan and literature ledger](docs/research-plan.md) for the sco
 of this foundation and the work required before making a research claim.
 The [validation record](docs/validation.md) maps the original acceptance criteria
 to the checks and experiments actually completed, including their limits.
+The [stored-continuation results](docs/validation-continuations.md) include the
+matched search-budget comparison and saved-evidence replay.
 
 An ordinary Git checkout uses standard Git commands. Notes for the restricted
 development workspace and its portable history are in [workspace setup](docs/workspace.md).
