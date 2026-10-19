@@ -1,0 +1,12 @@
+{
+  "method": "trajectory_candidates",
+  "p": ["-2", "0.7"],
+  "v": ["1", "0"],
+  "goal": ["2", "0.7"],
+  "obstacles": [{"center": ["0", "0"], "radius": "0.5"}],
+  "duration": "0.1",
+  "horizon": "4",
+  "a_max": "2",
+  "grid_points": 5,
+  "command_quantum": "1e-6"
+}
