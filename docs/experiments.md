@@ -4,9 +4,10 @@
 `configs/stress.json` crosses initial clearance, update period, actuator gain,
 measurement error, execution delay, and two seeds. Change one grid field at a
 time for an interpretable causal comparison; the full grid exposes interactions.
-The initial default sweep uses a fixed number of updates, so its physical horizon
-varies with period. Compare per-interval behavior or configure equal physical
-horizons before interpreting aggregate performance across periods.
+Both grids specify a common physical horizon across update periods. A horizon
+must be a positive integer multiple of the update period and overrides `steps`.
+Without a horizon the configured number of steps is used, which can confound
+aggregate comparisons across update periods.
 
 `initial_geometric_safe` checks current clearance. `initial_viable` uses the true
 plant's maximum deceleration and the ideal no-delay wall viability formula.

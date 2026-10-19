@@ -1,5 +1,5 @@
 {
-  "base": {"v": "1", "steps": 10, "a_max": "10", "nominal": "0"},
+  "base": {"v": "1", "horizon": "1", "a_max": "10", "nominal": "0"},
   "grid": {
     "method": ["continuous_cbf", "endpoint", "breeden", "zocbf", "exact_hold"],
     "d": ["0.04", "0.06", "0.6"],

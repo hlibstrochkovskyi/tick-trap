@@ -60,7 +60,7 @@ def write_runs(output, runs, spec):
     output.mkdir(parents=True, exist_ok=True)
     write_json(output/"metadata.json", provenance(spec))
     write_json(output/"runs.json", runs)
-    columns = ["run", "method", "d", "v", "duration", "seed", "plant_gain", "plant_bias",
+    columns = ["run", "method", "d", "v", "duration", "horizon", "steps", "seed", "plant_gain", "plant_bias",
                "model_gain", "model_bias", "measurement_d", "measurement_v", "delay", "termination",
                "initial_viable", "initial_controller_domain", "assumption_violations", "executed_steps",
                "completed_safe_horizon", "sampled_safe_observed", "collision_observed", "minimum_clearance",
@@ -93,7 +93,7 @@ def write_runs(output, runs, spec):
                      f"{sum(r['termination']=='outside_domain' for r in group)} | "
                      f"{sum(r['deadline_misses'] for r in group)} |")
     lines += ["", "*Viability uses the ideal no-delay wall formula with true braking authority.", "",
-              "Different update periods with a fixed number of steps have different physical horizons.",
+              "Use a common configured horizon when comparing different update periods; fixed step counts imply different horizons.",
               "A model match does not give endpoint-only or emulated continuous filters a hold guarantee.",
               "Timing measurements are empirical; fixed simulated delay is configured independently.",
               "The oracle is offline; its time is excluded from controller deadline measurements.", "",

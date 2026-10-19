@@ -77,6 +77,13 @@ class ExperimentTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 list(load_grid(spec))
 
+    def test_common_physical_horizon(self):
+        for duration, count in [("0.1", 10), ("0.2", 5)]:
+            result = run(RunConfig(method="nominal", d="10", v="0", horizon="1", duration=duration))
+            self.assertEqual(result["executed_steps"], count)
+        with self.assertRaises(ValueError):
+            RunConfig(horizon="1", duration="0.3")
+
 
 if __name__ == "__main__":
     unittest.main()

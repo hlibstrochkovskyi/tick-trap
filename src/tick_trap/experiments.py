@@ -19,6 +19,7 @@ class RunConfig:
     v: str = "1"
     duration: str = "0.1"
     steps: int = 20
+    horizon: str | None = None
     a_max: str = "10"
     nominal: str = "0"
     tau: str = "0.3"
@@ -56,6 +57,10 @@ class RunConfig:
             raise ValueError("previous_action exceeds actuator limits")
         if self.deadline is not None:
             positive(self.deadline, "deadline")
+        if self.horizon is not None:
+            count = positive(self.horizon, "horizon")/q(self.duration)
+            if count.denominator != 1:
+                raise ValueError("horizon must be an integer multiple of duration")
         if q(self.plant_gain)*q(self.a_max)-q(self.plant_bias) <= 0:
             raise ValueError("Plant must retain strictly positive braking authority")
         if q(self.model_gain)*q(self.a_max)-abs(q(self.model_bias)) <= 0:
@@ -88,7 +93,8 @@ def run(config: RunConfig):
     if state.d < 0:
         termination = "initially_unsafe"
     else:
-        for index in range(config.steps):
+        steps = int(q(config.horizon)/duration) if config.horizon is not None else config.steps
+        for index in range(steps):
             measured = WallState(state.d+q(rng.uniform(-1, 1))*q(config.measurement_d),
                                  state.v+q(rng.uniform(-1, 1))*q(config.measurement_v))
             start = perf_counter_ns()
