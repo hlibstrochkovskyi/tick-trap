@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from fractions import Fraction
 from itertools import product
 
+from .barrier_paths import certify_auxiliary_path
 from .numbers import positive, q, sqrt_upper, vector2
 from .polynomial import certify_minimum, certify_sign, evaluate
 from .qp import HalfSpace, dot, project_box
@@ -15,6 +16,7 @@ from .sampling import sacbf_assessment
 PLANAR_METHODS = ("nominal", "hocbf", "endpoint_candidates", "segment_candidates",
                   "zocbf_candidates", "sacbf_candidates", "sacbf_relaxed_candidates",
                   "high_order_trajectory_candidates", "high_order_sign_candidates",
+                  "auxiliary_sign_candidates",
                   "trajectory_candidates", "backup_candidates")
 
 
@@ -137,7 +139,8 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
     if method == "nominal":
         return PlanarDecision("feasible", _round(_clip(nominal, a_max), quantum), details={"guarantee": "none"})
     sampling_aware = method in ("sacbf_candidates", "sacbf_relaxed_candidates")
-    high_order_path = method in ("high_order_trajectory_candidates", "high_order_sign_candidates")
+    auxiliary_only = method == "auxiliary_sign_candidates"
+    high_order_path = auxiliary_only or method in ("high_order_trajectory_candidates", "high_order_sign_candidates")
     if method == "hocbf" or sampling_aware or high_order_path:
         constraints, domains = hocbf_constraints(state, obstacles, lambda1, lambda2)
         if not all(d["in_domain"] for d in domains):
@@ -160,6 +163,7 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
     limit = len(actions) if max_candidates is None else min(len(actions), max_candidates)
     for action in actions[:limit]:
         margins, certificates, sampling_assessments, auxiliary_certificates = [], [], [], []
+        geometric_implications = []
         accepted, unknown = True, False
         for index, obstacle in enumerate(obstacles):
             polynomial = obstacle.polynomial(state, action)
@@ -180,14 +184,20 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                 margins.append(assessment["margin_exact"])
                 accepted = accepted and assessment["accepted"]
             else:
-                certifier = certify_sign if method == "high_order_sign_candidates" else certify_minimum
-                queries = [(polynomial, certificates)]
-                if high_order_path:
-                    psi = tuple(q(lambda1)*c+((i+1)*polynomial[i+1] if i+1 < len(polynomial) else 0)
-                                for i, c in enumerate(polynomial))
-                    queries.append((psi, auxiliary_certificates))
-                for coefficients, evidence in queries:
-                    cert = certifier(coefficients, duration, tolerance, max_subdivisions)
+                if auxiliary_only:
+                    cert, implication = certify_auxiliary_path(polynomial, lambda1, duration, tolerance, max_subdivisions)
+                    geometric_implications.append(implication)
+                    computed = [(cert, auxiliary_certificates)]
+                else:
+                    certifier = certify_sign if method == "high_order_sign_candidates" else certify_minimum
+                    queries = [(polynomial, certificates)]
+                    if high_order_path:
+                        psi = tuple(q(lambda1)*c+((i+1)*polynomial[i+1] if i+1 < len(polynomial) else 0)
+                                    for i, c in enumerate(polynomial))
+                        queries.append((psi, auxiliary_certificates))
+                    computed = [(certifier(coefficients, duration, tolerance, max_subdivisions), evidence)
+                                for coefficients, evidence in queries]
+                for cert, evidence in computed:
                     evidence.append({"status": cert.status, "lower_exact": str(cert.lower),
                                      "upper_exact": str(cert.upper), "witness_time_exact": str(cert.witness_time),
                                      "subdivisions": cert.subdivisions, "precision_reached": cert.precision_reached,
@@ -195,8 +205,8 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                                      "stopping_reason": cert.stopping_reason})
                     accepted = accepted and cert.status == "safe"
                     unknown = unknown or cert.status == "unknown"
-        # A single collision witness rules out the entire action, even when a
-        # different obstacle's certificate remains unresolved.
+        # A negative witness for either required path rules out the action,
+        # even when a different path's certificate remains unresolved.
         if any(c["status"] == "unsafe" for c in certificates+auxiliary_certificates):
             unknown = False
         checked.append({"action_exact": [str(x) for x in action], "accepted": accepted,
@@ -205,6 +215,8 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
             checked[-1]["sampling_assessments"] = sampling_assessments
         if high_order_path:
             checked[-1]["auxiliary_certificates"] = auxiliary_certificates
+        if auxiliary_only:
+            checked[-1]["geometric_implications"] = geometric_implications
         unknown_count += unknown
         if accepted:
             return PlanarDecision("feasible", action, details={"candidate_count": len(actions), "candidate_set_constructed": True, "checked": checked,
@@ -218,6 +230,7 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                                       "sacbf_relaxed_candidates": "continuous h and auxiliary psi safety of this hold",
                                       "high_order_trajectory_candidates": "continuous h and auxiliary psi safety of this hold",
                                       "high_order_sign_candidates": "continuous h and auxiliary psi safety of this hold",
+                                      "auxiliary_sign_candidates": "continuous h and auxiliary psi safety of this hold; h by comparison",
                                       "trajectory_candidates": "continuous safety of this hold",
                                   }[method], "terminal_viability": "unknown"})
     budget_exhausted = limit < len(actions)

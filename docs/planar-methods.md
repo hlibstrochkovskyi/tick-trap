@@ -56,6 +56,7 @@ declared candidates; no continuous-input optimality is claimed.
 | `sacbf_relaxed_candidates` | Sampling-aware high-order condition with the permitted zero target |
 | `high_order_trajectory_candidates` | Validated minima of both actual h and auxiliary psi paths |
 | `high_order_sign_candidates` | The same two path properties, stopping on proved signs |
+| `auxiliary_sign_candidates` | Validated psi sign and a comparison proof of geometric safety |
 | `trajectory_candidates` | Validated nonnegative minimum on the actual curved trajectory |
 | `backup_candidates` | Safe hold plus certified stopping continuation, or execution of a previously certified plan |
 
@@ -150,6 +151,17 @@ comparison of computation, not a different safety guarantee.
 on matched eight-second tasks. The saved-run verifier replays their geometric
 and auxiliary proofs, declared query goals and stopping flags. A sign-proved
 interval must not be mistaken for a precision-qualified minimum enclosure.
+
+`auxiliary_sign_candidates` retains the same initial domain and ordered commands
+but queries only `psi`. The [linear comparison proof](auxiliary-certification.md)
+derives geometric nonnegativity from `h(0)>=0`. Saved inference records are
+distinct from numerical geometric certificates and carry no minimum bounds.
+The offline geometric oracle is still run, and saved-run verification reconstructs
+the polynomial, gain, initial value, interval and auxiliary proof. A failed or
+unknown auxiliary condition authorizes no action. At finite work limits its
+classification can differ from the dual query in either direction; the required
+safety guarantee has not changed. The matched rollout configuration is
+`configs/auxiliary-baselines.json`.
 
 ## Matched-control audit
 

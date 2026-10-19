@@ -157,6 +157,40 @@ class PlanarControlTests(unittest.TestCase):
             outside = decide_planar(method, PlanarState((2, 0), (-4, 0)), (10, 0), [Circle((0, 0), 1)], "0.1", 10)
             self.assertEqual(outside.status, "outside_domain")
 
+    def test_auxiliary_filter_uses_the_comparison_proof_without_a_geometric_query(self):
+        state, obstacle = PlanarState(("-0.3", "1.06"), (1, 0)), Circle((0, 0), 1)
+        dual = decide_planar("high_order_sign_candidates", state, (0, 0), [obstacle], 1, 1,
+                             lambda1=3, max_subdivisions=0, max_candidates=1)
+        self.assertIsNone(dual.action)
+        with patch("tick_trap.planar_control.certify_sign", side_effect=AssertionError("Unexpected direct query")), \
+             patch("tick_trap.planar_control.certify_minimum", side_effect=AssertionError("Unexpected minimum query")):
+            reduced = decide_planar("auxiliary_sign_candidates", state, (0, 0), [obstacle], 1, 1,
+                                    lambda1=3, max_subdivisions=0, max_candidates=1)
+        self.assertEqual(reduced.action, (0, 0))
+        chosen = reduced.details["checked"][-1]
+        self.assertEqual(chosen["certificates"], [])
+        self.assertEqual(len(chosen["auxiliary_certificates"]), 1)
+        self.assertEqual(chosen["geometric_implications"][0]["status"], "safe")
+        self.assertEqual(chosen["geometric_implications"][0]["initial_h_exact"], "267/1250")
+
+    def test_auxiliary_filter_keeps_unknown_and_domain_exclusions_explicit(self):
+        state, obstacle = PlanarState((2, 0), (-1, 0)), Circle((0, 0), 1)
+        result = decide_planar("auxiliary_sign_candidates", state, (0, 0), [obstacle], "2.9", 1,
+                               max_subdivisions=0, max_candidates=1)
+        self.assertIsNone(result.action)
+        self.assertEqual(result.details["unknown_count"], 1)
+        self.assertEqual(result.details["checked"][0]["geometric_implications"][0]["status"], "not_certified")
+        outside = decide_planar("auxiliary_sign_candidates", PlanarState((2, 0), (-4, 0)), (0, 0), [obstacle], "0.1", 1)
+        self.assertEqual(outside.status, "outside_domain")
+
+    def test_auxiliary_filter_certifies_every_obstacle(self):
+        result = decide_planar("auxiliary_sign_candidates", PlanarState((-2, 0), (1, 0)), (0, 0),
+                               [Circle((0, 0), "0.5"), Circle((0, 2), "0.5")], "0.1", 2)
+        self.assertEqual(result.status, "feasible")
+        chosen = result.details["checked"][-1]
+        self.assertEqual(len(chosen["auxiliary_certificates"]), 2)
+        self.assertTrue(all(p["status"] == "safe" for p in chosen["geometric_implications"]))
+
     def test_high_order_unknown_cannot_authorize_a_command(self):
         # h is positive, but psi has an unresolved sign at zero subdivisions.
         state = PlanarState((-2, "0.3"), (1, 0))

@@ -139,13 +139,41 @@ def _high_order_reference(record, config, state, action, obstacles, period, cach
     totals["high_order_reference_holds"] += 1
 
 
+def _auxiliary_reference(record, config, state, action, obstacles, period, cache, totals):
+    checked = record["details"]["checked"]
+    _require(checked and checked[-1]["accepted"] is True, "Missing accepted auxiliary candidate")
+    selected = checked[-1]
+    _require(vector2(selected["action_exact"]) == action, "Auxiliary evidence belongs to another action")
+    _require(selected["certificates"] == [], "Auxiliary-only inference must not claim a numerical geometric minimum")
+    proofs, implications = selected["auxiliary_certificates"], selected["geometric_implications"]
+    _require(len(proofs) == len(obstacles) and len(implications) == len(obstacles), "Missing auxiliary proof or geometric implication")
+    lambda1 = positive(config["lambda1"], "lambda1")
+    for index, (obstacle, cert, implication) in enumerate(zip(obstacles, proofs, implications)):
+        h = obstacle.polynomial(state, action)
+        _require(h[0] >= 0, "Comparison proof starts outside the geometric set")
+        psi = tuple(lambda1*c+((i+1)*h[i+1] if i+1 < len(h) else 0) for i, c in enumerate(h))
+        _require(_integer(cert["subdivisions"], "subdivisions") <= _integer(config["max_subdivisions"], "configured subdivision budget"),
+                 "Auxiliary certificate exceeds the configured subdivision budget")
+        status = _certificate(psi, period, cert, config["tolerance"], cache, expected_goal="sign")
+        _require(status == "safe", "An unresolved or unsafe auxiliary certificate authorized an action")
+        expected = {"rule": "linear_comparison", "initial_h_exact": str(h[0]), "lambda1_exact": str(lambda1),
+                    "duration_exact": str(period), "status": "safe"}
+        _require(implication == expected, "Geometric comparison assumptions or conclusion are wrong")
+        offline = record["obstacles"][index]["continuous_status"]
+        _require(offline != "unsafe", "Comparison proof contradicts a negative offline geometric witness")
+        totals["derived_safe_offline_unknown"] += offline == "unknown"
+        totals["auxiliary_reference_certificates"] += 1
+    totals["auxiliary_reference_holds"] += 1
+
+
 def verify_planar_runs(runs):
     _require(isinstance(runs, list), "Expected a list of planar run records")
     cache = {}
     totals = {"runs": len(runs), "executed_holds": 0, "retained_plans": 0,
               "unsafe_intervals": 0, "unknown_intervals": 0,
               "sampling_aware_holds": 0, "auxiliary_safe_checks": 0, "auxiliary_unknown_checks": 0,
-              "high_order_reference_holds": 0, "high_order_reference_certificates": 0}
+              "high_order_reference_holds": 0, "high_order_reference_certificates": 0,
+              "auxiliary_reference_holds": 0, "auxiliary_reference_certificates": 0, "derived_safe_offline_unknown": 0}
     for run_index, run in enumerate(runs):
         try:
             config = run["config"]
@@ -191,6 +219,8 @@ def verify_planar_runs(runs):
                     _sampling_aware(record, config, state, action, obstacles, period, totals)
                 if config["method"] in ("high_order_trajectory_candidates", "high_order_sign_candidates"):
                     _high_order_reference(record, config, state, action, obstacles, period, cache, totals)
+                if config["method"] == "auxiliary_sign_candidates":
+                    _auxiliary_reference(record, config, state, action, obstacles, period, cache, totals)
                 if backup:
                     _require(previous is not None, "An uninitialized backup filter applied an action")
                     plan = record["details"]["retained_plan"]

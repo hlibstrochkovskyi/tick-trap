@@ -91,5 +91,34 @@ class VerificationTests(unittest.TestCase):
                 verify_planar_runs([altered])
 
 
+    def test_auxiliary_reference_replays_the_comparison_assumptions(self):
+        run = run_planar(PlanarConfig(method="auxiliary_sign_candidates", p=("-0.3", "1.06"), v=(1, 0),
+                                      obstacles=({"center": [0, 0], "radius": 1},), nominal_policy="constant",
+                                      nominal=(0, 0), lambda1="3", a_max="1", duration="1", horizon="1",
+                                      max_subdivisions=0, max_candidates=1))
+        self.assertTrue(run["completed_safe_horizon"])
+        result = verify_planar_runs([run])
+        self.assertEqual(result["auxiliary_reference_holds"], 1)
+        self.assertEqual(result["auxiliary_reference_certificates"], 1)
+        self.assertEqual(result["derived_safe_offline_unknown"], 0)
+        changes = [
+            lambda c: c["geometric_implications"][0].__setitem__("initial_h_exact", "-1"),
+            lambda c: c["geometric_implications"][0].__setitem__("lambda1_exact", "2"),
+            lambda c: c["geometric_implications"][0].__setitem__("duration_exact", "2"),
+            lambda c: c["geometric_implications"][0].__setitem__("rule", "endpoint"),
+            lambda c: c["geometric_implications"][0].__setitem__("lower_exact", "0.1"),
+            lambda c: c.__setitem__("geometric_implications", []),
+            lambda c: c.__setitem__("auxiliary_certificates", []),
+            lambda c: c["auxiliary_certificates"][0].__setitem__("status", "unknown"),
+            lambda c: c["auxiliary_certificates"][0].__setitem__("goal", "minimum"),
+            lambda c: c.__setitem__("certificates", [c["auxiliary_certificates"][0]]),
+        ]
+        for change in changes:
+            altered = copy.deepcopy(run)
+            change(altered["records"][0]["details"]["checked"][-1])
+            with self.assertRaises(VerificationError):
+                verify_planar_runs([altered])
+
+
 if __name__ == "__main__":
     unittest.main()
