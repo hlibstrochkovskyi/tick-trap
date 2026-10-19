@@ -30,6 +30,20 @@ class CandidateAuditTests(unittest.TestCase):
         self.assertEqual(result["counts"]["hocbf"]["safe_excluded"], 0)
         self.assertEqual(result["counts"]["hocbf"]["applicable"], 0)
         self.assertTrue(all(r["predicates"]["hocbf"] is None for r in result["candidates"]))
+        for method in ("sacbf", "sacbf_relaxed"):
+            self.assertEqual(result["counts"][method]["applicable"], 0)
+            self.assertEqual(result["counts"][method]["safe_excluded"], 0)
+
+    def test_sampling_aware_audit_is_safe_and_relaxation_is_a_superset(self):
+        result = audit_case("safe", ("1.2", 0), ("-0.1", 0), (0, 0),
+                            [{"center": [0, 0], "radius": 1}], "0.1", 2)
+        for method in ("sacbf", "sacbf_relaxed"):
+            self.assertEqual(result["counts"][method]["unsafe_admitted"], 0)
+            self.assertGreater(result["counts"][method]["safe_admitted"], 0)
+        for row in result["candidates"]:
+            if row["predicates"]["sacbf"]:
+                self.assertTrue(row["predicates"]["sacbf_relaxed"])
+        self.assertGreater(result["counts"]["sacbf_relaxed"]["safe_admitted"], result["counts"]["zocbf"]["safe_admitted"])
 
     def test_invalid_catalog_rejected(self):
         for spec in [{}, {"cases": [1]}, {"base": [], "cases": [{}]}, {"unexpected": 1}]:

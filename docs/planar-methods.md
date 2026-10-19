@@ -52,6 +52,8 @@ declared candidates; no continuous-input optimality is claimed.
 | `endpoint_candidates` | `h(T)>=(1-gamma)*h(0)` |
 | `segment_candidates` | Nonnegative minimum on the chord from `p(0)` to `p(T)` |
 | `zocbf_candidates` | Endpoint difference plus the local buffer below |
+| `sacbf_candidates` | Sampling-aware high-order condition with an exponential endpoint target |
+| `sacbf_relaxed_candidates` | Sampling-aware high-order condition with the permitted zero target |
 | `trajectory_candidates` | Validated nonnegative minimum on the actual curved trajectory |
 | `backup_candidates` | Safe hold plus certified stopping continuation, or execution of a previously certified plan |
 
@@ -109,13 +111,28 @@ These diagnostics do not silently become fallback actions when a filter fails.
 The separate [stateful continuation reference](continuations.md) does maintain an
 online certified plan and explicitly reports each action taken from it.
 
+## Sampling-aware high-order conditions
+
+The [SACBF specialization and local proof](sampling-aware.md) implement Liu et al.'s
+unrelaxed condition and its relaxed feasibility envelope. Both require the same
+`h>=0, psi1>=0` initial domain as the linear-gain HOCBF. Exact candidate-specific
+second-derivative bounds protect the actual held path. The zero-target variant
+uses the greatest allowed feasibility relaxation, rather than duplicating the
+paper's QP preference for a multiplier near one. Both use the shared finite
+candidate set and report exhaustion explicitly. Neither retains a future plan.
+
+`configs/sampling-baselines.json` compares them with HOCBF, the local zero-order
+buffer, trajectory checks and stored continuations over matched eight-second
+tasks. This does not reproduce the original papers' complete experiment setups.
+
 ## Matched-control audit
 
 `planar-audit` evaluates every declared candidate at exactly the same initial
 state. It records safe controls admitted, unsafe controls admitted, safe controls
 excluded, and accepted controls whose continuous status is unknown. HOCBF
 initial-set exclusions are marked not applicable rather than counted as rejected
-controls. A finite audit is evidence about those controls, not the volume of the
+controls. SACBF has the same domain and uses the same exclusion rule. A finite
+audit is evidence about those controls, not the volume of the
 continuous feasible set. It does not establish that the standard constructions
 used here are the strongest versions of their respective papers.
 

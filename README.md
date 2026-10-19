@@ -67,12 +67,21 @@ budget on six analytical trajectories, including tiny positive/negative margins
 and a non-dyadic tangency. It records `unknown` outcomes alongside empirical cost.
 
 Planar experiments compare a conventional HOCBF QP with endpoint, chord,
-zero-order barrier, and validated trajectory checks against multiple circles.
+zero-order barrier, sampling-aware high-order conditions and validated trajectory
+checks against multiple circles.
 Reports include exact quadratic trajectory SVGs and sufficient stopping-plan
 certificates. Candidate-search exhaustion, proven QP infeasibility, unresolved
 certificates, and task progress remain separate outcomes. The matched-control
 audit measures which safe controls a condition excludes and which unsafe curves
 an endpoint or chord check admits. Read the [planar method assumptions](docs/planar-methods.md).
+
+The [sampling-aware comparator](docs/sampling-aware.md) uses exact derivative
+bounds on our model and distinguishes the unrelaxed condition from its allowed
+feasibility relaxation. Compare it on matched eight-second tasks with:
+
+```sh
+PYTHONPATH=src python -m tick_trap planar-sweep --config configs/sampling-baselines.json --output results/sampling-baselines
+```
 
 The [stored-continuation reference](docs/continuations.md) keeps a proved plan to
 rest available when a new action cannot be certified. It measures initialization,

@@ -8,8 +8,9 @@ from .planar_control import candidate_actions, hocbf_constraints, segment_minimu
 from .planar_experiments import braking_continuation
 from .polynomial import certify_minimum
 from .qp import dot
+from .sampling import sacbf_assessment
 
-PREDICATES = ("hocbf", "endpoint", "segment", "zocbf")
+PREDICATES = ("hocbf", "endpoint", "segment", "zocbf", "sacbf", "sacbf_relaxed")
 
 
 def audit_case(name, p, v, nominal, obstacles, duration, a_max, lambda1=2, lambda2=2,
@@ -58,6 +59,13 @@ def audit_case(name, p, v, nominal, obstacles, duration, a_max, lambda1=2, lambd
         row["predicates"]["zocbf"] = all(m >= 0 for m in zocbf)
         row["zocbf_margins_exact"] = [str(m) for m in zocbf]
         row["predicate_ns"]["zocbf"] = perf_counter_ns()-start
+        for method, relaxed in (("sacbf", False), ("sacbf_relaxed", True)):
+            start = perf_counter_ns()
+            assessments = [sacbf_assessment(state, action, o, duration, lambda1, lambda2, relaxed)
+                           for o in obstacles] if hocbf_applicable else []
+            row["predicates"][method] = all(a["accepted"] for a in assessments) if hocbf_applicable else None
+            row[method+"_assessments"] = assessments
+            row["predicate_ns"][method] = perf_counter_ns()-start
         start = perf_counter_ns()
         certificates = [certify_minimum(o.polynomial(state, action), duration, tolerance, max_subdivisions)
                         for o in obstacles]

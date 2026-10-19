@@ -75,7 +75,8 @@ def main(argv=None):
                     for predicate, counts in case["counts"].items():
                         lines.append(f"| {case['name']} | {predicate} | {counts['applicable']} | {counts['safe_admitted']} | "
                                      f"{counts['unsafe_admitted']} | {counts['safe_excluded']} | {counts['accepted_truth_unknown']} |")
-                lines += ["", "HOCBF initial-domain exclusions are not counted as rejected controls.",
+                lines += ["", "HOCBF and SACBF initial-domain exclusions are not counted as rejected controls.",
+                          "The relaxed SACBF predicate uses the zero-target feasibility envelope, not a slack-penalized QP.",
                           "Endpoint and chord acceptance do not assert a physical hold guarantee.",
                           "Safe-control exclusion by a sufficient condition is not a theorem violation.",
                           "[Exact per-control evidence and timings](audit.json).", ""]

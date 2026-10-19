@@ -112,6 +112,26 @@ class PlanarControlTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             decide_planar("backup_candidates", PlanarState((-2, 0), (1, 0)), (0, 0), [], "0.1", 2)
 
+    def test_sampling_aware_methods_enforce_domain_and_record_candidate_bounds(self):
+        obstacle = Circle((0, 0), 1)
+        for method in ("sacbf_candidates", "sacbf_relaxed_candidates"):
+            decision = decide_planar(method, PlanarState((2, 0), (-4, 0)), (0, 0), [obstacle], "0.1", 10)
+            self.assertEqual(decision.status, "outside_domain")
+            self.assertIsNone(decision.action)
+            decision = decide_planar(method, PlanarState((2, 0), (-1, 0)), (0, 0), [obstacle], "0.1", 2)
+            self.assertEqual(decision.status, "feasible")
+            assessments = decision.details["checked"][-1]["sampling_assessments"]
+            self.assertEqual(len(assessments), 1)
+            self.assertTrue(assessments[0]["accepted"])
+            self.assertEqual(certify_minimum(obstacle.polynomial(PlanarState((2, 0), (-1, 0)), decision.action), "0.1").status, "safe")
+
+    def test_sampling_aware_zero_budget_does_not_construct_candidates(self):
+        with patch("tick_trap.planar_control.candidate_actions", side_effect=AssertionError("Unexpected search")):
+            result = decide_planar("sacbf_relaxed_candidates", PlanarState((2, 0), (-1, 0)), (0, 0),
+                                   [Circle((0, 0), 1)], "0.1", 2, max_candidates=0)
+        self.assertEqual(result.status, "budget_exhausted")
+        self.assertFalse(result.details["candidate_set_constructed"])
+
 
 if __name__ == "__main__":
     unittest.main()

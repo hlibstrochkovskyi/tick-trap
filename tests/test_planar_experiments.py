@@ -129,6 +129,18 @@ class PlanarExperimentTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 PlanarConfig(**kwargs)
 
+    def test_sampling_aware_rollouts_remain_in_the_auxiliary_initial_set(self):
+        for method in ("sacbf_candidates", "sacbf_relaxed_candidates"):
+            run = run_planar(PlanarConfig(method=method, p=(-2, 0), v=(1, 0), goal=(-2, 0), horizon="0.5"))
+            self.assertTrue(run["initial_hocbf_domain"])
+            self.assertTrue(run["completed_safe_horizon"])
+            for record in run["records"]:
+                self.assertTrue(record["details"]["checked"][-1]["accepted"])
+                state = PlanarState(record["end_state"]["p_exact"], record["end_state"]["v_exact"])
+                obstacle = Circle((0, 0), "0.5")
+                h = obstacle.polynomial(state, (0, 0))
+                self.assertGreaterEqual(h[1]+2*h[0], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

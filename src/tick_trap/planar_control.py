@@ -10,9 +10,11 @@ from itertools import product
 from .numbers import positive, q, sqrt_upper, vector2
 from .polynomial import certify_minimum, evaluate
 from .qp import HalfSpace, dot, project_box
+from .sampling import sacbf_assessment
 
 PLANAR_METHODS = ("nominal", "hocbf", "endpoint_candidates", "segment_candidates",
-                  "zocbf_candidates", "trajectory_candidates", "backup_candidates")
+                  "zocbf_candidates", "sacbf_candidates", "sacbf_relaxed_candidates",
+                  "trajectory_candidates", "backup_candidates")
 
 
 @dataclass(frozen=True)
@@ -133,12 +135,14 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
         return PlanarDecision("outside_domain", reason="Current geometric constraint is violated")
     if method == "nominal":
         return PlanarDecision("feasible", _round(_clip(nominal, a_max), quantum), details={"guarantee": "none"})
-    if method == "hocbf":
+    sampling_aware = method in ("sacbf_candidates", "sacbf_relaxed_candidates")
+    if method == "hocbf" or sampling_aware:
         constraints, domains = hocbf_constraints(state, obstacles, lambda1, lambda2)
         if not all(d["in_domain"] for d in domains):
-            return PlanarDecision("outside_domain", reason="Outside the HOCBF initial-set intersection", details={"domains": domains})
-        decision = _rounded_qp(nominal, constraints, a_max, quantum)
-        return PlanarDecision(decision.status, decision.action, decision.reason, decision.details | {"domains": domains})
+            return PlanarDecision("outside_domain", reason="Outside the high-order initial-set intersection", details={"domains": domains})
+        if method == "hocbf":
+            decision = _rounded_qp(nominal, constraints, a_max, quantum)
+            return PlanarDecision(decision.status, decision.action, decision.reason, decision.details | {"domains": domains})
 
     if isinstance(grid_points, bool) or not isinstance(grid_points, int) or grid_points < 2:
         raise ValueError("grid_points must be an integer >=2")
@@ -153,7 +157,7 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
     unknown_count = 0
     limit = len(actions) if max_candidates is None else min(len(actions), max_candidates)
     for action in actions[:limit]:
-        margins, certificates = [], []
+        margins, certificates, sampling_assessments = [], [], []
         accepted, unknown = True, False
         for index, obstacle in enumerate(obstacles):
             polynomial = obstacle.polynomial(state, action)
@@ -167,6 +171,12 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                 margin = segment_minimum(state, action, obstacle, duration)
                 margins.append(str(margin))
                 accepted = accepted and margin >= 0
+            elif sampling_aware:
+                assessment = sacbf_assessment(state, action, obstacle, duration, lambda1, lambda2,
+                                               relaxed=method == "sacbf_relaxed_candidates")
+                sampling_assessments.append(assessment)
+                margins.append(assessment["margin_exact"])
+                accepted = accepted and assessment["accepted"]
             else:
                 cert = certify_minimum(polynomial, duration, tolerance, max_subdivisions)
                 certificates.append({"status": cert.status, "lower_exact": str(cert.lower),
@@ -180,6 +190,8 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
             unknown = False
         checked.append({"action_exact": [str(x) for x in action], "accepted": accepted,
                         "margins_exact": margins, "certificates": certificates})
+        if sampling_aware:
+            checked[-1]["sampling_assessments"] = sampling_assessments
         unknown_count += unknown
         if accepted:
             return PlanarDecision("feasible", action, details={"candidate_count": len(actions), "candidate_set_constructed": True, "checked": checked,
@@ -189,6 +201,8 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                                       "endpoint_candidates": "sampled endpoint condition only",
                                       "segment_candidates": "straight chord safety only",
                                       "zocbf_candidates": "continuous safety of this hold",
+                                      "sacbf_candidates": "continuous h and auxiliary psi safety of this hold",
+                                      "sacbf_relaxed_candidates": "continuous h and auxiliary psi safety of this hold",
                                       "trajectory_candidates": "continuous safety of this hold",
                                   }[method], "terminal_viability": "unknown"})
     budget_exhausted = limit < len(actions)
