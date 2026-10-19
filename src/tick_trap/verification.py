@@ -8,6 +8,7 @@ provide a mathematically independent implementation of polynomial certification.
 from .dynamics import Circle, PlanarState
 from .numbers import positive, q, vector2
 from .polynomial import certify_minimum, evaluate
+from .sampling import sacbf_assessment
 
 
 class VerificationError(ValueError):
@@ -89,11 +90,34 @@ def _plan(plan, expected_state, obstacles, period, a_max, quantum, tolerance, ca
              "Remaining step count is inconsistent")
 
 
+def _sampling_aware(record, config, state, action, obstacles, period, totals):
+    """Replay the accepted condition, then independently check its auxiliary path."""
+    checked = record["details"]["checked"]
+    _require(checked and checked[-1]["accepted"] is True, "Missing accepted SACBF candidate")
+    selected = checked[-1]
+    _require(vector2(selected["action_exact"]) == action, "SACBF evidence belongs to another action")
+    relaxed = config["method"] == "sacbf_relaxed_candidates"
+    expected = [sacbf_assessment(state, action, obstacle, period, config["lambda1"], config["lambda2"], relaxed)
+                for obstacle in obstacles]
+    _require(selected["sampling_assessments"] == expected and all(a["accepted"] for a in expected),
+             "Saved SACBF condition does not match exact replay")
+    _require(selected["margins_exact"] == [a["margin_exact"] for a in expected], "SACBF margin evidence is wrong")
+    lambda1 = positive(config["lambda1"], "lambda1")
+    for obstacle in obstacles:
+        h = obstacle.polynomial(state, action)
+        psi = tuple(lambda1*c+((i+1)*h[i+1] if i+1 < len(h) else 0) for i, c in enumerate(h))
+        cert = certify_minimum(psi, period, config["oracle_tolerance"], config["oracle_max_subdivisions"])
+        _require(cert.status != "unsafe", "Accepted SACBF action violates its continuous auxiliary barrier")
+        totals["auxiliary_"+cert.status+"_checks"] += 1
+    totals["sampling_aware_holds"] += 1
+
+
 def verify_planar_runs(runs):
     _require(isinstance(runs, list), "Expected a list of planar run records")
     cache = {}
     totals = {"runs": len(runs), "executed_holds": 0, "retained_plans": 0,
-              "unsafe_intervals": 0, "unknown_intervals": 0}
+              "unsafe_intervals": 0, "unknown_intervals": 0,
+              "sampling_aware_holds": 0, "auxiliary_safe_checks": 0, "auxiliary_unknown_checks": 0}
     for run_index, run in enumerate(runs):
         try:
             config = run["config"]
@@ -135,6 +159,8 @@ def verify_planar_runs(runs):
                          "Recorded safety classifications disagree with replay")
                 statuses.append(status)
                 sampled.append(all(interval_sampled))
+                if config["method"] in ("sacbf_candidates", "sacbf_relaxed_candidates"):
+                    _sampling_aware(record, config, state, action, obstacles, period, totals)
                 if backup:
                     _require(previous is not None, "An uninitialized backup filter applied an action")
                     plan = record["details"]["retained_plan"]

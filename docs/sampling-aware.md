@@ -76,3 +76,12 @@ Tests compare the derivative polynomial with an independently differentiated
 vector expression, check quadratic endpoint/vertex extrema and high-precision
 exponential values, and validate both `h` and `psi` on accepted test trajectories
 using the separate Bernstein polynomial certifier.
+
+The `verify` command reconstructs the chosen candidate's complete SACBF
+assessment from the saved initial state, action, period and gains. Altered bounds,
+targets, margins or acceptance fields are rejected. It also reconstructs `psi(t)`
+and checks its continuous path with the Bernstein engine, separately from the
+geometric `h(t)` check. An unresolved auxiliary sign is counted as unknown;
+an unsafe auxiliary witness contradicts accepted exact-model SACBF evidence and
+fails verification. This is artifact and model consistency, not validation of
+physical assumptions or an independent implementation of the SACBF condition.

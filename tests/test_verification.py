@@ -46,6 +46,27 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual(result["status"], "verified")
         self.assertEqual(result["unsafe_intervals"], 1)
 
+    def test_sampling_aware_conditions_and_continuous_auxiliary_paths_are_replayed(self):
+        runs = [run_planar(PlanarConfig(method=method, p=(-2, 0), v=(1, 0), goal=(-2, 0), horizon="0.3"))
+                for method in ("sacbf_candidates", "sacbf_relaxed_candidates")]
+        result = verify_planar_runs(runs)
+        self.assertEqual(result["sampling_aware_holds"], 6)
+        self.assertEqual(result["auxiliary_safe_checks"], 6)
+        self.assertEqual(result["auxiliary_unknown_checks"], 0)
+        original = runs[0]
+        changes = [
+            lambda r: r["records"][0]["details"]["checked"][-1]["sampling_assessments"][0].__setitem__("second_derivative_bound_exact", "0"),
+            lambda r: r["records"][0]["details"]["checked"][-1]["sampling_assessments"][0].__setitem__("accepted", False),
+            lambda r: r["records"][0]["details"]["checked"][-1].__setitem__("sampling_assessments", []),
+            lambda r: r["records"][0]["details"]["checked"][-1]["action_exact"].__setitem__(0, "100"),
+            lambda r: r["records"][0]["details"]["checked"][-1]["margins_exact"].__setitem__(0, "100"),
+        ]
+        for change in changes:
+            altered = copy.deepcopy(original)
+            change(altered)
+            with self.assertRaises(VerificationError):
+                verify_planar_runs([altered])
+
 
 if __name__ == "__main__":
     unittest.main()
