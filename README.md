@@ -74,6 +74,14 @@ certificates, and task progress remain separate outcomes. The matched-control
 audit measures which safe controls a condition excludes and which unsafe curves
 an endpoint or chord check admits. Read the [planar method assumptions](docs/planar-methods.md).
 
+The [stored-continuation reference](docs/continuations.md) keeps a proved plan to
+rest available when a new action cannot be certified. It measures initialization,
+candidate search, plan reuse and terminal holding separately:
+
+```sh
+PYTHONPATH=src python -m tick_trap planar-sweep --config configs/continuations.json --output results/continuations
+```
+
 See the [research plan and literature ledger](docs/research-plan.md) for the scope
 of this foundation and the work required before making a research claim.
 The [validation record](docs/validation.md) maps the original acceptance criteria

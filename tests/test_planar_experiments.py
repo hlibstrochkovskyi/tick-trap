@@ -90,6 +90,45 @@ class PlanarExperimentTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 list(load_planar_grid(spec))
 
+    def test_retained_plan_finishes_when_stateless_search_has_no_budget(self):
+        for method in ["trajectory_candidates", "backup_candidates"]:
+            result = run_planar(PlanarConfig(method=method, p=(-2, 0), v=(1, 0), horizon="1", max_candidates=0))
+            if method == "trajectory_candidates":
+                self.assertEqual(result["termination"], "budget_exhausted")
+                self.assertEqual(result["executed_steps"], 0)
+                self.assertIsNone(result["retained_continuation_after_every_update"])
+            else:
+                self.assertTrue(result["completed_safe_horizon"])
+                self.assertTrue(result["retained_continuation_after_every_update"])
+                self.assertEqual(result["controller_initialization_status"], "ready")
+                self.assertGreater(result["controller_initialization_ns"], 0)
+                self.assertEqual(result["stored_plan_steps"], 5)
+                self.assertEqual(result["terminal_hold_steps"], 5)
+                self.assertEqual(result["final_state"]["v_exact"], ["0", "0"])
+
+    def test_losing_recovery_is_distinct_from_a_safe_next_interval(self):
+        results = {}
+        for method in ["trajectory_candidates", "backup_candidates"]:
+            config = PlanarConfig(method=method, p=("1.06", 0), v=("-0.3", 0), horizon="1", a_max="1",
+                                  nominal_policy="constant", nominal=(-1, 0), obstacles=({"center": [0, 0], "radius": 1},))
+            results[method] = run_planar(config)
+        self.assertEqual(results["trajectory_candidates"]["termination"], "search_exhausted")
+        self.assertEqual(results["trajectory_candidates"]["executed_steps"], 1)
+        self.assertTrue(results["backup_candidates"]["completed_safe_horizon"])
+        self.assertTrue(results["backup_candidates"]["retained_continuation_after_every_update"])
+
+    def test_backup_initialization_failure_has_no_action(self):
+        result = run_planar(PlanarConfig(method="backup_candidates", p=("1.01", 0), v=(-10, 0), horizon="0.1",
+                                         obstacles=({"center": [0, 0], "radius": 1},)))
+        self.assertEqual(result["termination"], "initialization_failed")
+        self.assertEqual(result["executed_steps"], 0)
+        self.assertFalse(result["completed_safe_horizon"])
+
+    def test_candidate_budget_validation(self):
+        for kwargs in [{"max_candidates": -1}, {"max_candidates": True}, {"method": "hocbf", "max_candidates": 1}]:
+            with self.assertRaises(ValueError):
+                PlanarConfig(**kwargs)
+
 
 if __name__ == "__main__":
     unittest.main()

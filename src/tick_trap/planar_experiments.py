@@ -5,6 +5,7 @@ from fractions import Fraction
 from itertools import product
 from time import perf_counter_ns
 
+from .backup_filter import ContinuationFilter
 from .continuation import assess_stopping
 from .dynamics import Circle, PlanarState
 from .numbers import nonnegative, positive, q, vector2
@@ -55,6 +56,7 @@ class PlanarConfig:
     lambda2: str = "2"
     gamma: str = "1"
     grid_points: int = 5
+    max_candidates: int | None = None
     command_quantum: str = "1e-6"
     tolerance: str = "1e-10"
     max_subdivisions: int = 256
@@ -80,6 +82,11 @@ class PlanarConfig:
                 raise ValueError(f"Invalid {name}")
         if q(self.gamma) > 1:
             raise ValueError("gamma must be in (0,1]")
+        if self.max_candidates is not None:
+            if isinstance(self.max_candidates, bool) or not isinstance(self.max_candidates, int) or self.max_candidates < 0:
+                raise ValueError("max_candidates must be a nonnegative integer or None")
+            if not self.method.endswith("_candidates"):
+                raise ValueError("max_candidates applies only to candidate methods")
         if (q(self.horizon)/q(self.duration)).denominator != 1:
             raise ValueError("horizon must be an integer multiple of duration")
         if (q(self.a_max)/q(self.command_quantum)).denominator != 1:
@@ -99,8 +106,21 @@ def run_planar(config: PlanarConfig):
     steps = int(q(config.horizon)/duration)
     deadline = q(config.deadline) if config.deadline is not None else duration
     initial_safe = all(o.polynomial(state, (0, 0))[0] >= 0 for o in obstacles)
+    start = perf_counter_ns()
     initial_braking = braking_continuation(state, obstacles, duration, a_max,
                                            config.oracle_tolerance, config.oracle_max_subdivisions, config.command_quantum)
+    initial_viability_check_ns = perf_counter_ns()-start
+    controller, initialization_ns = None, 0
+    initialization_status = "not_required"
+    if config.method == "backup_candidates" and initial_safe:
+        start = perf_counter_ns()
+        controller = ContinuationFilter(state, obstacles, duration, a_max, config.grid_points,
+                                         config.command_quantum, config.tolerance, config.max_subdivisions,
+                                         config.max_candidates)
+        initialization_ns = perf_counter_ns()-start
+        initialization_status = "ready" if controller.continuation is not None else "uncertified"
+    elif config.method == "backup_candidates":
+        initialization_status = "not_started"
     _, initial_domains = hocbf_constraints(state, obstacles, config.lambda1, config.lambda2)
     records, termination = [], "horizon" if initial_safe else "initially_unsafe"
     goal_first_time = None
@@ -117,12 +137,17 @@ def run_planar(config: PlanarConfig):
                 q(config.position_gain)*(g-p)-q(config.velocity_gain)*v
                 for g, p, v in zip(config.goal, state.p, state.v))
             start = perf_counter_ns()
-            decision = decide_planar(config.method, state, nominal, obstacles, duration, a_max,
-                                     config.lambda1, config.lambda2, config.gamma, config.grid_points,
-                                     config.command_quantum, config.tolerance, config.max_subdivisions)
+            if controller is not None:
+                decision = controller.decide(state, nominal, obstacles=obstacles)
+            else:
+                decision = decide_planar(config.method, state, nominal, obstacles, duration, a_max,
+                                         config.lambda1, config.lambda2, config.gamma, config.grid_points,
+                                         config.command_quantum, config.tolerance, config.max_subdivisions,
+                                         config.max_candidates)
             solve_ns = perf_counter_ns()-start
             record = {"step": index, "time_exact": str(index*duration), "state": _state_record(state),
                       "nominal_exact": [str(x) for x in nominal], "decision": decision.status,
+                      "control_source": decision.details.get("source", "filter" if decision.status == "feasible" else "none"),
                       "reason": decision.reason, "details": decision.details, "solve_ns": solve_ns,
                       "deadline_missed": Fraction(solve_ns, 10**9) > deadline}
             records.append(record)
@@ -135,6 +160,11 @@ def run_planar(config: PlanarConfig):
             statuses = [r["continuous_status"] for r in checks]
             continuous = "unsafe" if "unsafe" in statuses else "unknown" if "unknown" in statuses else "safe"
             end = state.at(action, duration)
+            retained_certified = None
+            if controller is not None:
+                retained_certified = controller.continuation is not None and controller.continuation.matches(end, obstacles)
+                if not retained_certified:
+                    raise ArithmeticError("Controller did not retain a continuation from its executed endpoint")
             start = perf_counter_ns()
             continuation = braking_continuation(end, obstacles, duration, a_max,
                                                 config.oracle_tolerance, config.oracle_max_subdivisions, config.command_quantum)
@@ -145,6 +175,7 @@ def run_planar(config: PlanarConfig):
                            "certification_ns": sum(r["certification_ns"] for r in checks),
                            "estimation_ns": sum(r["estimation_ns"] for r in checks),
                            "continuation": continuation, "continuation_check_ns": continuation_ns,
+                           "retained_continuation_certified": retained_certified,
                            "intervention_squared_exact": str(sum((a-n)**2 for a, n in zip(action, nominal)))})
             state = end
             if at_goal(state) and goal_first_time is None:
@@ -156,9 +187,14 @@ def run_planar(config: PlanarConfig):
     all_checks = [check for r in executed for check in r["obstacles"]]
     collision = any(r["continuous_status"] == "unsafe" for r in executed)
     observed = "unsafe" if collision else "unknown" if any(r["continuous_status"] == "unknown" for r in executed) else "safe" if executed else "not_executed"
+    stored_steps = sum(r["control_source"] == "stored_continuation" for r in executed)
+    terminal_steps = sum(r["control_source"] == "terminal_hold" for r in executed)
     return {"config": config.record(), "initial_geometric_safe": initial_safe,
             "initial_viability": initial_braking["viability"], "initial_braking": initial_braking,
             "initial_hocbf_domain": all(d["in_domain"] for d in initial_domains),
+            "initial_viability_check_ns": initial_viability_check_ns,
+            "controller_initialization_ns": initialization_ns, "controller_initialization_status": initialization_status,
+            "controller_initialization_assessment": controller.initial_assessment.record() if controller is not None else None,
             "viability_scope": "sufficient admissible stopping-plan check, not the full planar viability kernel",
             "termination": termination, "executed_steps": len(executed),
             "completed_safe_horizon": termination == "horizon" and observed == "safe",
@@ -168,6 +204,12 @@ def run_planar(config: PlanarConfig):
             "minimum_barrier_upper_exact": str(min(q(c["minimum_upper_exact"]) for c in all_checks)) if all_checks else None,
             "minimum_clearance_estimate": min((c["clearance_estimate"] for c in all_checks), default=None),
             "goal_reached_at_end": at_goal(state), "goal_first_time_exact": goal_first_time,
+            "renewed_continuations": sum(r["control_source"] == "certified_candidate" for r in executed),
+            "stored_plan_steps": stored_steps, "stored_plan_time_exact": str(stored_steps*duration),
+            "terminal_hold_steps": terminal_steps, "terminal_hold_time_exact": str(terminal_steps*duration),
+            "candidate_budget_exhaustions": sum(r["details"].get("candidate_budget_exhausted", False) for r in records),
+            "retained_continuation_after_every_update": all(r["retained_continuation_certified"] for r in executed) if controller is not None and executed else None,
+            "final_retained_plan": controller.continuation.record() if controller is not None and controller.continuation is not None else None,
             "final_state": _state_record(state), "deadline_misses": sum(r["deadline_missed"] for r in records),
             "solve_ns_total": sum(r["solve_ns"] for r in records),
             "certification_ns_total": sum(r["certification_ns"] for r in executed), "records": records}

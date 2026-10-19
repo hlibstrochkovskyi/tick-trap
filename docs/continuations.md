@@ -77,3 +77,27 @@ delayed execution require additional arguments and are not covered here.
 Safety does not imply task convergence. Repeatedly following the stored plan can
 stop safely without reaching the goal. Performance and safety must be reported
 as separate outcomes.
+
+## Experiments
+
+The stateful reference is exposed as `backup_candidates`. The matched experiment
+varies update period, initial position and candidate count budget over an
+eight-second physical horizon:
+
+```sh
+PYTHONPATH=src python -m tick_trap planar-sweep --config configs/continuations.json --output results/continuations
+```
+
+`max_candidates` applies to all finite-candidate methods. A stateless filter that
+uses up that budget before finding an accepted command returns `budget_exhausted`
+and no action. The stored-plan filter can instead use its prior certificate.
+The report distinguishes candidate renewals, stored-plan updates, terminal holds,
+and budget exhaustion. It records controller initialization expense independently
+from solve time and offline viability diagnostics. Dashed SVG segments show
+actions taken from the retained plan.
+
+An initialized stored-plan filter reports whether a certified continuation was
+retained after every executed update. This field is null when there were no
+executed updates; initialization or an unexecuted plan is not a safe completed
+horizon. An initial stopping diagnostic can succeed even when a cheaper online
+initialization check remains unresolved, so those two results are also separate.

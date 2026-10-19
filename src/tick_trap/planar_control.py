@@ -12,7 +12,7 @@ from .polynomial import certify_minimum, evaluate
 from .qp import HalfSpace, dot, project_box
 
 PLANAR_METHODS = ("nominal", "hocbf", "endpoint_candidates", "segment_candidates",
-                  "zocbf_candidates", "trajectory_candidates")
+                  "zocbf_candidates", "trajectory_candidates", "backup_candidates")
 
 
 @dataclass(frozen=True)
@@ -112,9 +112,16 @@ def _rounded_qp(nominal, constraints, a_max, quantum):
 
 def decide_planar(method, state, nominal, obstacles, duration, a_max,
                   lambda1=2, lambda2=2, gamma=1, grid_points=5,
-                  command_quantum="1e-6", tolerance="1e-10", max_subdivisions=256):
+                  command_quantum="1e-6", tolerance="1e-10", max_subdivisions=256, max_candidates=None):
     if method not in PLANAR_METHODS:
         raise ValueError(f"Unknown planar method {method!r}")
+    if method == "backup_candidates":
+        raise ValueError("backup_candidates requires the stateful ContinuationFilter")
+    if max_candidates is not None:
+        if isinstance(max_candidates, bool) or not isinstance(max_candidates, int) or max_candidates < 0:
+            raise ValueError("max_candidates must be a nonnegative integer or None")
+        if not method.endswith("_candidates"):
+            raise ValueError("max_candidates applies only to candidate methods")
     duration, a_max = positive(duration, "duration"), positive(a_max, "a_max")
     quantum, gamma = positive(command_quantum, "command_quantum"), positive(gamma, "gamma")
     if gamma > 1:
@@ -137,7 +144,8 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
     buffers = [zocbf_buffer(state, o, duration, a_max) for o in obstacles] if method == "zocbf_candidates" else []
     checked = []
     unknown_count = 0
-    for action in actions:
+    limit = len(actions) if max_candidates is None else min(len(actions), max_candidates)
+    for action in actions[:limit]:
         margins, certificates = [], []
         accepted, unknown = True, False
         for index, obstacle in enumerate(obstacles):
@@ -168,6 +176,7 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
         unknown_count += unknown
         if accepted:
             return PlanarDecision("feasible", action, details={"candidate_count": len(actions), "checked": checked,
+                                  "checked_count": len(checked), "candidate_budget_exhausted": False,
                                   "buffers_exact": [str(x) for x in buffers], "unknown_count": unknown_count,
                                   "guarantee": {
                                       "endpoint_candidates": "sampled endpoint condition only",
@@ -175,7 +184,9 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                                       "zocbf_candidates": "continuous safety of this hold",
                                       "trajectory_candidates": "continuous safety of this hold",
                                   }[method], "terminal_viability": "unknown"})
-    status = "uncertified" if unknown_count else "search_exhausted"
+    budget_exhausted = limit < len(actions)
+    status = "budget_exhausted" if budget_exhausted else "uncertified" if unknown_count else "search_exhausted"
     return PlanarDecision(status, reason="No admissible action certified in the finite candidate set",
                           details={"candidate_count": len(actions), "checked": checked,
+                                   "checked_count": len(checked), "candidate_budget_exhausted": budget_exhausted,
                                    "unknown_count": unknown_count, "buffers_exact": [str(x) for x in buffers]})

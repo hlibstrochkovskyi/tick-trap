@@ -53,6 +53,7 @@ declared candidates; no continuous-input optimality is claimed.
 | `segment_candidates` | Nonnegative minimum on the chord from `p(0)` to `p(T)` |
 | `zocbf_candidates` | Endpoint difference plus the local buffer below |
 | `trajectory_candidates` | Validated nonnegative minimum on the actual curved trajectory |
+| `backup_candidates` | Safe hold plus certified stopping continuation, or execution of a previously certified plan |
 
 Segment checking is an exact geometric diagnostic, not a reproduction of the
 Segment-Safe MPC paper. A safe chord can coexist with a colliding physical path.
@@ -105,6 +106,8 @@ certified against every obstacle. The plan respects the same update period,
 actuator box and command quantum as the controller. If exact rest is unreachable
 on that lattice, or any part cannot be certified, viability remains unknown.
 These diagnostics do not silently become fallback actions when a filter fails.
+The separate [stateful continuation reference](continuations.md) does maintain an
+online certified plan and explicitly reports each action taken from it.
 
 ## Matched-control audit
 

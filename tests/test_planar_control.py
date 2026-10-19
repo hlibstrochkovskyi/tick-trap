@@ -97,6 +97,18 @@ class PlanarControlTests(unittest.TestCase):
                                [Circle((0, 0), 1)], "0.1", "0.1")
         self.assertEqual(result.status, "infeasible")
 
+    def test_candidate_budget_exhaustion_does_not_mean_all_controls_were_checked(self):
+        result = decide_planar("trajectory_candidates", PlanarState((-2, 0), (1, 0)), (0, 0),
+                               [Circle((0, 0), 1)], "0.1", 2, max_candidates=0)
+        self.assertEqual(result.status, "budget_exhausted")
+        self.assertEqual(result.details["checked_count"], 0)
+        self.assertGreater(result.details["candidate_count"], 0)
+        self.assertIsNone(result.action)
+
+    def test_backup_filter_cannot_be_accidentally_used_as_a_stateless_method(self):
+        with self.assertRaises(ValueError):
+            decide_planar("backup_candidates", PlanarState((-2, 0), (1, 0)), (0, 0), [], "0.1", 2)
+
 
 if __name__ == "__main__":
     unittest.main()

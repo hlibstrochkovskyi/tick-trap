@@ -99,6 +99,18 @@ class CliTests(unittest.TestCase):
             self.assertEqual(len(read_json(Path(folder)/"audit.json")), 1)
             self.assertIn("Unsafe admitted", (Path(folder)/"report.md").read_text())
 
+    def test_backup_plan_metrics_are_in_cli_artifacts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            config = Path(folder)/"config.json"
+            config.write_text(json.dumps({"method": "backup_candidates", "p": [-2, 0], "v": [1, 0],
+                                          "horizon": "1", "max_candidates": 0}))
+            self.assertEqual(self.invoke("planar-run", "--config", str(config), "--output", folder), 0)
+            result = read_json(Path(folder)/"runs.json")[0]
+            self.assertTrue(result["completed_safe_horizon"])
+            self.assertEqual(result["stored_plan_steps"], 5)
+            self.assertIn("controller_initialization_status", (Path(folder)/"summary.csv").read_text())
+            self.assertIn("stroke-dasharray", (Path(folder)/"trajectories"/"run-000.svg").read_text())
+
 
 if __name__ == "__main__":
     unittest.main()
