@@ -21,3 +21,11 @@ git clone tick-trap-history.bundle tick-trap-restored
 Runtime commands work without dependencies using `PYTHONPATH=src python -m
 tick_trap ...`. If the environment blocks writes to uv's default cache, use the
 already installed `.venv/bin/python` or a cache under a writable temporary path.
+
+The first GitHub publication used the connected account because terminal network
+access was restricted. Its commits were recreated in their original step order;
+each published Git tree was checked against the corresponding local tree SHA,
+and all remote commit authors were verified as the repository owner. Commit IDs
+differ from the original local sequence because server metadata differs. The
+original sequence is preserved on the local `original-local-history` branch.
+Local `main` follows the exact published commit objects after synchronization.

@@ -10,11 +10,14 @@ is analytical and does not rely on a grid.
 
 ## Executed experiments
 
-These results were generated from commit
+These results were generated from original local commit
 `d1229c0b19df2bbf136cce4220e7e1d73a4941f1`, with a clean tracked working tree.
 The package source SHA-256 was
 `b35a7cce2a08749b8b1f686d818820d8c835b05b5ca248b165a24a0dcdd47e6a`.
 Later documentation commits do not change that source.
+The connected GitHub publication recreated commit metadata; the source hash is
+the stable identifier for this historical result, and the original local history
+is retained in the development workspace's portable bundle.
 
 | Experiment | Cases | Completed safe horizons | Collision intervals | Infeasible stops | Outside-domain stops |
 | --- | ---: | ---: | ---: | ---: | ---: |
