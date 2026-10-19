@@ -121,6 +121,7 @@ def run_planar(config: PlanarConfig):
         initialization_status = "ready" if controller.continuation is not None else "uncertified"
     elif config.method == "backup_candidates":
         initialization_status = "not_started"
+    initial_plan = controller.continuation.record() if controller is not None and controller.continuation is not None else None
     _, initial_domains = hocbf_constraints(state, obstacles, config.lambda1, config.lambda2)
     records, termination = [], "horizon" if initial_safe else "initially_unsafe"
     goal_first_time = None
@@ -195,6 +196,7 @@ def run_planar(config: PlanarConfig):
             "initial_viability_check_ns": initial_viability_check_ns,
             "controller_initialization_ns": initialization_ns, "controller_initialization_status": initialization_status,
             "controller_initialization_assessment": controller.initial_assessment.record() if controller is not None else None,
+            "controller_initial_plan": initial_plan,
             "viability_scope": "sufficient admissible stopping-plan check, not the full planar viability kernel",
             "termination": termination, "executed_steps": len(executed),
             "completed_safe_horizon": termination == "horizon" and observed == "safe",

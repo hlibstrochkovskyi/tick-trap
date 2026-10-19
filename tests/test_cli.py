@@ -110,6 +110,8 @@ class CliTests(unittest.TestCase):
             self.assertEqual(result["stored_plan_steps"], 5)
             self.assertIn("controller_initialization_status", (Path(folder)/"summary.csv").read_text())
             self.assertIn("stroke-dasharray", (Path(folder)/"trajectories"/"run-000.svg").read_text())
+            self.assertEqual(self.invoke("verify", "--runs", str(Path(folder)/"runs.json"), "--output", str(Path(folder)/"verified")), 0)
+            self.assertEqual(read_json(Path(folder)/"verified"/"verification.json")["status"], "verified")
 
 
 if __name__ == "__main__":

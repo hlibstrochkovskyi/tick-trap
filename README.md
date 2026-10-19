@@ -80,6 +80,7 @@ candidate search, plan reuse and terminal holding separately:
 
 ```sh
 PYTHONPATH=src python -m tick_trap planar-sweep --config configs/continuations.json --output results/continuations
+PYTHONPATH=src python -m tick_trap verify --runs results/continuations/runs.json
 ```
 
 See the [research plan and literature ledger](docs/research-plan.md) for the scope

@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -12,6 +13,7 @@ from .planar_audit import audit_cases
 from .planar_experiments import PlanarConfig, load_planar_grid, run_planar
 from .planar_reporting import write_planar_runs
 from .reporting import counterexample_svg, provenance, read_json, write_json, write_runs
+from .verification import verify_planar_runs
 
 
 def main(argv=None):
@@ -19,6 +21,9 @@ def main(argv=None):
     sub = parser.add_subparsers(dest="command", required=True)
     example = sub.add_parser("counterexample", help="Reproduce the analytical hidden collision")
     example.add_argument("--output", default="results/counterexample")
+    verification = sub.add_parser("verify", help="Replay exact planar run records and retained-plan proofs")
+    verification.add_argument("--runs", default="results/continuations/runs.json")
+    verification.add_argument("--output", default="results/verification")
     for command, help_text, default in [
         ("run", "Run a single wall configuration", "configs/wall.json"),
         ("sweep", "Run a reproducible Cartesian experiment grid", "configs/baselines.json"),
@@ -47,6 +52,14 @@ def main(argv=None):
             write_json(output/"metadata.json", provenance(result))
             (output/"counterexample.svg").write_text(counterexample_svg())
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
+        elif args.command == "verify":
+            result = verify_planar_runs(read_json(args.runs))
+            output.mkdir(parents=True, exist_ok=True)
+            write_json(output/"verification.json", result)
+            spec = {"runs_file": str(Path(args.runs).resolve()),
+                    "runs_sha256": hashlib.sha256(Path(args.runs).read_bytes()).hexdigest()}
+            write_json(output/"metadata.json", provenance(spec))
+            print(f"Verified {result['runs']} runs, {result['executed_holds']} holds and {result['retained_plans']} retained plans.")
         else:
             spec = read_json(args.config)
             if args.command == "planar-audit":

@@ -101,3 +101,21 @@ retained after every executed update. This field is null when there were no
 executed updates; initialization or an unexecuted plan is not a safe completed
 horizon. An initial stopping diagnostic can succeed even when a cheaper online
 initialization check remains unresolved, so those two results are also separate.
+
+Saved evidence can be replayed without running the controller:
+
+```sh
+PYTHONPATH=src python -m tick_trap verify --runs results/continuations/runs.json --output results/continuation-verification
+```
+
+The verifier reconstructs exact states and admissible commands, recomputes the
+saved polynomial enclosures, and checks initialization, replacements, consumed
+prefixes, remaining suffixes and terminal rest. It rejects altered commands,
+endpoints, bounds and plan counters. Required initialization proofs must be present
+in the input artifact. Plot curves are derived from the exact fields.
+
+`verified` means the exact artifact is consistent with its declared mathematical
+model; a correctly recorded collision witness can also be verified. The output
+therefore includes unsafe and unresolved interval counts. The verifier shares the
+existing polynomial engine and does not independently establish its mathematics,
+physical model fidelity, uncertainty coverage or real-time execution properties.

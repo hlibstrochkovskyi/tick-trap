@@ -19,8 +19,8 @@ def trajectory_svg(run):
     for record in run["records"]:
         if "action" not in record:
             continue
-        start, end = record["state"]["p"], record["end_state"]["p"]
-        velocity, action = record["state"]["v"], record["action"]
+        start, end = display_vector(record["state"]["p_exact"]), display_vector(record["end_state"]["p_exact"])
+        velocity, action = display_vector(record["state"]["v_exact"]), display_vector(record["action_exact"])
         control = tuple(p+v*dt/2 for p, v in zip(start, velocity))
         points.extend([start, end, control])
         segments.append((start, control, end, record["continuous_status"], record.get("control_source", "filter")))
