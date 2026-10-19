@@ -1,10 +1,12 @@
 import argparse
+import csv
 import hashlib
 import json
 import sys
 from pathlib import Path
 
 from .benchmark import benchmark
+from .certification_study import certification_study
 from .dynamics import Circle, PlanarState, WallState
 from .experiments import RunConfig, load_grid, run
 from .learning import learning_study
@@ -30,6 +32,7 @@ def main(argv=None):
         ("certify", "Analyze a planar held trajectory against a circle", "configs/planar.json"),
         ("learn", "Fit a small actuator model and test changed dynamics", "configs/learning.json"),
         ("benchmark", "Measure trajectory certificate precision and cost", "configs/certification.json"),
+        ("certification-study", "Measure matched high-order property checks", "configs/certification-cost.json"),
         ("planar-run", "Run a controlled planar scene", "configs/planar-control.json"),
         ("planar-sweep", "Compare planar filters on matched scenes", "configs/planar-baselines.json"),
         ("planar-audit", "Audit admitted controls against the trajectory certificates", "configs/planar-audit.json"),
@@ -97,6 +100,34 @@ def main(argv=None):
                 write_planar_runs(output, results, spec)
                 print(f"{len(results)} planar runs; {sum(r['completed_safe_horizon'] for r in results)} safe completed horizons; "
                       f"{sum(r['collision_observed'] for r in results)} observed collisions.")
+            elif args.command == "certification-study":
+                result = certification_study(spec)
+                output.mkdir(parents=True, exist_ok=True)
+                write_json(output/"study.json", result)
+                write_json(output/"metadata.json", provenance(spec))
+                columns = ["strategy", "tolerance_exact", "budget", "queries", "accepted", "rejected", "unknown",
+                           "reference_safe_excluded", "reference_safe_unresolved", "accepted_reference_unknown",
+                           "total_subdivisions", "median_per_control_ns"]
+                with (output/"summary.csv").open("w", newline="") as stream:
+                    writer = csv.DictWriter(stream, fieldnames=columns)
+                    writer.writeheader()
+                    writer.writerows(result["groups"])
+                lines = ["# tick-trap matched high-order certification cost", "", result["scope"], "",
+                         "| Strategy | Width tolerance | Splits per polynomial | Queries | Accepted | Rejected | Unknown | Reference-safe excluded | Reference-safe unresolved | Total splits | Median per-control time (µs) |",
+                         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
+                for row in result["groups"]:
+                    lines.append(f"| {row['strategy']} | {row['tolerance_exact']} | {row['budget']} | {row['queries']} | "
+                                 f"{row['accepted']} | {row['rejected']} | {row['unknown']} | {row['reference_safe_excluded']} | "
+                                 f"{row['reference_safe_unresolved']} | {row['total_subdivisions']} | {row['median_per_control_ns']/1000:.1f} |")
+                lines += ["", "All strategies target continuous h and psi safety at the same declared controls.",
+                          "SACBF rejection is a failed sufficient condition; polynomial rejection has a negative witness.",
+                          "Initial-domain exclusions are not counted as rejections. Unknown reference signs remain unknown.",
+                          "Minimum and sign queries use identical tolerances/budgets; sign stopping need not attain the minimum width.",
+                          "The budget applies to each polynomial. Empirical costs do not establish hard deadlines.",
+                          f"{result['repeats']} seeded, interleaved repeats per setting and control.",
+                          "[Exact evidence, reference audit and all timings](study.json).", ""]
+                (output/"report.md").write_text("\n".join(lines))
+                print(f"{result['applicable_cases']} applicable states; {len(result['measurements'])} matched property configurations.")
             elif args.command == "benchmark":
                 results = benchmark(spec)
                 output.mkdir(parents=True, exist_ok=True)

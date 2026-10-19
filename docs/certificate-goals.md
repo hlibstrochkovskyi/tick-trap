@@ -31,3 +31,40 @@ collision queries from computing contact times. Its mesh geometry, exact
 computation machinery and floating-point filters are not reproduced here. The
 tick-trap change merely avoids unnecessary minimum refinement for an existing
 validated sign decision; no new collision-detection method is claimed.
+
+## Measuring cost at matched controls
+
+`certification-study` builds the declared finite command set at each fixed state
+and obtains a separate, tighter geometric/auxiliary reference audit. Only
+high-order in-domain states enter its timed comparisons. Each command is tested
+with relaxed SACBF, minimum refinement and sign stopping. Polynomial methods
+check both properties at every obstacle, including after an earlier negative
+witness, so the timed query scope is consistent. They use the same tolerance
+and per-polynomial subdivision budget.
+
+Five repeats by default are shuffled with a recorded seed for every control.
+Every setting's exact evidence must remain unchanged across repeats; measurement
+order and all elapsed times are retained. Reported cost includes constructing
+the condition/polynomials and serializable exact evidence. Candidate generation,
+nominal-action selection and offline reference certification are excluded. This
+measures a fixed property predicate, not a full controller call or worst-case
+execution time. The reference uses the same Bernstein engine with its separately
+declared limits; it is neither a second numerical implementation nor an oracle
+that always resolves tangency.
+
+An unknown result is kept separate from rejection. SACBF rejection fails a
+sufficient condition; polynomial rejection has a negative path witness. The
+report separately counts excluded reference-safe controls and unresolved
+reference-safe controls. If a predicate proves safety where the reference was
+unknown, the reference is still recorded unknown, and that outcome is counted
+explicitly. Exact contradictions against a resolved reference abort the study.
+
+```sh
+PYTHONPATH=src python -m tick_trap certification-study --config configs/certification-cost.json --output results/certification-cost
+```
+
+This writes full JSON evidence, group CSV metrics, a Markdown table and
+configuration/source provenance. The default study compares four states from
+the earlier audit. Its finite controls and seeded timing experiment support
+specific comparisons only; broader systems and original paper experiments
+remain outside its scope.

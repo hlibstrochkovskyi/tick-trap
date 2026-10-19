@@ -73,6 +73,20 @@ class CliTests(unittest.TestCase):
             self.assertEqual(results[0]["result"]["continuous_status"], "safe")
             self.assertEqual(len(results[0]["all_certification_ns"]), 2)
 
+    def test_matched_certification_study_artifacts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            config = Path(folder)/"config.json"
+            case = dict(name="safe", p=[2, 0], v=[0, 0], nominal=[0, 0],
+                        obstacles=[dict(center=[0, 0], radius=1)], duration="0.1", a_max=1)
+            config.write_text(json.dumps({"base": {"grid_points": 2}, "cases": [case], "repeats": 2, "budgets": [0, 8]}))
+            self.assertEqual(self.invoke("certification-study", "--config", str(config), "--output", folder), 0)
+            result = read_json(Path(folder)/"study.json")
+            self.assertEqual(len(result["groups"]), 5)
+            self.assertEqual(result["applicable_cases"], 1)
+            self.assertTrue((Path(folder)/"summary.csv").is_file())
+            self.assertIn("same declared controls", (Path(folder)/"report.md").read_text())
+            self.assertIn("configuration_sha256", read_json(Path(folder)/"metadata.json"))
+
     def test_planar_run_and_sweep_artifacts(self):
         with tempfile.TemporaryDirectory() as folder:
             config = Path(folder)/"config.json"
