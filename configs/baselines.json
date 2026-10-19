@@ -1,0 +1,7 @@
+{
+  "base": {"d": "0.6", "v": "1", "a_max": "10", "nominal": "0", "steps": 20, "seed": 7},
+  "grid": {
+    "method": ["nominal", "continuous_cbf", "endpoint", "breeden", "zocbf", "exact_hold"],
+    "duration": ["0.02", "0.1", "0.2", "0.4"]
+  }
+}

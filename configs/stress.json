@@ -1,0 +1,12 @@
+{
+  "base": {"v": "1", "steps": 10, "a_max": "10", "nominal": "0"},
+  "grid": {
+    "method": ["continuous_cbf", "endpoint", "breeden", "zocbf", "exact_hold"],
+    "d": ["0.04", "0.06", "0.6"],
+    "duration": ["0.05", "0.2"],
+    "plant_gain": ["1", "0.7"],
+    "measurement_d": ["0", "0.01"],
+    "delay": ["0", "0.02"],
+    "seed": [7, 19]
+  }
+}
