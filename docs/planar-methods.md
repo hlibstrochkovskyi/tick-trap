@@ -54,6 +54,8 @@ declared candidates; no continuous-input optimality is claimed.
 | `zocbf_candidates` | Endpoint difference plus the local buffer below |
 | `sacbf_candidates` | Sampling-aware high-order condition with an exponential endpoint target |
 | `sacbf_relaxed_candidates` | Sampling-aware high-order condition with the permitted zero target |
+| `high_order_trajectory_candidates` | Validated minima of both actual h and auxiliary psi paths |
+| `high_order_sign_candidates` | The same two path properties, stopping on proved signs |
 | `trajectory_candidates` | Validated nonnegative minimum on the actual curved trajectory |
 | `backup_candidates` | Safe hold plus certified stopping continuation, or execution of a previously certified plan |
 
@@ -124,6 +126,30 @@ candidate set and report exhaustion explicitly. Neither retains a future plan.
 `configs/sampling-baselines.json` compares them with HOCBF, the local zero-order
 buffer, trajectory checks and stored continuations over matched eight-second
 tasks. This does not reproduce the original papers' complete experiment setups.
+
+## High-order polynomial references
+
+The two high-order references check both `h(t)` and
+`psi(t)=h_dot(t)+lambda1*h(t)` against every obstacle over the entire hold.
+They share the SACBF initial domain and the same ordered finite command set.
+They accept only when both certificates are safe. A negative witness for either
+property rejects the action; unresolved evidence cannot authorize it. This
+removes the Taylor sufficient-condition restriction while preserving the two
+trajectory properties promised by the relaxed SACBF specialization. It does not
+add reach-and-remain constraints, a future feasible input, or a terminal plan.
+
+`high_order_trajectory_candidates` requests minimum-enclosure precision;
+`high_order_sign_candidates` uses the [sign stopping goal](certificate-goals.md).
+With the same tolerance and subdivision budget, both traverse the same proof
+prefix and classify each candidate identically. Once a sign is proved, further
+refinement cannot reverse it. Thus their deterministic selected commands are
+the same, while their numerical work and minimum widths can differ. This is a
+comparison of computation, not a different safety guarantee.
+
+`configs/high-order-baselines.json` compares these references with relaxed SACBF
+on matched eight-second tasks. The saved-run verifier replays their geometric
+and auxiliary proofs, declared query goals and stopping flags. A sign-proved
+interval must not be mistaken for a precision-qualified minimum enclosure.
 
 ## Matched-control audit
 

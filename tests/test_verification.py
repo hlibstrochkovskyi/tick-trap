@@ -67,6 +67,20 @@ class VerificationTests(unittest.TestCase):
             with self.assertRaises(VerificationError):
                 verify_planar_runs([altered])
 
+    def test_high_order_reference_proofs_replay_their_declared_goal(self):
+        runs = [run_planar(PlanarConfig(method=method, p=(-2, 0), v=(1, 0), goal=(-2, 0), horizon="0.3"))
+                for method in ("high_order_trajectory_candidates", "high_order_sign_candidates")]
+        result = verify_planar_runs(runs)
+        self.assertEqual(result["high_order_reference_holds"], 6)
+        self.assertEqual(result["high_order_reference_certificates"], 12)
+        self.assertEqual([r["action_exact"] for r in runs[0]["records"]], [r["action_exact"] for r in runs[1]["records"]])
+        for field, value in (("goal", "minimum"), ("lower_exact", "100"), ("precision_reached", None),
+                             ("budget_exhausted", True), ("stopping_reason", "budget_exhausted")):
+            altered = copy.deepcopy(runs[1])
+            altered["records"][0]["details"]["checked"][-1]["auxiliary_certificates"][0][field] = value
+            with self.assertRaises(VerificationError):
+                verify_planar_runs([altered])
+
 
 if __name__ == "__main__":
     unittest.main()

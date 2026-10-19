@@ -145,6 +145,47 @@ class PlanarControlTests(unittest.TestCase):
         cost = lambda u: sum((x-y)**2 for x, y in zip(u, nominal))
         self.assertEqual(cost((0, 1))-cost((0, 0)), F("0.2"))
 
+    def test_high_order_reference_requires_both_paths_and_enforces_initial_domain(self):
+        state, obstacles = PlanarState(("-0.52", "0.3"), (0, 0)), (Circle((0, 0), "0.5"),)
+        for method in ("high_order_trajectory_candidates", "high_order_sign_candidates"):
+            decision = decide_planar(method, state, ("2.52", "0.4"), obstacles, "0.4", 2)
+            self.assertEqual(decision.status, "feasible")
+            selected = decision.details["checked"][-1]
+            self.assertTrue(all(c["status"] == "safe" for c in selected["certificates"]+selected["auxiliary_certificates"]))
+            expected_goal = "sign" if method == "high_order_sign_candidates" else "minimum"
+            self.assertTrue(all(c["goal"] == expected_goal for c in selected["auxiliary_certificates"]))
+            outside = decide_planar(method, PlanarState((2, 0), (-4, 0)), (10, 0), [Circle((0, 0), 1)], "0.1", 10)
+            self.assertEqual(outside.status, "outside_domain")
+
+    def test_high_order_unknown_cannot_authorize_a_command(self):
+        # h is positive, but psi has an unresolved sign at zero subdivisions.
+        state = PlanarState((-2, "0.3"), (1, 0))
+        obstacle = Circle((0, 0), "0.5")
+        decision = decide_planar("high_order_sign_candidates", state, (1, 1), [obstacle], 1, 2,
+                                 max_subdivisions=0, max_candidates=1)
+        self.assertIsNone(decision.action)
+        self.assertFalse(decision.details["checked"][0]["accepted"])
+        self.assertEqual(decision.details["checked"][0]["certificates"][0]["status"], "safe")
+        self.assertEqual(decision.details["checked"][0]["auxiliary_certificates"][0]["status"], "unknown")
+        self.assertEqual(decision.details["unknown_count"], 1)
+
+    def test_both_high_order_queries_choose_the_same_control(self):
+        state = PlanarState((-2, "0.3"), (1, 0))
+        obstacles = (Circle((0, 0), "0.5"), Circle(("1.2", "-0.7"), "0.4"))
+        minimum = decide_planar("high_order_trajectory_candidates", state, (2, 0), obstacles, "0.4", 2)
+        sign = decide_planar("high_order_sign_candidates", state, (2, 0), obstacles, "0.4", 2)
+        self.assertEqual((minimum.status, minimum.action), (sign.status, sign.action))
+        self.assertEqual([c["accepted"] for c in minimum.details["checked"]], [c["accepted"] for c in sign.details["checked"]])
+
+    def test_high_order_reference_can_accept_a_path_excluded_by_the_taylor_condition(self):
+        state = PlanarState((-2, "0.3"), (1, 0))
+        obstacles = (Circle((0, 0), "0.5"), Circle(("1.2", "-0.7"), "0.4"))
+        reference = decide_planar("high_order_sign_candidates", state, (1, 0), obstacles, "0.4", 2)
+        taylor = decide_planar("sacbf_relaxed_candidates", state, (1, 0), obstacles, "0.4", 2)
+        self.assertEqual(reference.action, (1, 0))
+        self.assertFalse(taylor.details["checked"][0]["accepted"])
+        self.assertNotEqual(taylor.action, reference.action)
+
 
 if __name__ == "__main__":
     unittest.main()

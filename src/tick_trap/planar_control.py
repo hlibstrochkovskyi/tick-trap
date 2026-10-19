@@ -8,12 +8,13 @@ from fractions import Fraction
 from itertools import product
 
 from .numbers import positive, q, sqrt_upper, vector2
-from .polynomial import certify_minimum, evaluate
+from .polynomial import certify_minimum, certify_sign, evaluate
 from .qp import HalfSpace, dot, project_box
 from .sampling import sacbf_assessment
 
 PLANAR_METHODS = ("nominal", "hocbf", "endpoint_candidates", "segment_candidates",
                   "zocbf_candidates", "sacbf_candidates", "sacbf_relaxed_candidates",
+                  "high_order_trajectory_candidates", "high_order_sign_candidates",
                   "trajectory_candidates", "backup_candidates")
 
 
@@ -136,7 +137,8 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
     if method == "nominal":
         return PlanarDecision("feasible", _round(_clip(nominal, a_max), quantum), details={"guarantee": "none"})
     sampling_aware = method in ("sacbf_candidates", "sacbf_relaxed_candidates")
-    if method == "hocbf" or sampling_aware:
+    high_order_path = method in ("high_order_trajectory_candidates", "high_order_sign_candidates")
+    if method == "hocbf" or sampling_aware or high_order_path:
         constraints, domains = hocbf_constraints(state, obstacles, lambda1, lambda2)
         if not all(d["in_domain"] for d in domains):
             return PlanarDecision("outside_domain", reason="Outside the high-order initial-set intersection", details={"domains": domains})
@@ -157,7 +159,7 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
     unknown_count = 0
     limit = len(actions) if max_candidates is None else min(len(actions), max_candidates)
     for action in actions[:limit]:
-        margins, certificates, sampling_assessments = [], [], []
+        margins, certificates, sampling_assessments, auxiliary_certificates = [], [], [], []
         accepted, unknown = True, False
         for index, obstacle in enumerate(obstacles):
             polynomial = obstacle.polynomial(state, action)
@@ -178,20 +180,31 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                 margins.append(assessment["margin_exact"])
                 accepted = accepted and assessment["accepted"]
             else:
-                cert = certify_minimum(polynomial, duration, tolerance, max_subdivisions)
-                certificates.append({"status": cert.status, "lower_exact": str(cert.lower),
+                certifier = certify_sign if method == "high_order_sign_candidates" else certify_minimum
+                queries = [(polynomial, certificates)]
+                if high_order_path:
+                    psi = tuple(q(lambda1)*c+((i+1)*polynomial[i+1] if i+1 < len(polynomial) else 0)
+                                for i, c in enumerate(polynomial))
+                    queries.append((psi, auxiliary_certificates))
+                for coefficients, evidence in queries:
+                    cert = certifier(coefficients, duration, tolerance, max_subdivisions)
+                    evidence.append({"status": cert.status, "lower_exact": str(cert.lower),
                                      "upper_exact": str(cert.upper), "witness_time_exact": str(cert.witness_time),
-                                     "subdivisions": cert.subdivisions, "precision_reached": cert.precision_reached})
-                accepted = accepted and cert.status == "safe"
-                unknown = unknown or cert.status == "unknown"
+                                     "subdivisions": cert.subdivisions, "precision_reached": cert.precision_reached,
+                                     "budget_exhausted": cert.budget_exhausted, "goal": cert.goal,
+                                     "stopping_reason": cert.stopping_reason})
+                    accepted = accepted and cert.status == "safe"
+                    unknown = unknown or cert.status == "unknown"
         # A single collision witness rules out the entire action, even when a
         # different obstacle's certificate remains unresolved.
-        if certificates and any(c["status"] == "unsafe" for c in certificates):
+        if any(c["status"] == "unsafe" for c in certificates+auxiliary_certificates):
             unknown = False
         checked.append({"action_exact": [str(x) for x in action], "accepted": accepted,
                         "margins_exact": margins, "certificates": certificates})
         if sampling_aware:
             checked[-1]["sampling_assessments"] = sampling_assessments
+        if high_order_path:
+            checked[-1]["auxiliary_certificates"] = auxiliary_certificates
         unknown_count += unknown
         if accepted:
             return PlanarDecision("feasible", action, details={"candidate_count": len(actions), "candidate_set_constructed": True, "checked": checked,
@@ -203,6 +216,8 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                                       "zocbf_candidates": "continuous safety of this hold",
                                       "sacbf_candidates": "continuous h and auxiliary psi safety of this hold",
                                       "sacbf_relaxed_candidates": "continuous h and auxiliary psi safety of this hold",
+                                      "high_order_trajectory_candidates": "continuous h and auxiliary psi safety of this hold",
+                                      "high_order_sign_candidates": "continuous h and auxiliary psi safety of this hold",
                                       "trajectory_candidates": "continuous safety of this hold",
                                   }[method], "terminal_viability": "unknown"})
     budget_exhausted = limit < len(actions)

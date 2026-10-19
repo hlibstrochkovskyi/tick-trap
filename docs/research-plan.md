@@ -31,6 +31,9 @@ is a later extension requiring its own validity argument.
    controls preserving both properties that the Taylor test excludes. A next
    experiment must preserve this same property when comparing precision and cost;
    a geometric-only reference cannot by itself measure every high-order exclusion.
+   Two high-order polynomial references now preserve both properties and compare
+   minimum refinement with sign stopping on the same ordered candidates. They
+   remain one-hold checks with no recursive-feasibility claim.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.

@@ -7,7 +7,7 @@ provide a mathematically independent implementation of polynomial certification.
 
 from .dynamics import Circle, PlanarState
 from .numbers import positive, q, vector2
-from .polynomial import certify_minimum, evaluate
+from .polynomial import certify_minimum, certify_sign, evaluate
 from .sampling import sacbf_assessment
 
 
@@ -36,11 +36,14 @@ def _command(action, a_max, quantum):
     return action
 
 
-def _certificate(polynomial, duration, record, tolerance, cache, offline=False):
+def _certificate(polynomial, duration, record, tolerance, cache, offline=False, expected_goal=None):
     count = _integer(record["subdivisions"], "subdivisions")
-    key = (tuple(polynomial), duration, q(tolerance), count)
+    goal = record.get("goal", "minimum")
+    _require(goal in ("minimum", "sign") and (expected_goal is None or goal == expected_goal), "Incorrect certificate goal")
+    key = (tuple(polynomial), duration, q(tolerance), count, goal)
     if key not in cache:
-        cache[key] = certify_minimum(polynomial, duration, tolerance, count)
+        certifier = certify_sign if goal == "sign" else certify_minimum
+        cache[key] = certifier(polynomial, duration, tolerance, count)
     cert = cache[key]
     lower = "minimum_lower_exact" if offline else "lower_exact"
     upper = "minimum_upper_exact" if offline else "upper_exact"
@@ -48,6 +51,9 @@ def _certificate(polynomial, duration, record, tolerance, cache, offline=False):
     _require((cert.lower, cert.upper, cert.witness_time, cert.status, cert.subdivisions) ==
              (q(record[lower]), q(record[upper]), q(record["witness_time_exact"]), record[status], count),
              "Saved certificate does not match deterministic exact replay")
+    for field in ("precision_reached", "budget_exhausted", "stopping_reason"):
+        if field in record:
+            _require(record[field] == getattr(cert, field), f"Incorrect certificate {field}")
     return cert.status
 
 
@@ -112,12 +118,32 @@ def _sampling_aware(record, config, state, action, obstacles, period, totals):
     totals["sampling_aware_holds"] += 1
 
 
+def _high_order_reference(record, config, state, action, obstacles, period, cache, totals):
+    checked = record["details"]["checked"]
+    _require(checked and checked[-1]["accepted"] is True, "Missing accepted high-order reference candidate")
+    selected = checked[-1]
+    _require(vector2(selected["action_exact"]) == action, "High-order evidence belongs to another action")
+    _require(len(selected["certificates"]) == len(obstacles) and len(selected["auxiliary_certificates"]) == len(obstacles),
+             "Missing geometric or auxiliary reference certificate")
+    goal = "sign" if config["method"] == "high_order_sign_candidates" else "minimum"
+    lambda1 = positive(config["lambda1"], "lambda1")
+    for obstacle, h_cert, psi_cert in zip(obstacles, selected["certificates"], selected["auxiliary_certificates"]):
+        h = obstacle.polynomial(state, action)
+        psi = tuple(lambda1*c+((i+1)*h[i+1] if i+1 < len(h) else 0) for i, c in enumerate(h))
+        for polynomial, cert in ((h, h_cert), (psi, psi_cert)):
+            status = _certificate(polynomial, period, cert, config["tolerance"], cache, expected_goal=goal)
+            _require(status == "safe", "An unresolved or unsafe reference certificate authorized an action")
+            totals["high_order_reference_certificates"] += 1
+    totals["high_order_reference_holds"] += 1
+
+
 def verify_planar_runs(runs):
     _require(isinstance(runs, list), "Expected a list of planar run records")
     cache = {}
     totals = {"runs": len(runs), "executed_holds": 0, "retained_plans": 0,
               "unsafe_intervals": 0, "unknown_intervals": 0,
-              "sampling_aware_holds": 0, "auxiliary_safe_checks": 0, "auxiliary_unknown_checks": 0}
+              "sampling_aware_holds": 0, "auxiliary_safe_checks": 0, "auxiliary_unknown_checks": 0,
+              "high_order_reference_holds": 0, "high_order_reference_certificates": 0}
     for run_index, run in enumerate(runs):
         try:
             config = run["config"]
@@ -161,6 +187,8 @@ def verify_planar_runs(runs):
                 sampled.append(all(interval_sampled))
                 if config["method"] in ("sacbf_candidates", "sacbf_relaxed_candidates"):
                     _sampling_aware(record, config, state, action, obstacles, period, totals)
+                if config["method"] in ("high_order_trajectory_candidates", "high_order_sign_candidates"):
+                    _high_order_reference(record, config, state, action, obstacles, period, cache, totals)
                 if backup:
                     _require(previous is not None, "An uninitialized backup filter applied an action")
                     plan = record["details"]["retained_plan"]
