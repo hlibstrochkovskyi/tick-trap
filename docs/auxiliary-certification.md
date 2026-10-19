@@ -27,8 +27,9 @@ state/model, a static inflated circle, the stated constant gain, and admissible
 commands. It preserves both `h>=0` and `psi>=0` during the certified hold, without
 establishing another feasible input or task convergence. Boundary contact is
 permitted. Model error, observation error, delayed execution and moving obstacles
-are not covered. The independent offline geometric oracle remains useful for
-checking model/implementation consistency.
+are not covered. The separate offline geometric oracle remains useful for
+checking model/implementation consistency. It uses the same Bernstein engine;
+it is not an independent numerical implementation.
 
 ## Finite-work decisions need not match
 
@@ -68,7 +69,7 @@ three. The last strategy makes one auxiliary sign query per obstacle and derives
 geometric safety by the rule above. Every method still targets the same two
 properties. All inference records and auxiliary certificates are saved; there
 are no fabricated geometric minimum bounds. Timings include exact evidence
-construction, with search and the independent offline reference excluded.
+construction, with search and the separate offline reference excluded.
 
 `configs/auxiliary-cost.json` retains the eight previous fixed states and adds
 both decision-difference examples. Besides accepted/rejected/unknown counts, the
@@ -82,6 +83,7 @@ geometric query can be replaced by a valid implication.
 PYTHONPATH=src python -m tick_trap certification-study --config configs/auxiliary-cost.json --output results/auxiliary-cost
 PYTHONPATH=src python -m tick_trap planar-sweep --config configs/auxiliary-baselines.json --output results/auxiliary-baselines
 PYTHONPATH=src python -m tick_trap verify --runs results/auxiliary-baselines/runs.json --output results/auxiliary-verification
+python scripts/summarize-certification.py --comparison sign-auxiliary
 ```
 
 The saved-run verifier independently reconstructs the auxiliary polynomial and
@@ -93,3 +95,10 @@ offline geometric result stays unknown in that oracle's own record; the separate
 comparison evidence is counted explicitly. The runner still stops on an
 unresolved offline interval, as it does for the existing references. No physical
 model validity or hard execution deadline is inferred from this replay.
+
+The compact summary checks matched configurations, exact terminal goal flags,
+rollout verification hashes and the allowed finite-work decision transitions.
+It reports how many paired action sequences actually match, rather than requiring
+them to match for this comparison. The existing minimum/sign summary mode retains
+its stronger proof-prefix equivalence check. Both modes keep recorded source and
+configuration provenance and reject artifacts made from dirty source snapshots.
