@@ -92,9 +92,9 @@ It rejects altered implication rules, missing proofs, claimed geometric minimum
 bounds or an unresolved auxiliary proof used to authorize a command. A negative
 offline geometric witness contradicts a valid comparison proof. An unknown
 offline geometric result stays unknown in that oracle's own record; the separate
-comparison evidence is counted explicitly. The runner still stops on an
-unresolved offline interval, as it does for the existing references. No physical
-model validity or hard execution deadline is inferred from this replay.
+comparison evidence is counted explicitly. The runner now distinguishes this
+from genuinely uncertified execution; see [execution evidence](execution-evidence.md).
+No physical model validity or hard execution deadline is inferred from this replay.
 
 The compact summary checks matched configurations, exact terminal goal flags,
 rollout verification hashes and the allowed finite-work decision transitions.
@@ -102,3 +102,40 @@ It reports how many paired action sequences actually match, rather than requirin
 them to match for this comparison. The existing minimum/sign summary mode retains
 its stronger proof-prefix equivalence check. Both modes keep recorded source and
 configuration provenance and reject artifacts made from dirty source snapshots.
+
+## Audit with an independent reference and a common total budget
+
+The study now also saves the [independent exact algebraic sign
+reference](algebraic-reference.md) for every h and psi polynomial, outside the
+timed predicate. Original bounded Bernstein answers remain recorded separately.
+`accepted_safe_controls`, `rejected_unsafe_controls`, safe controls excluded and
+unknown safe/unsafe counts use **joint h-and-psi truth**. An unsafe psi alone is
+not a collision. Geometric unsafe rejections have a separate count. A failed
+native SACBF sufficient condition can exclude a truly safe path; it does not
+prove the action unsafe. A resolved contradiction raises an error.
+
+`configs/auxiliary-cost.json` keeps its original **per-polynomial** split budget
+for exact reproduction. Dual queries may consequently use twice as many splits
+as an auxiliary-only query at a single obstacle. This is not a common total-work
+allocation. `configs/auxiliary-total-work.json` repeats the identical states,
+candidates, tolerances, seeds and repeats with **per-control** budgets: all queries
+for a candidate share the same remaining subdivision allowance. Queries use
+obstacle order and, for dual checks, h before psi. Unused work carries forward;
+no query can exceed the remaining allowance. Evidence construction and constant
+queries still cost time even at zero subdivisions. This allocation rule is a
+benchmark policy, not a proposed new certification algorithm.
+
+Native SACBF has no subdivision parameter: its exact Taylor bound is measured
+once per repeat/control and reused across the numeric setting comparisons. Both
+budget scopes count its work as zero subdivisions, not zero computation. Common
+split limits do not imply equal primitive operation counts or wall-clock cost.
+Minimum/sign proof-prefix classification equivalence applies to the original
+per-polynomial limits; a shared allowance can allocate different work to later
+polynomials and therefore produce different decisions.
+
+Every strategy pair has a decision transition table, a distribution of paired
+per-control median timing ratios, paired differences in ns, repeat-level ratios,
+and case-stratified ratios. Quantiles use linear interpolation of ordered samples.
+All raw times, randomized positions and exact decisions are saved so these
+descriptive distributions can be reconstructed. They do not estimate hardware
+worst-case timing, a population confidence interval, or deadline reliability.

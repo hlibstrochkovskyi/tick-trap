@@ -80,6 +80,33 @@ class CertificationStudyTests(unittest.TestCase):
         self.assertEqual(result["strategies"], ["auxiliary_sign", "sign", "minimum"])
         self.assertEqual(len(result["groups"]), 6)
 
+    def test_independent_reference_counts_and_all_paired_distributions(self):
+        result = certification_study(self.spec() | {"strategies": ["sacbf_relaxed", "minimum", "sign", "auxiliary_sign"]})
+        self.assertEqual(len(result["paired_comparisons"]), 12)  # 6 pairs, 2 budgets
+        for group in result["groups"]:
+            self.assertEqual(group["accepted_unsafe_controls"], 0)
+            self.assertEqual(group["accepted_safe_controls"], group["accepted"])
+            self.assertEqual(group["unknown_safe_controls"]+group["unknown_unsafe_controls"], group["unknown"])
+            self.assertEqual(group["per_control_median_ns_distribution"]["count"], group["queries"])
+        for pair in result["paired_comparisons"]:
+            self.assertEqual(sum(t["controls"] for t in pair["transitions"]), pair["controls"])
+            self.assertEqual(pair["paired_repeat_time_ratio"]["count"], 2*pair["controls"])
+            ratios = pair["paired_median_time_ratio"]
+            self.assertLessEqual(ratios["min"], ratios["p10"])
+            self.assertLessEqual(ratios["p10"], ratios["median"])
+            self.assertLessEqual(ratios["median"], ratios["p90"])
+            self.assertLessEqual(ratios["p90"], ratios["max"])
+
+    def test_common_per_control_budget_is_never_exceeded(self):
+        result = certification_study(self.spec() | {"strategies": ["minimum", "sign", "auxiliary_sign"],
+                                                   "budgets": [0, 1, 8], "budget_scope": "per_control"})
+        for row in result["measurements"]:
+            self.assertLessEqual(row["result"]["subdivisions"], row["budget"])
+            self.assertEqual(row["result"]["subdivisions"], sum(c["subdivisions"] for c in row["result"]["proofs"]))
+        self.assertEqual(result["budget_scope"], "per_control")
+        with self.assertRaises(ValueError):
+            certification_study(self.spec() | {"budget_scope": "unknown"})
+
 
 if __name__ == "__main__":
     unittest.main()

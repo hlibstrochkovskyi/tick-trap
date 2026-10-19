@@ -106,11 +106,13 @@ def main(argv=None):
                 write_json(output/"study.json", result)
                 write_json(output/"metadata.json", provenance(spec))
                 columns = ["strategy", "tolerance_exact", "budget", "queries", "accepted", "rejected", "unknown",
+                           "accepted_safe_controls", "accepted_unsafe_controls", "rejected_unsafe_controls", "rejected_safe_controls",
+                           "unknown_safe_controls", "unknown_unsafe_controls", "geometrically_unsafe_rejected",
                            "reference_safe_excluded", "reference_safe_unresolved", "accepted_reference_unknown",
                            "polynomial_checks", "geometric_implications_proved",
                            "total_subdivisions", "median_per_control_ns"]
                 with (output/"summary.csv").open("w", newline="") as stream:
-                    writer = csv.DictWriter(stream, fieldnames=columns)
+                    writer = csv.DictWriter(stream, fieldnames=columns, extrasaction="ignore")
                     writer.writeheader()
                     writer.writerows(result["groups"])
                 lines = ["# tick-trap matched high-order certification cost", "", result["scope"], "",
@@ -126,12 +128,26 @@ def main(argv=None):
                     for pair in result["decision_comparisons"]:
                         for row in pair["transitions"]:
                             lines.append(f"| {pair['tolerance_exact']} | {pair['budget']} | {row['dual_sign']} | {row['auxiliary_sign']} | {row['controls']} |")
+                lines += ["", "| Strategy | Tolerance | Budget | Independently safe accepted | Unsafe h or psi rejected | Safe excluded | Safe unknown | Unsafe unknown |",
+                          "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
+                for row in result["groups"]:
+                    lines.append(f"| {row['strategy']} | {row['tolerance_exact']} | {row['budget']} | {row['accepted_safe_controls']} | "
+                                 f"{row['rejected_unsafe_controls']} | {row['rejected_safe_controls']} | {row['unknown_safe_controls']} | {row['unknown_unsafe_controls']} |")
+                lines += ["", "| Baseline / candidate | Tolerance | Budget | Paired time ratio p10 | Median | p90 |",
+                          "| --- | --- | ---: | ---: | ---: | ---: |"]
+                for pair in result["paired_comparisons"]:
+                    d = pair["paired_median_time_ratio"]
+                    lines.append(f"| {pair['baseline']} / {pair['candidate']} | {pair['tolerance_exact']} | {pair['budget']} | {d['p10']:.3f} | {d['median']:.3f} | {d['p90']:.3f} |")
                 lines += ["", "All strategies target continuous h and psi safety at the same declared controls.",
                           "auxiliary_sign certifies psi and derives h by linear comparison; it reports no numerical geometric minimum.",
                           "SACBF rejection is a failed sufficient condition; polynomial rejection has a negative witness.",
                           "Initial-domain exclusions are not counted as rejections. Unknown reference signs remain unknown.",
                           "Minimum and sign queries use identical tolerances/budgets; sign stopping need not attain the minimum width.",
-                          "The budget applies to each polynomial. Empirical costs do not establish hard deadlines.",
+                          f"Subdivision budget scope: {result['budget_scope']}. Native SACBF has no subdivisions; its repeated measurements are reused across tolerance/budget comparisons.",
+                          "Independent exact algebraic signs distinguish safe/unsafe h-and-psi paths; unsafe psi alone does not mean collision.",
+                          "Online unknowns remain unknown even if the independent offline reference resolves their signs.",
+                          "Paired ratios divide the baseline per-control median by the candidate median; full repeat distributions and query order are saved.",
+                          "These are descriptive distributions on this finite set, not confidence intervals or hard deadline bounds.",
                           f"{result['repeats']} seeded, interleaved repeats per setting and control.",
                           "[Exact evidence, reference audit and all timings](study.json).", ""]
                 (output/"report.md").write_text("\n".join(lines))

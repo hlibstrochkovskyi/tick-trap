@@ -136,6 +136,10 @@ def main():
                                       "matched_cases": len(paired_runs[0]), "identical_actions": identical_actions,
                                       "identical_outcomes": identical_outcomes},
                "predicate_groups": study["groups"], "decision_comparisons": study.get("decision_comparisons", []),
+               "budget_scope": study.get("budget_scope", "per_polynomial"),
+               "all_paired_comparisons": study.get("paired_comparisons", []),
+               "independent_reference_counts": dict(Counter(c["independent_high_order_status"] for case in study["reference"]
+                                                            for c in case["candidates"] if "independent_high_order_status" in c)),
                "paired_timing_ratios": pairs, "seed": study["seed"], "repeats": study["repeats"], "cases": cases}
     if not auxiliary:
         summary["identical_minimum_sign_rollouts"] = len(paired_runs[0])

@@ -48,6 +48,19 @@ class AlgebraicReferenceTests(unittest.TestCase):
         self.check([0, 0, 1], "safe")
         self.check([1, -3, 3, -1], "safe")  # (1-t)^3
 
+    def test_irrational_repeated_roots_and_nonunit_intervals(self):
+        factor = [F(-1, 2), 0, 1]
+        self.check(multiply(factor, factor), "safe")
+        self.check(factor, "unsafe")
+        self.check([1, -1], "safe", duration=1)
+        self.check([1, -1], "unsafe", duration=2)
+        self.check([1, -1], "safe", duration=F(1, 3))
+        # Two distinct, very close irrational roots create a tiny negative pocket.
+        epsilon = F(1, 10**100)
+        coefficients = multiply(factor, factor)
+        coefficients[0] -= epsilon
+        self.check(coefficients, "unsafe")
+
     def test_known_factored_roots_and_multiplicities(self):
         # Exhaust known factors at exterior, endpoint and interior locations.
         roots = (F(-1), F(0), F(1, 3), F(2, 3), F(1), F(2))
