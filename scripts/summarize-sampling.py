@@ -83,7 +83,8 @@ def main():
                "method_totals": aggregates, "per_run": per_run,
                "matched_control_audits": [{"name": c["name"], "candidate_count": c["candidate_count"],
                                             "high_order_applicable": c["hocbf_applicable"],
-                                            "truth_counts": c["truth_counts"], "counts": c["counts"]} for c in audits]}
+                                            "truth_counts": c["truth_counts"], "high_order_truth_counts": c["high_order_truth_counts"],
+                                            "counts": c["counts"]} for c in audits]}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(summary, indent=2, allow_nan=False)+"\n")
     print(f"Summarized {len(runs)} matched runs and {len(audits)} control audits in {args.output}")

@@ -67,14 +67,26 @@ def audit_case(name, p, v, nominal, obstacles, duration, a_max, lambda1=2, lambd
             row[method+"_assessments"] = assessments
             row["predicate_ns"][method] = perf_counter_ns()-start
         start = perf_counter_ns()
-        certificates = [certify_minimum(o.polynomial(state, action), duration, tolerance, max_subdivisions)
-                        for o in obstacles]
+        polynomials = [o.polynomial(state, action) for o in obstacles]
+        certificates = [certify_minimum(h, duration, tolerance, max_subdivisions) for h in polynomials]
         row["certification_ns"] = perf_counter_ns()-start
         statuses = [c.status for c in certificates]
         row["trajectory_status"] = "unsafe" if "unsafe" in statuses else "unknown" if "unknown" in statuses else "safe"
         row["certificates"] = [{"status": c.status, "lower_exact": str(c.lower), "upper_exact": str(c.upper),
                                 "witness_time_exact": str(c.witness_time), "subdivisions": c.subdivisions}
                                for c in certificates]
+        start = perf_counter_ns()
+        auxiliary = [tuple(q(lambda1)*c+((i+1)*h[i+1] if i+1 < len(h) else 0) for i, c in enumerate(h))
+                     for h in polynomials]
+        auxiliary_certificates = [certify_minimum(psi, duration, tolerance, max_subdivisions) for psi in auxiliary]
+        row["auxiliary_certification_ns"] = perf_counter_ns()-start
+        auxiliary_statuses = [c.status for c in auxiliary_certificates]
+        row["auxiliary_status"] = "unsafe" if "unsafe" in auxiliary_statuses else "unknown" if "unknown" in auxiliary_statuses else "safe"
+        row["auxiliary_certificates"] = [{"status": c.status, "lower_exact": str(c.lower), "upper_exact": str(c.upper),
+                                         "witness_time_exact": str(c.witness_time), "subdivisions": c.subdivisions}
+                                        for c in auxiliary_certificates]
+        statuses = statuses+auxiliary_statuses
+        row["high_order_path_status"] = "unsafe" if "unsafe" in statuses else "unknown" if "unknown" in statuses else "safe"
         rows.append(row)
     counts = {}
     for method in PREDICATES:
@@ -86,9 +98,18 @@ def audit_case(name, p, v, nominal, obstacles, duration, a_max, lambda1=2, lambd
             "safe_excluded": sum(r["predicates"][method] is False and r["trajectory_status"] == "safe" for r in rows),
             "accepted_truth_unknown": sum(r["predicates"][method] is True and r["trajectory_status"] == "unknown" for r in rows),
         }
+        if method in ("sacbf", "sacbf_relaxed"):
+            counts[method].update({
+                "safe_high_order_paths_excluded": sum(r["predicates"][method] is False and r["high_order_path_status"] == "safe" for r in rows),
+                "geometrically_safe_auxiliary_unsafe_excluded": sum(r["predicates"][method] is False and r["trajectory_status"] == "safe" and r["auxiliary_status"] == "unsafe" for r in rows),
+                "geometrically_safe_auxiliary_unknown_excluded": sum(r["predicates"][method] is False and r["trajectory_status"] == "safe" and r["auxiliary_status"] == "unknown" for r in rows),
+                "unsafe_high_order_paths_admitted": sum(r["predicates"][method] is True and r["high_order_path_status"] == "unsafe" for r in rows),
+                "accepted_high_order_truth_unknown": sum(r["predicates"][method] is True and r["high_order_path_status"] == "unknown" for r in rows),
+            })
     return {"name": name, "candidate_count": len(candidates), "hocbf_applicable": hocbf_applicable,
             "initial_braking": braking_continuation(state, obstacles, duration, a_max, tolerance, max_subdivisions, command_quantum),
             "truth_counts": {status: sum(r["trajectory_status"] == status for r in rows) for status in ("safe", "unsafe", "unknown")},
+            "high_order_truth_counts": {status: sum(r["high_order_path_status"] == status for r in rows) for status in ("safe", "unsafe", "unknown")},
             "zocbf_buffers_exact": [str(b) for b in buffers], "buffer_construction_ns": buffer_ns,
             "counts": counts, "candidates": rows,
             "scope": "Finite matched controls and one-interval safety; no global feasibility or viability-kernel claim"}

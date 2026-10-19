@@ -141,3 +141,11 @@ buffer construction. The zero-order margin uses the endpoint computation already
 recorded for the endpoint predicate. These components must be combined before
 comparing complete evaluation expense; per-predicate timings alone are not an
 end-to-end runtime ranking. Controller rollouts measure the complete filter call.
+
+The audit's geometric table uses actual `h(t)` safety. SACBF also preserves
+`psi(t)=h_dot(t)+lambda1*h(t)`, so a second table uses separate validated
+certificates for that auxiliary polynomial. It distinguishes rejected paths with
+safe `h` and safe `psi` from safe geometric paths that leave the auxiliary set,
+or whose auxiliary sign remains unresolved. Only the first category measures
+exclusion relative to the same two required trajectory properties. The
+zero-order buffer and trajectory filter do not promise auxiliary-set preservation.

@@ -85,3 +85,9 @@ geometric `h(t)` check. An unresolved auxiliary sign is counted as unknown;
 an unsafe auxiliary witness contradicts accepted exact-model SACBF evidence and
 fails verification. This is artifact and model consistency, not validation of
 physical assumptions or an independent implementation of the SACBF condition.
+
+The matched-control audit also certifies actual `psi(t)` paths independently of
+the SACBF acceptance test. Its high-order table measures rejection relative to
+preserving both `h` and `psi`, and separates controls that keep `h` safe while
+leaving the auxiliary set. The geometric table alone is insufficient to attribute
+every SACBF exclusion to the Taylor remainder bound.

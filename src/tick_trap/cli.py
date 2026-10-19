@@ -75,7 +75,16 @@ def main(argv=None):
                     for predicate, counts in case["counts"].items():
                         lines.append(f"| {case['name']} | {predicate} | {counts['applicable']} | {counts['safe_admitted']} | "
                                      f"{counts['unsafe_admitted']} | {counts['safe_excluded']} | {counts['accepted_truth_unknown']} |")
+                lines += ["", "| Case | SACBF predicate | Safe h and psi paths excluded | Safe h / unsafe psi excluded | Safe h / unknown psi excluded | Unsafe h or psi admitted | Admitted / high-order truth unknown |",
+                          "| --- | --- | ---: | ---: | ---: | ---: | ---: |"]
+                for case in results:
+                    for predicate in ("sacbf", "sacbf_relaxed"):
+                        counts = case["counts"][predicate]
+                        lines.append(f"| {case['name']} | {predicate} | {counts['safe_high_order_paths_excluded']} | "
+                                     f"{counts['geometrically_safe_auxiliary_unsafe_excluded']} | {counts['geometrically_safe_auxiliary_unknown_excluded']} | "
+                                     f"{counts['unsafe_high_order_paths_admitted']} | {counts['accepted_high_order_truth_unknown']} |")
                 lines += ["", "HOCBF and SACBF initial-domain exclusions are not counted as rejected controls.",
+                          "The first table uses geometric h safety; SACBF also preserves psi, evaluated separately in the second table.",
                           "The relaxed SACBF predicate uses the zero-target feasibility envelope, not a slack-penalized QP.",
                           "Endpoint and chord acceptance do not assert a physical hold guarantee.",
                           "Safe-control exclusion by a sufficient condition is not a theorem violation.",

@@ -40,10 +40,21 @@ class CandidateAuditTests(unittest.TestCase):
         for method in ("sacbf", "sacbf_relaxed"):
             self.assertEqual(result["counts"][method]["unsafe_admitted"], 0)
             self.assertGreater(result["counts"][method]["safe_admitted"], 0)
+            self.assertEqual(result["counts"][method]["unsafe_high_order_paths_admitted"], 0)
         for row in result["candidates"]:
             if row["predicates"]["sacbf"]:
                 self.assertTrue(row["predicates"]["sacbf_relaxed"])
         self.assertGreater(result["counts"]["sacbf_relaxed"]["safe_admitted"], result["counts"]["zocbf"]["safe_admitted"])
+
+    def test_safe_geometry_is_separated_from_leaving_the_auxiliary_set(self):
+        result = audit_case("rest", ("-0.52", "0.3"), (0, 0), ("2.52", "0.4"),
+                            [{"center": [0, 0], "radius": "0.5"}, {"center": ["1.2", "-0.7"], "radius": "0.4"}], "0.4", 2)
+        counts = result["counts"]["sacbf_relaxed"]
+        self.assertGreater(counts["safe_high_order_paths_excluded"], 0)
+        self.assertGreater(counts["geometrically_safe_auxiliary_unsafe_excluded"], 0)
+        self.assertEqual(counts["safe_excluded"], counts["safe_high_order_paths_excluded"]+
+                         counts["geometrically_safe_auxiliary_unsafe_excluded"]+counts["geometrically_safe_auxiliary_unknown_excluded"])
+        self.assertEqual(sum(result["high_order_truth_counts"].values()), result["candidate_count"])
 
     def test_invalid_catalog_rejected(self):
         for spec in [{}, {"cases": [1]}, {"base": [], "cases": [{}]}, {"unexpected": 1}]:
