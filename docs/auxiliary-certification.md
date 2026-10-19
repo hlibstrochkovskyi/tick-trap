@@ -59,3 +59,37 @@ a collision witness, not a physical contact simulation.
 Both examples are exact rational reference cases. They show why cost comparisons
 must retain unknowns and distinguish auxiliary violations from geometric ones,
 rather than assuming an optimization preserves every reported answer.
+
+## Cost and controller comparisons
+
+The certification study accepts an explicit `strategies` list: `sacbf_relaxed`,
+`minimum`, `sign`, and `auxiliary_sign`. The default retains the original first
+three. The last strategy makes one auxiliary sign query per obstacle and derives
+geometric safety by the rule above. Every method still targets the same two
+properties. All inference records and auxiliary certificates are saved; there
+are no fabricated geometric minimum bounds. Timings include exact evidence
+construction, with search and the independent offline reference excluded.
+
+`configs/auxiliary-cost.json` retains the eight previous fixed states and adds
+both decision-difference examples. Besides accepted/rejected/unknown counts, the
+report gives a paired transition table between dual-sign and auxiliary-only
+answers. Unlike minimum versus sign stopping on identical polynomials, these
+strategies are **not** required to classify every command identically at limited
+work. A geometric negative witness can become an unknown, while an unresolved
+geometric query can be replaced by a valid implication.
+
+```sh
+PYTHONPATH=src python -m tick_trap certification-study --config configs/auxiliary-cost.json --output results/auxiliary-cost
+PYTHONPATH=src python -m tick_trap planar-sweep --config configs/auxiliary-baselines.json --output results/auxiliary-baselines
+PYTHONPATH=src python -m tick_trap verify --runs results/auxiliary-baselines/runs.json --output results/auxiliary-verification
+```
+
+The saved-run verifier independently reconstructs the auxiliary polynomial and
+checks its sign proof, work limit, initial geometric value, gain and duration.
+It rejects altered implication rules, missing proofs, claimed geometric minimum
+bounds or an unresolved auxiliary proof used to authorize a command. A negative
+offline geometric witness contradicts a valid comparison proof. An unknown
+offline geometric result stays unknown in that oracle's own record; the separate
+comparison evidence is counted explicitly. The runner still stops on an
+unresolved offline interval, as it does for the existing references. No physical
+model validity or hard execution deadline is inferred from this replay.

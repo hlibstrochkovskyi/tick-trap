@@ -107,6 +107,7 @@ def main(argv=None):
                 write_json(output/"metadata.json", provenance(spec))
                 columns = ["strategy", "tolerance_exact", "budget", "queries", "accepted", "rejected", "unknown",
                            "reference_safe_excluded", "reference_safe_unresolved", "accepted_reference_unknown",
+                           "polynomial_checks", "geometric_implications_proved",
                            "total_subdivisions", "median_per_control_ns"]
                 with (output/"summary.csv").open("w", newline="") as stream:
                     writer = csv.DictWriter(stream, fieldnames=columns)
@@ -119,7 +120,14 @@ def main(argv=None):
                     lines.append(f"| {row['strategy']} | {row['tolerance_exact']} | {row['budget']} | {row['queries']} | "
                                  f"{row['accepted']} | {row['rejected']} | {row['unknown']} | {row['reference_safe_excluded']} | "
                                  f"{row['reference_safe_unresolved']} | {row['total_subdivisions']} | {row['median_per_control_ns']/1000:.1f} |")
+                if result["decision_comparisons"]:
+                    lines += ["", "| Width tolerance | Budget | Dual sign decision | Auxiliary-only decision | Controls |",
+                              "| --- | ---: | --- | --- | ---: |"]
+                    for pair in result["decision_comparisons"]:
+                        for row in pair["transitions"]:
+                            lines.append(f"| {pair['tolerance_exact']} | {pair['budget']} | {row['dual_sign']} | {row['auxiliary_sign']} | {row['controls']} |")
                 lines += ["", "All strategies target continuous h and psi safety at the same declared controls.",
+                          "auxiliary_sign certifies psi and derives h by linear comparison; it reports no numerical geometric minimum.",
                           "SACBF rejection is a failed sufficient condition; polynomial rejection has a negative witness.",
                           "Initial-domain exclusions are not counted as rejections. Unknown reference signs remain unknown.",
                           "Minimum and sign queries use identical tolerances/budgets; sign stopping need not attain the minimum width.",

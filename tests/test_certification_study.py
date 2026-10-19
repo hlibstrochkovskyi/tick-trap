@@ -51,10 +51,34 @@ class CertificationStudyTests(unittest.TestCase):
 
     def test_invalid_measurement_settings_are_rejected(self):
         for change in ({"repeats": 0}, {"seed": True}, {"budgets": [-1]}, {"budgets": []},
-                       {"budgets": [0, 0]}, {"tolerances": ["0.1", "1/10"]}, {"tolerances": [0]}, {"unexpected": 1}):
+                       {"budgets": [0, 0]}, {"tolerances": ["0.1", "1/10"]}, {"tolerances": [0]}, {"unexpected": 1},
+                       {"strategies": []}, {"strategies": ["sign", "sign"]}, {"strategies": ["unsupported"]}, {"strategies": [{}]}):
             spec = deepcopy(self.spec()) | change
             with self.assertRaises(ValueError):
                 certification_study(spec)
+
+    def test_auxiliary_only_classification_differences_are_reported_in_both_directions(self):
+        spec = {"base": {"grid_points": 2}, "strategies": ["sign", "auxiliary_sign"], "budgets": [0],
+                "repeats": 1, "cases": [
+                    {"name": "derive_safe", "p": ["-0.3", "1.06"], "v": [1, 0], "nominal": [0, 0],
+                     "obstacles": [{"center": [0, 0], "radius": 1}], "duration": 1, "a_max": 1, "lambda1": 3},
+                    {"name": "lose_negative_h_witness", "p": [2, 0], "v": [-1, 0], "nominal": [0, 0],
+                     "obstacles": [{"center": [0, 0], "radius": 1}], "duration": "2.9", "a_max": 1}]}
+        result = certification_study(spec)
+        transitions = {(r["dual_sign"], r["auxiliary_sign"]): r["controls"] for r in result["decision_comparisons"][0]["transitions"]}
+        self.assertGreater(transitions[("unknown", "accepted")], 0)
+        self.assertGreater(transitions[("rejected", "unknown")], 0)
+        for row in result["measurements"]:
+            if row["strategy"] == "auxiliary_sign":
+                self.assertTrue(all(p["property"] == "psi" for p in row["result"]["proofs"]))
+                self.assertEqual(len(row["result"]["proofs"]), len(row["result"]["geometric_implications"]))
+                if row["result"]["status"] == "accepted":
+                    self.assertNotEqual(row["reference_status"], "unsafe")
+
+    def test_custom_strategy_order_preserves_the_minimum_sign_pairing(self):
+        result = certification_study(self.spec() | {"strategies": ["auxiliary_sign", "sign", "minimum"]})
+        self.assertEqual(result["strategies"], ["auxiliary_sign", "sign", "minimum"])
+        self.assertEqual(len(result["groups"]), 6)
 
 
 if __name__ == "__main__":
