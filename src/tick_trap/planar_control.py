@@ -140,6 +140,13 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
         decision = _rounded_qp(nominal, constraints, a_max, quantum)
         return PlanarDecision(decision.status, decision.action, decision.reason, decision.details | {"domains": domains})
 
+    if isinstance(grid_points, bool) or not isinstance(grid_points, int) or grid_points < 2:
+        raise ValueError("grid_points must be an integer >=2")
+    if max_candidates == 0:
+        return PlanarDecision("budget_exhausted", reason="Candidate count budget is zero",
+                              details={"candidate_count": None, "candidate_set_constructed": False,
+                                       "checked": [], "checked_count": 0, "unknown_count": 0,
+                                       "candidate_budget_exhausted": True})
     actions = candidate_actions(nominal, state, duration, a_max, grid_points, quantum)
     buffers = [zocbf_buffer(state, o, duration, a_max) for o in obstacles] if method == "zocbf_candidates" else []
     checked = []
@@ -175,7 +182,7 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
                         "margins_exact": margins, "certificates": certificates})
         unknown_count += unknown
         if accepted:
-            return PlanarDecision("feasible", action, details={"candidate_count": len(actions), "checked": checked,
+            return PlanarDecision("feasible", action, details={"candidate_count": len(actions), "candidate_set_constructed": True, "checked": checked,
                                   "checked_count": len(checked), "candidate_budget_exhausted": False,
                                   "buffers_exact": [str(x) for x in buffers], "unknown_count": unknown_count,
                                   "guarantee": {
@@ -187,6 +194,6 @@ def decide_planar(method, state, nominal, obstacles, duration, a_max,
     budget_exhausted = limit < len(actions)
     status = "budget_exhausted" if budget_exhausted else "uncertified" if unknown_count else "search_exhausted"
     return PlanarDecision(status, reason="No admissible action certified in the finite candidate set",
-                          details={"candidate_count": len(actions), "checked": checked,
+                          details={"candidate_count": len(actions), "candidate_set_constructed": True, "checked": checked,
                                    "checked_count": len(checked), "candidate_budget_exhausted": budget_exhausted,
                                    "unknown_count": unknown_count, "buffers_exact": [str(x) for x in buffers]})

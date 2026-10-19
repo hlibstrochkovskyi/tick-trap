@@ -34,11 +34,13 @@ class BackupFilterTests(unittest.TestCase):
         controller = ContinuationFilter(state, obstacles, "0.1", 2, max_candidates=0)
         # Reuse must not depend on a new root/certificate calculation.
         with patch("tick_trap.backup_filter.certify_segment", side_effect=AssertionError("Unexpected recertification")), \
-             patch("tick_trap.backup_filter.assess_stopping", side_effect=AssertionError("Unexpected replanning")):
+             patch("tick_trap.backup_filter.assess_stopping", side_effect=AssertionError("Unexpected replanning")), \
+             patch("tick_trap.backup_filter.candidate_actions", side_effect=AssertionError("Unexpected candidate generation")):
             for index in range(10):
                 result = controller.decide(state, (2, 0))
                 self.assertEqual(result.status, "feasible")
                 self.assertEqual(result.details["checked_count"], 0)
+                self.assertFalse(result.details["candidate_set_constructed"])
                 self.assertEqual(result.details["source"], "stored_continuation" if index < 5 else "terminal_hold")
                 state = state.at(result.action, "0.1")
         self.assertEqual(state, PlanarState(("-1.75", 0), (0, 0)))

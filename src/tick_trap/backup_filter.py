@@ -64,7 +64,7 @@ class ContinuationFilter:
         if not same_limits or not self._plan.matches(state, actual_obstacles):
             self._plan, self._revoked = None, True
             return PlanarDecision("assumption_violation", reason="State, obstacles or command limits differ from the stored plan's exact assumptions")
-        actions = candidate_actions(nominal, state, self.duration, self.a_max, self.grid_points, self.quantum)
+        actions = [] if budget == 0 else candidate_actions(nominal, state, self.duration, self.a_max, self.grid_points, self.quantum)
         limit = len(actions) if budget is None else min(len(actions), budget)
         checked = []
         for action in actions[:limit]:
@@ -85,16 +85,18 @@ class ContinuationFilter:
             row["accepted"] = True
             self._plan = prepend_hold(hold, recovery.continuation).advance()
             return PlanarDecision("feasible", action, details={
-                "source": "certified_candidate", "checked": checked, "candidate_count": len(actions),
+                "source": "certified_candidate", "checked": checked, "candidate_count": len(actions), "candidate_set_constructed": True,
                 "checked_count": len(checked), "candidate_budget_exhausted": False,
                 "subdivision_budget": subdivisions, "retained_plan": self._plan.record(),
                 "guarantee": "hold safety with a retained admissible continuation to collision-free rest"})
         source = "stored_continuation" if self._plan.pieces else "terminal_hold"
         action = self._plan.next_action
         self._plan = self._plan.advance()
+        exhausted = budget == 0 or limit < len(actions)
         return PlanarDecision("feasible", action,
-                              reason="Candidate budget exhausted" if limit < len(actions) else "No newly certified continuation found",
-                              details={"source": source, "checked": checked, "candidate_count": len(actions),
-                                       "checked_count": len(checked), "candidate_budget_exhausted": limit < len(actions),
+                              reason="Candidate budget exhausted" if exhausted else "No newly certified continuation found",
+                              details={"source": source, "checked": checked, "candidate_count": None if budget == 0 else len(actions),
+                                       "candidate_set_constructed": budget != 0,
+                                       "checked_count": len(checked), "candidate_budget_exhausted": exhausted,
                                        "subdivision_budget": subdivisions, "retained_plan": self._plan.record(),
                                        "guarantee": "reused certified continuation; zero input only after certified rest"})

@@ -95,6 +95,9 @@ The report distinguishes candidate renewals, stored-plan updates, terminal holds
 and budget exhaustion. It records controller initialization expense independently
 from solve time and offline viability diagnostics. Dashed SVG segments show
 actions taken from the retained plan.
+With a zero candidate budget, no candidate set is constructed or sorted. The
+candidate count is reported as null and `candidate_set_constructed` is false;
+the previously certified plan can be executed without new trajectory checks.
 
 An initialized stored-plan filter reports whether a certified continuation was
 retained after every executed update. This field is null when there were no
