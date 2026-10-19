@@ -61,6 +61,17 @@ class CliTests(unittest.TestCase):
             self.assertEqual(len(read_json(Path(folder)/"learning.json")["evaluation"]), 4)
             self.assertEqual(len(read_json(Path(folder)/"runs.json")), 4)
 
+    def test_benchmark_artifacts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            config = Path(folder)/"config.json"
+            case = dict(name="safe", p=[2, 0], v=[0, 0], u=[0, 0], center=[0, 0], radius=1, duration=1)
+            config.write_text(json.dumps({"cases": [case], "repeats": 2, "budgets": [0, 8]}))
+            self.assertEqual(self.invoke("benchmark", "--config", str(config), "--output", folder), 0)
+            results = read_json(Path(folder)/"benchmark.json")
+            self.assertEqual(len(results), 2)
+            self.assertEqual(results[0]["result"]["continuous_status"], "safe")
+            self.assertEqual(len(results[0]["all_certification_ns"]), 2)
+
 
 if __name__ == "__main__":
     unittest.main()

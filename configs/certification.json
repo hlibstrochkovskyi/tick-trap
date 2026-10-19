@@ -1,0 +1,13 @@
+{
+  "repeats": 3,
+  "tolerances": ["1e-6", "1e-10", "1e-14"],
+  "budgets": [0, 64],
+  "cases": [
+    {"name": "curved_hidden_collision", "p": ["0.04", "0"], "v": ["-1", "0"], "u": ["10", "0"], "center": ["-1", "0"], "radius": "1", "duration": "0.2"},
+    {"name": "non_dyadic_tangency", "p": ["-0.3", "1"], "v": ["1", "0"], "u": ["0", "0"], "center": ["0", "0"], "radius": "1", "duration": "1"},
+    {"name": "near_tangent_safe", "p": ["-0.3", "1.000000000001"], "v": ["1", "0"], "u": ["0", "0"], "center": ["0", "0"], "radius": "1", "duration": "1"},
+    {"name": "near_tangent_unsafe", "p": ["-0.3", "0.999999999999"], "v": ["1", "0"], "u": ["0", "0"], "center": ["0", "0"], "radius": "1", "duration": "1"},
+    {"name": "three_stationary_points", "p": ["-1", "0"], "v": ["8", "0"], "u": ["-16", "0"], "center": ["0", "0"], "radius": "1", "duration": "1"},
+    {"name": "stationary_safe", "p": ["2", "0"], "v": ["0", "0"], "u": ["0", "0"], "center": ["0", "0"], "radius": "1", "duration": "1"}
+  ]
+}

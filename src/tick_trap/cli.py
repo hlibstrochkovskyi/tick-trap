@@ -3,6 +3,7 @@ import json
 import sys
 from pathlib import Path
 
+from .benchmark import benchmark
 from .dynamics import Circle, PlanarState, WallState
 from .experiments import RunConfig, load_grid, run
 from .learning import learning_study
@@ -20,6 +21,7 @@ def main(argv=None):
         ("sweep", "Run a reproducible Cartesian experiment grid", "configs/baselines.json"),
         ("certify", "Analyze a planar held trajectory against a circle", "configs/planar.json"),
         ("learn", "Fit a small actuator model and test changed dynamics", "configs/learning.json"),
+        ("benchmark", "Measure trajectory certificate precision and cost", "configs/certification.json"),
     ]:
         item = sub.add_parser(command, help=help_text)
         item.add_argument("--config", default=default)
@@ -41,7 +43,23 @@ def main(argv=None):
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
         else:
             spec = read_json(args.config)
-            if args.command == "learn":
+            if args.command == "benchmark":
+                results = benchmark(spec)
+                output.mkdir(parents=True, exist_ok=True)
+                write_json(output/"benchmark.json", results)
+                write_json(output/"metadata.json", provenance(spec))
+                lines = ["# tick-trap certificate cost", "",
+                         "Empirical times; subdivision limits do not bound worst-case execution time.", "",
+                         "| Case | Width tolerance (m²) | Subdivision budget | Status | Subdivisions | Median certificate (µs) |",
+                         "| --- | --- | ---: | --- | ---: | ---: |"]
+                for row in results:
+                    result = row["result"]
+                    lines.append(f"| {row['case']} | {row['tolerance']} | {row['budget']} | {result['continuous_status']} | "
+                                 f"{result['subdivisions']} | {row['certificate_ns_median']/1000:.1f} |")
+                lines += ["", "[Exact enclosures, all timings, and estimates](benchmark.json).", ""]
+                (output/"report.md").write_text("\n".join(lines))
+                print(f"{len(results)} certificate configurations measured.")
+            elif args.command == "learn":
                 result = learning_study(**spec)
                 runs = result.pop("runs")
                 write_runs(output, runs, spec)

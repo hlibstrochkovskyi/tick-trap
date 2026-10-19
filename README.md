@@ -17,6 +17,7 @@ PYTHONPATH=src python -m tick_trap run
 PYTHONPATH=src python -m tick_trap sweep --config configs/baselines.json
 PYTHONPATH=src python -m tick_trap certify --config configs/planar.json
 PYTHONPATH=src python -m tick_trap learn --config configs/learning.json
+PYTHONPATH=src python -m tick_trap benchmark --config configs/certification.json
 ```
 
 Or install with `uv sync`, then use `uv run tick-trap counterexample` and the
@@ -55,6 +56,10 @@ measures held-out prediction error, and runs the filters under original and
 changed dynamics. Fitted parameters and all training data are saved. This is a
 small model-identification experiment; prediction errors are not calibrated
 uncertainty bounds.
+
+The certification benchmark varies minimum-enclosure precision and subdivision
+budget on six analytical trajectories, including tiny positive/negative margins
+and a non-dyadic tangency. It records `unknown` outcomes alongside empirical cost.
 
 ## Local commit history
 
