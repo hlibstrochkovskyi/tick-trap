@@ -64,7 +64,26 @@ PYTHONPATH=src python -m tick_trap certification-study --config configs/certific
 ```
 
 This writes full JSON evidence, group CSV metrics, a Markdown table and
-configuration/source provenance. The default study compares four states from
-the earlier audit. Its finite controls and seeded timing experiment support
+configuration/source provenance. The default study includes four states from
+the earlier audit, a braking path with an interior auxiliary minimum, and three
+controlled perturbations of an auxiliary tangency. Its finite controls and seeded timing experiment support
 specific comparisons only; broader systems and original paper experiments
 remain outside its scope.
+
+For the tangency cases, start at `p=(1.231168,0)`, `v=(-0.90112,0)`, hold
+`u=(0.8704,0)` for one second, and use `lambda1=2` and radius `R=0.6`.
+Writing `z=t-0.3` gives the exact factorization
+
+```
+psi(t) = z²*(0.888832 - 0.35651584*z + 0.37879808*z²).
+```
+
+The quadratic factor has positive leading coefficient and negative discriminant,
+so this path is analytically nonnegative with one non-dyadic double root. Its
+Bernstein sign certificate may remain unknown at the configured limits. Changing
+the radius to `0.599999999` or `0.600000001` adds a small positive or negative
+constant to `psi`, respectively. Geometric clearance stays positive in all three
+nominal paths. This separates the two required properties and supplies known
+near-boundary cases without relying on a dense time grid. The computational
+reference retains an unresolved tangent as unknown despite the separate factor
+proof; an experiment must not silently promote that certifier's answer to safe.

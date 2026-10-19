@@ -75,7 +75,7 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual(result["high_order_reference_certificates"], 12)
         self.assertEqual([r["action_exact"] for r in runs[0]["records"]], [r["action_exact"] for r in runs[1]["records"]])
         for field, value in (("goal", "minimum"), ("lower_exact", "100"), ("precision_reached", None),
-                             ("budget_exhausted", True), ("stopping_reason", "budget_exhausted")):
+                             ("budget_exhausted", True), ("stopping_reason", "budget_exhausted"), ("subdivisions", 257)):
             altered = copy.deepcopy(runs[1])
             altered["records"][0]["details"]["checked"][-1]["auxiliary_certificates"][0][field] = value
             with self.assertRaises(VerificationError):

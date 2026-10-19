@@ -1,8 +1,10 @@
 from fractions import Fraction as F
 import random
+from math import comb
 import unittest
 
 from tick_trap.polynomial import certify_minimum, certify_sign, evaluate
+from tick_trap.dynamics import Circle, PlanarState
 
 
 class SignCertificateTests(unittest.TestCase):
@@ -62,6 +64,26 @@ class SignCertificateTests(unittest.TestCase):
         for kwargs in ({"tolerance": 0}, {"max_subdivisions": True}, {"max_subdivisions": -1}):
             with self.assertRaises(ValueError):
                 certify_sign([1, 2], 1, **kwargs)
+
+    def test_physical_auxiliary_tangency_has_controlled_sign_perturbations(self):
+        state, action = PlanarState(("1.231168", 0), ("-0.90112", 0)), (F("0.8704"), 0)
+        for radius, expected in (("0.599999999", "safe"), ("0.6", "unknown"), ("0.600000001", "unsafe")):
+            h = Circle((0, 0), radius).polynomial(state, action)
+            psi = tuple(2*c+((i+1)*h[i+1] if i+1 < len(h) else 0) for i, c in enumerate(h))
+            self.assertEqual(certify_sign(h, 1, "1e-12", 64).status, "safe")
+            self.assertEqual(certify_sign(psi, 1, "1e-12", 64).status, expected)
+            if expected != "unknown":
+                self.assertEqual(certify_sign(psi, 1, "1e-6", 64).status, "unknown")
+                limited = certify_sign(psi, 1, "1e-12", 8)
+                self.assertEqual(limited.status, "unknown")
+                self.assertTrue(limited.budget_exhausted)
+            if radius == "0.6":
+                # Independent factor proof: psi=z²*(a+b*z+c*z²), z=t-0.3.
+                shifted = [sum(comb(i, j)*psi[i]*F("0.3")**(i-j) for i in range(j, 5)) for j in range(5)]
+                self.assertEqual(shifted[:2], [0, 0])
+                self.assertEqual(shifted[2], F("0.888832"))
+                self.assertGreater(shifted[4], 0)
+                self.assertLess(shifted[3]**2-4*shifted[2]*shifted[4], 0)
 
 
 if __name__ == "__main__":

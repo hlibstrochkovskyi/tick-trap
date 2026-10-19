@@ -131,6 +131,8 @@ def _high_order_reference(record, config, state, action, obstacles, period, cach
         h = obstacle.polynomial(state, action)
         psi = tuple(lambda1*c+((i+1)*h[i+1] if i+1 < len(h) else 0) for i, c in enumerate(h))
         for polynomial, cert in ((h, h_cert), (psi, psi_cert)):
+            _require(_integer(cert["subdivisions"], "subdivisions") <= _integer(config["max_subdivisions"], "configured subdivision budget"),
+                     "Online reference certificate exceeds the configured subdivision budget")
             status = _certificate(polynomial, period, cert, config["tolerance"], cache, expected_goal=goal)
             _require(status == "safe", "An unresolved or unsafe reference certificate authorized an action")
             totals["high_order_reference_certificates"] += 1
