@@ -91,6 +91,13 @@ class Certificate:
     subdivisions: int
     precision_reached: bool
     budget_exhausted: bool
+    goal: str = "minimum"
+
+    @property
+    def stopping_reason(self):
+        if self.goal == "sign" and self.status != "unknown":
+            return "sign_proved"
+        return "precision_reached" if self.precision_reached else "budget_exhausted"
 
 
 def certify_minimum(coefficients, duration, tolerance="1e-10", max_subdivisions=4096):
@@ -100,6 +107,20 @@ def certify_minimum(coefficients, duration, tolerance="1e-10", max_subdivisions=
     Branch on the smallest lower bound and retain an evaluated upper witness.
     Budget or precision limits never turn an unresolved sign into 'safe'.
     """
+    return _certify(coefficients, duration, tolerance, max_subdivisions, "minimum")
+
+
+def certify_sign(coefficients, duration, tolerance="1e-10", max_subdivisions=4096):
+    """Prove nonnegativity or a negative witness, stopping once either is known.
+
+    The returned bounds still enclose the minimum but need not meet the requested
+    width. Precision and subdivision limits stop unresolved work with `unknown`.
+    Boundary contact is allowed; exact zero is safe only with a nonnegative bound.
+    """
+    return _certify(coefficients, duration, tolerance, max_subdivisions, "sign")
+
+
+def _certify(coefficients, duration, tolerance, max_subdivisions, goal):
     duration, tolerance = positive(duration, "duration"), positive(tolerance, "tolerance")
     if isinstance(max_subdivisions, bool) or not isinstance(max_subdivisions, int) or max_subdivisions < 0:
         raise ValueError("max_subdivisions must be a nonnegative integer")
@@ -108,6 +129,8 @@ def certify_minimum(coefficients, duration, tolerance="1e-10", max_subdivisions=
     heap = [(min(b), 0, Fraction(0), duration, b)]
     count = 0
     while heap and upper-heap[0][0] > tolerance and count < max_subdivisions:
+        if goal == "sign" and (heap[0][0] >= 0 or upper < 0):
+            break
         lower, _, left, right, b = heappop(heap)
         if lower >= upper:
             continue
@@ -124,4 +147,4 @@ def certify_minimum(coefficients, duration, tolerance="1e-10", max_subdivisions=
     status = "safe" if lower >= 0 else "unsafe" if upper < 0 else "unknown"
     precision = upper-lower <= tolerance
     return Certificate(status, lower, upper, witness, count, precision,
-                       not precision and count >= max_subdivisions)
+                       not precision and count >= max_subdivisions and (goal == "minimum" or status == "unknown"), goal)
