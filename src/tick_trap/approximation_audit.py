@@ -5,6 +5,7 @@ one-hold observations are kept separate from Taylor et al.'s family hypotheses.
 """
 
 from .algebraic_reference import exact_sign_reference
+import json
 from .dynamics import WallState
 from .numbers import nonnegative, positive, q
 
@@ -122,3 +123,78 @@ def audit_wall_approximation(state, action, duration, a_max=10, tau="0.3", gain=
                            "path_within_dilation": worst <= r*r} for r in radii],
             "maps": model_results, "practical_safety_family_certificate": "not_established",
             "scope": "Exact one-hold diagnostics; set-distance allowances do not change exact-set statuses or certify an invariant controller family"}
+
+
+def approximation_study(spec):
+    """Evaluate matched physical holds under explicit state-distance metrics."""
+    if not isinstance(spec, dict) or set(spec)-{"base", "cases", "durations", "normalizations", "radii"}:
+        raise ValueError("Unknown approximation study field")
+    base, cases = spec.get("base", {}), spec.get("cases", [])
+    if not isinstance(base, dict) or set(base)-{"a_max", "tau", "gain"} or not isinstance(cases, list) or not cases:
+        raise ValueError("Invalid approximation study base or cases")
+    base = {"a_max": 10, "tau": "0.3", "gain": 2} | base
+    periods = spec.get("durations", ["0.1"])
+    radii = spec.get("radii", [0, "0.01", "0.1"])
+    normalizations = spec.get("normalizations", [{"name": "unit", "position_scale": 1, "velocity_scale": 1}])
+    if not isinstance(periods, list) or not periods or not isinstance(radii, list) or not radii:
+        raise ValueError("durations and radii must be nonempty lists")
+    periods, radii = [positive(t, "duration") for t in periods], [nonnegative(r, "radius") for r in radii]
+    if len(set(periods)) != len(periods) or len(set(radii)) != len(radii):
+        raise ValueError("Duplicate durations or radii")
+    if not isinstance(normalizations, list) or not normalizations:
+        raise ValueError("normalizations must be a nonempty list")
+    labels = []
+    for metric in normalizations:
+        if (not isinstance(metric, dict) or set(metric) != {"name", "position_scale", "velocity_scale"}
+                or not isinstance(metric["name"], str) or not metric["name"] or metric["name"] in labels):
+            raise ValueError("Each normalization needs a distinct name and positive scales")
+        positive(metric["position_scale"], "position_scale")
+        positive(metric["velocity_scale"], "velocity_scale")
+        labels.append(metric["name"])
+    names, records = [], []
+    for case_index, case in enumerate(cases):
+        if (not isinstance(case, dict) or set(case)-{"name", "d", "v", "u", "a_max", "tau", "gain"}
+                or not {"name", "d", "v", "u"} <= set(case) or not isinstance(case["name"], str)
+                or not case["name"] or case["name"] in names):
+            raise ValueError("Each case needs a distinct name, d, v and u")
+        names.append(case["name"])
+        config = base | {k: v for k, v in case.items() if k in base}
+        state = WallState(case["d"], case["v"])
+        for duration in periods:
+            for metric in normalizations:
+                result = audit_wall_approximation(state, case["u"], duration, **config,
+                                                  position_scale=metric["position_scale"], velocity_scale=metric["velocity_scale"], radii=radii)
+                records.append({"case_index": case_index, "case": case["name"], "normalization": metric["name"], **result})
+    groups, dilation_groups = [], []
+    for label in labels:
+        physical = [r for r in records if r["normalization"] == label]
+        for method in MAPS:
+            matched = [(r, next(m for m in r["maps"] if m["method"] == method)) for r in physical]
+            groups.append({"normalization": label, "method": method, "holds": len(matched),
+                           "nonzero_map_errors": sum(q(m["normalized_error_squared_exact"]) > 0 for r, m in matched),
+                           "pointwise_ingredients_satisfied": sum(m["pointwise_ingredients_satisfied"] for r, m in matched),
+                           "step_restriction_violations": sum(not m["step_restriction_satisfied"] for r, m in matched),
+                           "pointwise_pass_but_exact_sample_outside_b": sum(m["pointwise_ingredients_satisfied"] and not r["exact_sampled_barrier_safe"] for r, m in matched),
+                           "pointwise_pass_and_exact_samples_safe_but_path_outside_b": sum(m["pointwise_ingredients_satisfied"] and r["exact_sampled_barrier_safe"] and r["barrier_path_status"] == "unsafe" for r, m in matched),
+                           "pointwise_pass_and_exact_samples_safe_but_geometric_collision": sum(m["pointwise_ingredients_satisfied"] and r["exact_sampled_barrier_safe"] and r["exact_sampled_geometric_safe"] and r["geometric_path_status"] == "unsafe" for r, m in matched),
+                           "established_practical_safety_families": 0})
+        for radius in radii:
+            selected = [(r, next(d for d in r["dilations"] if q(d["radius_exact"]) == radius)) for r in physical]
+            dilation_groups.append({"normalization": label, "radius_exact": str(radius), "holds": len(selected),
+                                    "sampled_within_dilation": sum(d["sampled_within_dilation"] for r, d in selected),
+                                    "path_within_dilation": sum(d["path_within_dilation"] for r, d in selected),
+                                    "within_dilation_despite_exact_barrier_violation": sum(d["path_within_dilation"] and r["barrier_path_status"] == "unsafe" for r, d in selected)})
+    return {"records": records, "groups": groups, "dilation_groups": dilation_groups,
+            "scope": "Offline held-input map and property audit inspired by Taylor 2203.11470v2; no Taylor controller or practically invariant set family is implemented or certified"}
+
+
+def verify_approximation_study(spec, stored):
+    """Regenerate every deterministic field, including references and metrics."""
+    expected = approximation_study(spec)
+    encode = lambda value: json.dumps(value, sort_keys=True, allow_nan=False)
+    if encode(stored) != encode(expected):
+        raise ValueError("Approximation audit does not match exact regeneration")
+    return {"status": "verified", "held_metric_cases": len(expected["records"]),
+            "map_comparisons": sum(len(r["maps"]) for r in expected["records"]),
+            "distance_classifications": sum(len(r["dilations"]) for r in expected["records"]),
+            "scope": "Deterministic arithmetic and saved-record consistency with independent polynomial sign references; no controller-family or physical-safety theorem verified"}

@@ -1,0 +1,19 @@
+{
+  "base": {"a_max": "10", "tau": "0.3", "gain": "2"},
+  "durations": ["0.4", "0.2", "0.1", "0.05"],
+  "radii": ["0", "0.01", "0.05", "0.1", "0.2"],
+  "normalizations": [
+    {"name": "unit", "position_scale": "1", "velocity_scale": "1"},
+    {"name": "velocity_scaled", "position_scale": "1", "velocity_scale": "10"}
+  ],
+  "cases": [
+    {"name": "euler_endpoint_error", "d": "0.6", "v": "0", "u": "4"},
+    {"name": "curved_barrier_only", "d": "0.31", "v": "1", "u": "-2.4", "gain": "4"},
+    {"name": "viable_hidden_collision", "d": "0.06", "v": "1", "u": "-4.25", "tau": "0.01", "gain": "2.2"},
+    {"name": "invalid_step_gain", "d": "1", "v": "0", "u": "0", "gain": "4"},
+    {"name": "barrier_tangent", "d": "0.45", "v": "1.2", "u": "-2"},
+    {"name": "outside_barrier_viable", "d": "0.1", "v": "1", "u": "-10"},
+    {"name": "unrecoverable_collision", "d": "0.04", "v": "1", "u": "-10", "tau": "0.01"},
+    {"name": "safe_departing", "d": "0.3", "v": "-1", "u": "0"}
+  ]
+}
