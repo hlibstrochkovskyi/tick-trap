@@ -13,6 +13,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, default=Path("results/audit-milestone"))
     parser.add_argument("--output", type=Path, default=Path("docs/data/audit-evidence.tar.gz"))
+    parser.add_argument("--manifest", type=Path, help="Manifest path (defaults to audit-manifest.json beside the archive)")
     args = parser.parse_args()
     sources = [args.input/"environment.json", *sorted(args.input.glob("*/metadata.json"))]
     metadata = [json.loads(p.read_text()) for p in sources]
@@ -43,7 +44,9 @@ def main():
     manifest = {"source_git_commit": metadata[0]["git_commit"], "source_sha256": metadata[0]["source_sha256"],
                 "archive": args.output.name, "archive_bytes": len(data), "archive_sha256": sha256(data).hexdigest(),
                 "uncompressed_bytes": sum(f["bytes"] for f in files), "files": files}
-    args.output.with_name("audit-manifest.json").write_text(json.dumps(manifest, indent=2)+"\n")
+    manifest_path = args.manifest or args.output.with_name("audit-manifest.json")
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(json.dumps(manifest, indent=2)+"\n")
     print(f"Archived and read-back verified {len(files)} files ({len(data)} compressed bytes)")
 
 
