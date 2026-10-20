@@ -1,0 +1,80 @@
+{
+  "source_git_commit": "790291a8382b642c4b1e7e17c41c7cb9efaa0a95",
+  "source_sha256": "23ed95c1c2f43cf3db960cd05b9d6c33827865bd5de5b3047c2631f184184413",
+  "archive": "allocation-evidence.tar.gz",
+  "archive_bytes": 455380,
+  "archive_sha256": "0d17e6319e401a0a665d6a7cce6705a75db3580f09ad545de94d1aca10073031",
+  "uncompressed_bytes": 32535899,
+  "files": [
+    {
+      "path": "ci-jobs.json",
+      "bytes": 13439,
+      "sha256": "96757f4a25884ae3b1fa88a47ae82d6d35d6e15f1d486963bd3fcc88e69342cd"
+    },
+    {
+      "path": "ci-run.json",
+      "bytes": 14500,
+      "sha256": "fed93654db19036d8e99de7afca772dacaa24e37a686607478d4fc05ad83dc21"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 2302,
+      "sha256": "a0869faf2179775974c1d4cde631d162779e026735f3fd793aed21643e8efc70"
+    },
+    {
+      "path": "per-control/audit.json",
+      "bytes": 16205878,
+      "sha256": "469f4cdba4afaea7950eb95b33e9b411950255fc599d5cee61b341828063db7f"
+    },
+    {
+      "path": "per-control/metadata.json",
+      "bytes": 1898,
+      "sha256": "0675553923fdeaa2e61696da7701e51116444acf13661e81608351815fc2dd3a"
+    },
+    {
+      "path": "per-control/report.md",
+      "bytes": 2217,
+      "sha256": "e3e29a05bffce14511620e028b364ab67e186c1920210ecdcd6638ae33bdfac9"
+    },
+    {
+      "path": "per-control/summary.csv",
+      "bytes": 1206,
+      "sha256": "471eabb85caf615aabf2c8e0eeeb82a02b6c58b87dd9c0284f30401d6d90bda0"
+    },
+    {
+      "path": "per-control.log",
+      "bytes": 176,
+      "sha256": "7535be7e1e3d648fdb6360ce8db045c3397dd64e69b01ea44aba91678b0c5495"
+    },
+    {
+      "path": "per-polynomial/audit.json",
+      "bytes": 16240509,
+      "sha256": "785ac2e78275ed60f62d751a42483ab738578774f14d3f3979a6fdf1a21464de"
+    },
+    {
+      "path": "per-polynomial/metadata.json",
+      "bytes": 1910,
+      "sha256": "cec219cf4bae7e1d7615aadaf518209a9551c290b1c4401e65ea48790d13afdc"
+    },
+    {
+      "path": "per-polynomial/report.md",
+      "bytes": 2215,
+      "sha256": "37c54c095a6fbf60e6bd722cae301ba6f3369961eca9985d907602b3b240747d"
+    },
+    {
+      "path": "per-polynomial/summary.csv",
+      "bytes": 1202,
+      "sha256": "4e629871f6d8460dbbf00ef479c0cc63f7e08ddafc3fc20e62380a4842168938"
+    },
+    {
+      "path": "per-polynomial.log",
+      "bytes": 179,
+      "sha256": "17a7a1a07928fe725daf9cf20c48ed9f639cedd391845cdd249e0f12fc502981"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 48268,
+      "sha256": "c217a8b3d16ab941383e07e3548d30e3b06ee0dc145c3737fed47338148cbe20"
+    }
+  ]
+}

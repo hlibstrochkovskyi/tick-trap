@@ -1,0 +1,1513 @@
+{
+  "replay_source": {
+    "git_commit": "790291a8382b642c4b1e7e17c41c7cb9efaa0a95",
+    "source_sha256": "23ed95c1c2f43cf3db960cd05b9d6c33827865bd5de5b3047c2631f184184413",
+    "python": "3.12.13 (main, Jun 11 2026, 04:03:26) [Clang 22.1.3 ]",
+    "platform": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+    "git_status": ""
+  },
+  "input_archive_sha256": "88c0f95a58d49927cd0b335857649e9689c15d1b3244147a8b4d66aecad9c3ad",
+  "input_source_commit": "8aa08b50cd0d59a10b67f48c51c3c9e6a74bca34",
+  "counterfactual_matched_configurations": 4921,
+  "results": {
+    "per-control": {
+      "status": "verified",
+      "budget_scope": "per_control",
+      "property_configurations": 4921,
+      "replayed_queries": 10080,
+      "unique_bernstein_replays": 7284,
+      "unique_independent_sign_references": 550,
+      "groups": [
+        {
+          "strategy": "sacbf_relaxed",
+          "tolerance_exact": null,
+          "budget": null,
+          "controls": 259,
+          "accepted": 48,
+          "rejected": 211,
+          "unknown": 0,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 0,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 48
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 211
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 130,
+          "rejected": 59,
+          "unknown": 70,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 70,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 130
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 59
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 70
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 130,
+          "rejected": 59,
+          "unknown": 70,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 70,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 130
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 59
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 70
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 131,
+          "rejected": 43,
+          "unknown": 85,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 85,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 131
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 43
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 85
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 135,
+          "rejected": 92,
+          "unknown": 32,
+          "allocation_limited_controls": 29,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 78,
+          "total_subdivisions": 1369,
+          "subdivisions_after_sign_decisions": 1245,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 135
+            },
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "unknown",
+              "controls": 9
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 92
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "unknown",
+              "controls": 20
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 111,
+          "unknown": 4,
+          "allocation_limited_controls": 1,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 1,
+          "total_subdivisions": 218,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 111
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "unknown",
+              "controls": 1
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 124,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 2830,
+          "subdivisions_after_sign_decisions": 2607,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 223,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 127,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 130,
+          "rejected": 59,
+          "unknown": 70,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 70,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 130
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 59
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 70
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 130,
+          "rejected": 59,
+          "unknown": 70,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 70,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 130
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 59
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 70
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 131,
+          "rejected": 43,
+          "unknown": 85,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 85,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 131
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 43
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 85
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 135,
+          "rejected": 92,
+          "unknown": 32,
+          "allocation_limited_controls": 29,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 78,
+          "total_subdivisions": 1402,
+          "subdivisions_after_sign_decisions": 1278,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 135
+            },
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "unknown",
+              "controls": 9
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 92
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "unknown",
+              "controls": 20
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 111,
+          "unknown": 4,
+          "allocation_limited_controls": 1,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 1,
+          "total_subdivisions": 218,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 111
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "unknown",
+              "controls": 1
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 124,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 145,
+          "rejected": 113,
+          "unknown": 1,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 1,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 5712,
+          "subdivisions_after_sign_decisions": 5462,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 145
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 113
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 1
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 145,
+          "rejected": 113,
+          "unknown": 1,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 1,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 250,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 145
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 113
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 1
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 145,
+          "rejected": 113,
+          "unknown": 1,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 1,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 144,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 145
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 113
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 1
+            }
+          ]
+        }
+      ],
+      "scope": "Offline assigned-budget replay and counterfactual allocation diagnosis; no recorded decision is changed. Uses the existing Bernstein engine, with independent algebraic sign cross-checks. Input timing samples and historical audit predicates are outside verification scope."
+    },
+    "per-polynomial": {
+      "status": "verified",
+      "budget_scope": "per_polynomial",
+      "property_configurations": 4921,
+      "replayed_queries": 10080,
+      "unique_bernstein_replays": 6600,
+      "unique_independent_sign_references": 550,
+      "groups": [
+        {
+          "strategy": "sacbf_relaxed",
+          "tolerance_exact": null,
+          "budget": null,
+          "controls": 259,
+          "accepted": 48,
+          "rejected": 211,
+          "unknown": 0,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 0,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 48
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 211
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 130,
+          "rejected": 59,
+          "unknown": 70,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 70,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 130
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 59
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 70
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 130,
+          "rejected": 59,
+          "unknown": 70,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 70,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 130
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 59
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 70
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 131,
+          "rejected": 43,
+          "unknown": 85,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 85,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 131
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 43
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 85
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 2281,
+          "subdivisions_after_sign_decisions": 2062,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 219,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 124,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 2830,
+          "subdivisions_after_sign_decisions": 2607,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 223,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 127,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 130,
+          "rejected": 59,
+          "unknown": 70,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 70,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 130
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 59
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 70
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 130,
+          "rejected": 59,
+          "unknown": 70,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 70,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 130
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 59
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 70
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "controls": 259,
+          "accepted": 131,
+          "rejected": 43,
+          "unknown": 85,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 85,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 0,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 131
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 43
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 85
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 2330,
+          "subdivisions_after_sign_decisions": 2111,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 219,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "controls": 259,
+          "accepted": 144,
+          "rejected": 112,
+          "unknown": 3,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 3,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 124,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 144
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 112
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 3
+            }
+          ]
+        },
+        {
+          "strategy": "minimum",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 145,
+          "rejected": 113,
+          "unknown": 1,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 1,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 5715,
+          "subdivisions_after_sign_decisions": 5465,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 145
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 113
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 1
+            }
+          ]
+        },
+        {
+          "strategy": "sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 145,
+          "rejected": 113,
+          "unknown": 1,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 1,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 250,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 145
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 113
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 1
+            }
+          ]
+        },
+        {
+          "strategy": "auxiliary_sign",
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "controls": 259,
+          "accepted": 145,
+          "rejected": 113,
+          "unknown": 1,
+          "allocation_limited_controls": 0,
+          "unknown_at_full_per_polynomial_limits": 1,
+          "allocation_limited_unknown_queries": 0,
+          "total_subdivisions": 144,
+          "subdivisions_after_sign_decisions": 0,
+          "full_to_allocated_transitions": [
+            {
+              "full_per_polynomial": "accepted",
+              "allocated": "accepted",
+              "controls": 145
+            },
+            {
+              "full_per_polynomial": "rejected",
+              "allocated": "rejected",
+              "controls": 113
+            },
+            {
+              "full_per_polynomial": "unknown",
+              "allocated": "unknown",
+              "controls": 1
+            }
+          ]
+        }
+      ],
+      "scope": "Offline assigned-budget replay and counterfactual allocation diagnosis; no recorded decision is changed. Uses the existing Bernstein engine, with independent algebraic sign cross-checks. Input timing samples and historical audit predicates are outside verification scope."
+    }
+  },
+  "examples": [
+    {
+      "case_index": 4,
+      "candidate_index": 2,
+      "case": "interior_braking_margin",
+      "action_exact": [
+        "1",
+        "-1"
+      ],
+      "strategy": "minimum",
+      "tolerance_exact": "1/1000000000000",
+      "budget": 8,
+      "status": "unknown",
+      "independent_joint_status": "safe",
+      "full_per_polynomial_status": "accepted",
+      "allocation_limited_control": true,
+      "trace": [
+        {
+          "obstacle_index": 0,
+          "property": "h",
+          "polynomial_exact": [
+            "17889/10000",
+            "-167/50",
+            "267/100",
+            "-1",
+            "1/2"
+          ],
+          "assigned_budget": 8,
+          "prior_subdivisions": 0,
+          "remaining_budget": 0,
+          "certificate": {
+            "property": "h",
+            "status": "safe",
+            "goal": "minimum",
+            "lower_exact": "1391434570159/2684354560000",
+            "upper_exact": "2782896882593/5368709120000",
+            "witness_time_exact": "203/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "full_per_polynomial_certificate": {
+            "property": "h",
+            "status": "safe",
+            "goal": "minimum",
+            "lower_exact": "1391434570159/2684354560000",
+            "upper_exact": "2782896882593/5368709120000",
+            "witness_time_exact": "203/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "sign_goal_subdivisions": 0,
+          "subdivisions_after_sign_decision": 8,
+          "prior_subdivisions_after_sign_decisions": 0,
+          "allocation_limited_unknown": false
+        },
+        {
+          "obstacle_index": 0,
+          "property": "psi",
+          "polynomial_exact": [
+            "1189/5000",
+            "-67/50",
+            "117/50",
+            "0",
+            "1"
+          ],
+          "assigned_budget": 0,
+          "prior_subdivisions": 8,
+          "remaining_budget": 0,
+          "certificate": {
+            "property": "psi",
+            "status": "unknown",
+            "goal": "minimum",
+            "lower_exact": "-243/2500",
+            "upper_exact": "1189/5000",
+            "witness_time_exact": "0",
+            "subdivisions": 0,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "full_per_polynomial_certificate": {
+            "property": "psi",
+            "status": "safe",
+            "goal": "minimum",
+            "lower_exact": "69658547559/1342177280000",
+            "upper_exact": "139317805793/2684354560000",
+            "witness_time_exact": "69/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "sign_goal_subdivisions": 0,
+          "subdivisions_after_sign_decision": 0,
+          "prior_subdivisions_after_sign_decisions": 8,
+          "allocation_limited_unknown": true
+        }
+      ]
+    },
+    {
+      "case_index": 9,
+      "candidate_index": 5,
+      "case": "negative_geometry_auxiliary_unknown",
+      "action_exact": [
+        "1/2",
+        "0"
+      ],
+      "strategy": "sign",
+      "tolerance_exact": "1/1000000000000",
+      "budget": 8,
+      "status": "unknown",
+      "independent_joint_status": "unsafe",
+      "full_per_polynomial_status": "rejected",
+      "allocation_limited_control": true,
+      "trace": [
+        {
+          "obstacle_index": 0,
+          "property": "h",
+          "polynomial_exact": [
+            "3",
+            "-4",
+            "2",
+            "-1/2",
+            "1/16"
+          ],
+          "assigned_budget": 8,
+          "prior_subdivisions": 0,
+          "remaining_budget": 0,
+          "certificate": {
+            "property": "h",
+            "status": "unknown",
+            "goal": "sign",
+            "lower_exact": "-41676293/8053063680000",
+            "upper_exact": "8860495761/687194767360000",
+            "witness_time_exact": "5133/2560",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "full_per_polynomial_certificate": {
+            "property": "h",
+            "status": "unknown",
+            "goal": "sign",
+            "lower_exact": "-41676293/8053063680000",
+            "upper_exact": "8860495761/687194767360000",
+            "witness_time_exact": "5133/2560",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "sign_goal_subdivisions": 8,
+          "subdivisions_after_sign_decision": 0,
+          "prior_subdivisions_after_sign_decisions": 0,
+          "allocation_limited_unknown": false
+        },
+        {
+          "obstacle_index": 0,
+          "property": "psi",
+          "polynomial_exact": [
+            "2",
+            "-4",
+            "5/2",
+            "-3/4",
+            "1/8"
+          ],
+          "assigned_budget": 0,
+          "prior_subdivisions": 8,
+          "remaining_budget": 0,
+          "certificate": {
+            "property": "psi",
+            "status": "unknown",
+            "goal": "sign",
+            "lower_exact": "-9/10",
+            "upper_exact": "157941/80000",
+            "witness_time_exact": "29/10",
+            "subdivisions": 0,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "full_per_polynomial_certificate": {
+            "property": "psi",
+            "status": "unsafe",
+            "goal": "sign",
+            "lower_exact": "-37567/128000",
+            "upper_exact": "-355399/1280000",
+            "witness_time_exact": "29/20",
+            "subdivisions": 1,
+            "precision_reached": false,
+            "budget_exhausted": false,
+            "stopping_reason": "sign_proved"
+          },
+          "sign_goal_subdivisions": 0,
+          "subdivisions_after_sign_decision": 0,
+          "prior_subdivisions_after_sign_decisions": 0,
+          "allocation_limited_unknown": true
+        }
+      ]
+    },
+    {
+      "case_index": 6,
+      "candidate_index": 0,
+      "case": "auxiliary_exact_tangent",
+      "action_exact": [
+        "544/625",
+        "0"
+      ],
+      "strategy": "auxiliary_sign",
+      "tolerance_exact": "1/1000000000000",
+      "budget": 8,
+      "status": "unknown",
+      "independent_joint_status": "safe",
+      "full_per_polynomial_status": "unknown",
+      "allocation_limited_control": false,
+      "trace": [
+        {
+          "obstacle_index": 0,
+          "property": "psi",
+          "polynomial_exact": [
+            "22629168/244140625",
+            "-32737728/48828125",
+            "13811008/9765625",
+            "-1584128/1953125",
+            "147968/390625"
+          ],
+          "assigned_budget": 8,
+          "prior_subdivisions": 0,
+          "remaining_budget": 0,
+          "certificate": {
+            "property": "psi",
+            "status": "unknown",
+            "goal": "sign",
+            "lower_exact": "-416400929/512000000000000",
+            "upper_exact": "1110692129/2048000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "full_per_polynomial_certificate": {
+            "property": "psi",
+            "status": "unknown",
+            "goal": "sign",
+            "lower_exact": "-416400929/512000000000000",
+            "upper_exact": "1110692129/2048000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted"
+          },
+          "sign_goal_subdivisions": 8,
+          "subdivisions_after_sign_decision": 0,
+          "prior_subdivisions_after_sign_decisions": 0,
+          "allocation_limited_unknown": false
+        }
+      ]
+    }
+  ],
+  "output_hashes": {
+    "environment.json": "a0869faf2179775974c1d4cde631d162779e026735f3fd793aed21643e8efc70",
+    "per-control/audit.json": "469f4cdba4afaea7950eb95b33e9b411950255fc599d5cee61b341828063db7f",
+    "per-control/metadata.json": "0675553923fdeaa2e61696da7701e51116444acf13661e81608351815fc2dd3a",
+    "per-control/report.md": "e3e29a05bffce14511620e028b364ab67e186c1920210ecdcd6638ae33bdfac9",
+    "per-control/summary.csv": "471eabb85caf615aabf2c8e0eeeb82a02b6c58b87dd9c0284f30401d6d90bda0",
+    "per-control.log": "7535be7e1e3d648fdb6360ce8db045c3397dd64e69b01ea44aba91678b0c5495",
+    "per-polynomial/audit.json": "785ac2e78275ed60f62d751a42483ab738578774f14d3f3979a6fdf1a21464de",
+    "per-polynomial/metadata.json": "cec219cf4bae7e1d7615aadaf518209a9551c290b1c4401e65ea48790d13afdc",
+    "per-polynomial/report.md": "37c54c095a6fbf60e6bd722cae301ba6f3369961eca9985d907602b3b240747d",
+    "per-polynomial/summary.csv": "4e629871f6d8460dbbf00ef479c0cc63f7e08ddafc3fc20e62380a4842168938",
+    "per-polynomial.log": "17a7a1a07928fe725daf9cf20c48ed9f639cedd391845cdd249e0f12fc502981"
+  }
+}
