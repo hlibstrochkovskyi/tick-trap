@@ -18,7 +18,10 @@ evidence; all guarantees remain conditional on the declared ideal model.
 
 The [work allocation follow-up](docs/validation-allocation.md) replays 20,160
 polynomial queries to explain which unresolved decisions result from prior
-queries consuming a shared budget. The current suite passes 159 tests.
+queries consuming a shared budget. The [published wall-condition
+comparison](docs/validation-breeden.md) adds Breeden's tighter reachable-error
+and second-order conditions, with matched gain policies and exact saved-record
+regeneration. The current suite passes 174 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 

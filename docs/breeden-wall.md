@@ -116,3 +116,6 @@ barrier polynomials using the independent exact algebraic sign reference. They
 also cover effective gains, exact projection, initial exclusions and infeasibility.
 These support implementation correctness; they are not a formal proof of the
 program or validation of a physical model.
+
+The [validation ledger](validation-breeden.md) reports matched controls, explicit
+gain policies, exact saved-record regeneration and the remaining research gates.
