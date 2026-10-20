@@ -23,8 +23,11 @@ comparison](docs/validation-breeden.md) adds Breeden's tighter reachable-error
 and second-order conditions, with matched gain policies and exact saved-record
 regeneration. The [approximation contract audit](docs/validation-approximation.md)
 separates map accuracy, sampled checks, continuous paths and enlarged-set
-observations without claiming a Taylor controller reproduction. The current
-suite passes 187 tests.
+observations without claiming a Taylor controller reproduction. The
+[zero-order contract audit](docs/validation-zocbf.md) checks state-input pairing,
+hold buffers and prediction-error margins on exact prescribed trajectories,
+keeping a valid local argument separate from full theorem assumptions. The
+current suite passes 201 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 

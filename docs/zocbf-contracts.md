@@ -127,6 +127,9 @@ sign references check the actual held proxy. `one_hold_implication_ingredients`
 requires a nonnegative endpoint target `(1-gamma)*h_start`, a valid backward bound,
 a valid lower endpoint prediction and a passing condition. It concerns only
 this proxy and hold, not geometric collision avoidance or future feasibility.
+The bound-validity and endpoint-lower-bound flags are checked against the
+exact hold offline. A true flag for one selected input does not establish
+an a priori online uncertainty or model-error bound over a domain.
 Left-pair-unsafe starts remain failures of the published safe-left recursion
 premise. When gamma=1 the endpoint target is zero even for a negative left
 value, so a valid local argument can still certify the new hold. This does not

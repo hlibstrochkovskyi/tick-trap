@@ -78,6 +78,14 @@ capabilities of this foundation.
 The subsequent planar control milestone is documented separately in
 [planar validation](validation-planar.md).
 
+Later evidence is recorded in the [certification audit](validation-audit.md),
+[work-allocation replay](validation-allocation.md), [published wall-condition
+comparison](validation-breeden.md), [approximation contracts](validation-approximation.md)
+and [zero-order contract audit](validation-zocbf.md). These ledgers distinguish
+exact local arguments, finite experimental results and unreproduced paper
+assumptions. The current suite has 201 passing tests; the earlier counts above
+describe their original snapshots.
+
 ## Reproduce locally
 
 ```sh
