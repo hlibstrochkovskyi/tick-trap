@@ -23,6 +23,18 @@ class CliTests(unittest.TestCase):
             self.assertIn("<svg", (Path(folder)/"counterexample.svg").read_text())
             self.assertEqual(read_json(Path(folder)/"metadata.json")["project"], "tick-trap")
 
+    def test_published_wall_conditions_artifacts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            config = root/"config.json"
+            config.write_text(json.dumps({"base": {"horizon": "0.1"}, "durations": ["0.1"], "grid_points": 3,
+                                          "cases": [{"name": "approach", "d": "0.6", "v": 1}]}))
+            self.assertEqual(self.invoke("wall-conditions", "--config", str(config), "--output", str(root/"output")), 0)
+            self.assertEqual(len(read_json(root/"output/runs.json")), 8)
+            self.assertEqual(len(read_json(root/"output/study.json")["single_hold_cases"]), 2)
+            self.assertIn("Matched gain", (root/"output/conditions.md").read_text())
+            self.assertTrue((root/"output/conditions.csv").exists())
+
     def test_allocation_audit_artifacts_and_invalid_evidence(self):
         from tick_trap.certification_study import certification_study
         spec = {"base": {"grid_points": 2}, "budget_scope": "per_control", "repeats": 1,

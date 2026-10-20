@@ -17,6 +17,7 @@ from .planar_experiments import PlanarConfig, load_planar_grid, run_planar
 from .planar_reporting import write_planar_runs
 from .reporting import counterexample_svg, provenance, read_json, write_json, write_runs
 from .verification import verify_planar_runs
+from .wall_conditions import wall_condition_study
 
 
 def main(argv=None):
@@ -41,6 +42,7 @@ def main(argv=None):
         ("planar-run", "Run a controlled planar scene", "configs/planar-control.json"),
         ("planar-sweep", "Compare planar filters on matched scenes", "configs/planar-baselines.json"),
         ("planar-audit", "Audit admitted controls against the trajectory certificates", "configs/planar-audit.json"),
+        ("wall-conditions", "Compare published sampled-data wall conditions", "configs/breeden-study.json"),
     ]:
         item = sub.add_parser(command, help=help_text)
         item.add_argument("--config", default=default)
@@ -104,7 +106,31 @@ def main(argv=None):
             print(f"Verified {result['runs']} runs, {result['executed_holds']} holds and {result['retained_plans']} retained plans.")
         else:
             spec = read_json(args.config)
-            if args.command == "planar-audit":
+            if args.command == "wall-conditions":
+                result = wall_condition_study(spec)
+                runs = result.pop("runs")
+                write_runs(output, runs, spec)
+                write_json(output/"study.json", result)
+                with (output/"conditions.csv").open("w", newline="") as stream:
+                    writer = csv.DictWriter(stream, fieldnames=list(result["groups"][0]))
+                    writer.writeheader()
+                    writer.writerows(result["groups"])
+                lines = ["# Published sampled-data wall conditions", "", result["scope"], "",
+                         "| Gain policy | Period | Method | Applicable controls | Safe accepted | Unsafe b/geometry accepted | Safe excluded | Full b-safe horizons | Infeasible stops | Outside-domain stops |",
+                         "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
+                for g in result["groups"]:
+                    lines.append(f"| {g['gain_policy']} | {g['duration_exact']} | {g['method']} | {g['applicable_controls']} | "
+                                 f"{g['accepted_safe']} | {g['accepted_unsafe']} | {g['safe_excluded']} | {g['completed_barrier_horizons']} / {g['rollouts']} | "
+                                 f"{g['infeasible_stops']} | {g['outside_domain_stops']} |")
+                lines += ["", "All methods use the same b=d-tau*v initial set; continuous-CBF emulation has no held-path guarantee.",
+                          "Fixed gain uses the configured k in Theorems 1–2. Matched gain uses k=gamma/T; Theorem 3 always uses gamma/T.",
+                          "Unsafe b does not imply a geometric collision. Viability and barrier-domain labels are independent.",
+                          "A zero-width admissible interval can be a feasible singleton. Infeasibility generates no fallback.",
+                          "Finite control counts are not volumes; exact admissible interval widths are saved separately.",
+                          "[Exact per-control evidence](study.json) · [Full rollout records](runs.json) · [Source and configuration](metadata.json)", ""]
+                (output/"conditions.md").write_text("\n".join(lines))
+                print(f"{len(result['single_hold_cases'])} matched state/rate/gain cases and {len(runs)} wall rollouts.")
+            elif args.command == "planar-audit":
                 results = audit_cases(spec)
                 output.mkdir(parents=True, exist_ok=True)
                 write_json(output/"audit.json", results)
