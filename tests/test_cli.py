@@ -23,6 +23,30 @@ class CliTests(unittest.TestCase):
             self.assertIn("<svg", (Path(folder)/"counterexample.svg").read_text())
             self.assertEqual(read_json(Path(folder)/"metadata.json")["project"], "tick-trap")
 
+    def test_approximation_contract_artifacts_and_regeneration(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            config = root/"config.json"
+            config.write_text(json.dumps({"durations": ["0.4"], "radii": [0, "0.2"],
+                                          "cases": [{"name": "endpoint_error", "d": "0.6", "v": 0, "u": 4}]}))
+            output = root/"output"
+            self.assertEqual(self.invoke("approximation-audit", "--config", str(config), "--output", str(output)), 0)
+            audit = read_json(output/"audit.json")
+            self.assertEqual(audit["records"][0]["barrier_path_status"], "unsafe")
+            self.assertTrue((output/"dilations.csv").exists())
+            self.assertIn("No controller", (output/"report.md").read_text())
+            metadata = json.loads((output/"metadata.json").read_text())
+            metadata.update(git_status="", git_commit="test-fixture")
+            (output/"metadata.json").write_text(json.dumps(metadata))
+            self.assertEqual(self.invoke("verify-approximation", "--audit", str(output/"audit.json"),
+                                         "--output", str(root/"verification")), 0)
+            self.assertEqual(read_json(root/"verification/verification.json")["map_comparisons"], 2)
+            audit["records"][0]["barrier_path_status"] = "safe"
+            (output/"audit.json").write_text(json.dumps(audit))
+            self.assertEqual(self.invoke("verify-approximation", "--audit", str(output/"audit.json"),
+                                         "--output", str(root/"invalid")), 2)
+            self.assertFalse((root/"invalid/verification.json").exists())
+
     def test_published_wall_conditions_artifacts(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .benchmark import benchmark
 from .allocation_audit import allocation_audit
+from .approximation_audit import approximation_study, verify_approximation_study
 from .certification_study import certification_study
 from .dynamics import Circle, PlanarState, WallState
 from .experiments import RunConfig, load_grid, run
@@ -37,6 +38,10 @@ def main(argv=None):
     wall_verification.add_argument("--runs", help="Defaults to runs.json beside the study")
     wall_verification.add_argument("--metadata", help="Defaults to metadata.json beside the study")
     wall_verification.add_argument("--output", default="results/breeden-verification")
+    approximation_verification = sub.add_parser("verify-approximation", help="Regenerate the saved approximation contract audit")
+    approximation_verification.add_argument("--audit", default="results/approximation-audit/audit.json")
+    approximation_verification.add_argument("--metadata", help="Defaults to metadata.json beside the audit")
+    approximation_verification.add_argument("--output", default="results/approximation-verification")
     for command, help_text, default in [
         ("run", "Run a single wall configuration", "configs/wall.json"),
         ("sweep", "Run a reproducible Cartesian experiment grid", "configs/baselines.json"),
@@ -48,6 +53,7 @@ def main(argv=None):
         ("planar-sweep", "Compare planar filters on matched scenes", "configs/planar-baselines.json"),
         ("planar-audit", "Audit admitted controls against the trajectory certificates", "configs/planar-audit.json"),
         ("wall-conditions", "Compare published sampled-data wall conditions", "configs/breeden-study.json"),
+        ("approximation-audit", "Separate approximate endpoints, sampled sets and continuous paths", "configs/approximation-audit.json"),
     ]:
         item = sub.add_parser(command, help=help_text)
         item.add_argument("--config", default=default)
@@ -67,6 +73,19 @@ def main(argv=None):
             write_json(output/"metadata.json", provenance(result))
             (output/"counterexample.svg").write_text(counterexample_svg())
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
+        elif args.command == "verify-approximation":
+            audit_path = Path(args.audit)
+            metadata_path = Path(args.metadata) if args.metadata else audit_path.with_name("metadata.json")
+            source = read_json(metadata_path)
+            if source["git_status"] != "":
+                raise ValueError("Approximation audit must identify a clean source snapshot")
+            result = verify_approximation_study(source["configuration"], read_json(audit_path))
+            output.mkdir(parents=True, exist_ok=True)
+            write_json(output/"verification.json", result)
+            write_json(output/"metadata.json", provenance({"input_source_commit": source["git_commit"],
+                       "audit_sha256": hashlib.sha256(audit_path.read_bytes()).hexdigest(),
+                       "input_metadata_sha256": hashlib.sha256(metadata_path.read_bytes()).hexdigest()}))
+            print(f"Verified {result['held_metric_cases']} held metric cases, {result['map_comparisons']} maps and {result['distance_classifications']} distance classifications.")
         elif args.command == "verify-wall-study":
             study_path = Path(args.study)
             runs_path = Path(args.runs) if args.runs else study_path.with_name("runs.json")
@@ -128,7 +147,36 @@ def main(argv=None):
             print(f"Verified {result['runs']} runs, {result['executed_holds']} holds and {result['retained_plans']} retained plans.")
         else:
             spec = read_json(args.config)
-            if args.command == "wall-conditions":
+            if args.command == "approximation-audit":
+                result = approximation_study(spec)
+                output.mkdir(parents=True, exist_ok=True)
+                write_json(output/"audit.json", result)
+                write_json(output/"metadata.json", provenance(spec))
+                for name, groups in (("summary.csv", result["groups"]), ("dilations.csv", result["dilation_groups"])):
+                    with (output/name).open("w", newline="") as stream:
+                        writer = csv.DictWriter(stream, fieldnames=list(groups[0]))
+                        writer.writeheader()
+                        writer.writerows(groups)
+                lines = ["# Approximate maps and observed safety contracts", "", result["scope"], "",
+                         "| Metric | Map | Holds | Nonzero map errors | Pointwise ingredients pass | Pass / exact next b outside | Pass / exact b samples inside, path outside |",
+                         "| --- | --- | ---: | ---: | ---: | ---: | ---: |"]
+                for g in result["groups"]:
+                    lines.append(f"| {g['normalization']} | {g['method']} | {g['holds']} | {g['nonzero_map_errors']} | "
+                                 f"{g['pointwise_ingredients_satisfied']} | {g['pointwise_pass_but_exact_sample_outside_b']} | "
+                                 f"{g['pointwise_pass_and_exact_samples_safe_but_path_outside_b']} |")
+                lines += ["", "| Metric | Radius | Holds | Samples within dilation | Path within dilation | Within dilation despite exact b violation |",
+                          "| --- | --- | ---: | ---: | ---: | ---: |"]
+                for g in result["dilation_groups"]:
+                    lines.append(f"| {g['normalization']} | {g['radius_exact']} | {g['holds']} | {g['sampled_within_dilation']} | "
+                                 f"{g['path_within_dilation']} | {g['within_dilation_despite_exact_barrier_violation']} |")
+                lines += ["", "Distances use the declared normalized state coordinates and the halfspace C_b alone.",
+                          "Observed dilation containment does not certify an invariant set family or imply geometric collision avoidance.",
+                          "Exact geometric and barrier path statuses remain unchanged when a positive radius permits their violations.",
+                          "Pointwise decrement ingredients do not establish all Taylor theorem hypotheses. No controller or fallback is synthesized.",
+                          "[Complete exact evidence](audit.json) · [Source and configuration](metadata.json)", ""]
+                (output/"report.md").write_text("\n".join(lines))
+                print(f"Audited {len(result['records'])} held metric cases; no practical-safety family certified.")
+            elif args.command == "wall-conditions":
                 result = wall_condition_study(spec)
                 runs = result.pop("runs")
                 write_runs(output, runs, spec)
