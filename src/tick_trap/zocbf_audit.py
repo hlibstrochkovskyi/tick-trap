@@ -4,6 +4,8 @@ The constraint is a declared affine proxy h(d,v,u)=d-tau*v-sigma*u, not a
 rollover model or a new controller. Global ZOCBF existence is not asserted.
 """
 
+import json
+
 from .algebraic_reference import exact_sign_reference
 from .approximation_audit import approximate_wall_step
 from .dynamics import WallState
@@ -89,6 +91,7 @@ def audit_zocbf_hold(state, previous_action, action, duration, a_max=10, tau=0, 
             "previous_action_exact": str(previous_action), "action_exact": str(action), "duration_exact": str(duration),
             "a_max_exact": str(a), "tau_exact": str(tau), "sigma_exact": str(sigma), "gamma_exact": str(gamma),
             "left_barrier_exact": str(left), "right_barrier_exact": str(right),
+            "endpoint_input_convention": "current held input; left limit before the next update",
             "input_jump_exact": str(right-left), "actual_end_barrier_exact": str(final),
             "stale_input_end_barrier_exact": str(stale_final),
             "left_pair_safe": left >= 0, "right_pair_safe": right >= 0,
@@ -103,3 +106,63 @@ def audit_zocbf_hold(state, previous_action, action, duration, a_max=10, tau=0, 
             "reachable_speed_bound_exact": str(speed_bound), "oracle_backward_drop_exact": str(backward),
             "euler_endpoint_error_bound_exact": str(prediction_error), "assessments": assessments,
             "scope": "Exact local held-input proxy diagnostics; no global ZOCBF, recursive feasibility, rollover model or new controller certified"}
+
+
+def zocbf_contract_study(spec):
+    """Evaluate every buffer/prediction variant on the same prescribed holds."""
+    if not isinstance(spec, dict) or set(spec)-{"base", "cases", "durations"}:
+        raise ValueError("Unknown ZOCBF contract study field")
+    base, cases, periods = spec.get("base", {}), spec.get("cases", []), spec.get("durations", ["0.1"])
+    allowed = {"a_max", "tau", "sigma", "gamma"}
+    if not isinstance(base, dict) or set(base)-allowed or not isinstance(cases, list) or not cases:
+        raise ValueError("Invalid ZOCBF base or cases")
+    base = {"a_max": 1, "tau": 0, "sigma": 0, "gamma": "0.5"} | base
+    if not isinstance(periods, list) or not periods:
+        raise ValueError("durations must be a nonempty list")
+    periods = [positive(t, "duration") for t in periods]
+    if len(set(periods)) != len(periods):
+        raise ValueError("Duplicate durations")
+    records, names = [], []
+    for index, case in enumerate(cases):
+        required = {"name", "d", "v", "previous_action", "action"}
+        if (not isinstance(case, dict) or not required <= set(case) or set(case)-required-allowed
+                or not isinstance(case["name"], str) or not case["name"] or case["name"] in names):
+            raise ValueError("Each case requires a distinct name, state and both input values")
+        names.append(case["name"])
+        config = base | {k: v for k, v in case.items() if k in allowed}
+        for duration in periods:
+            record = audit_zocbf_hold(WallState(case["d"], case["v"]), case["previous_action"], case["action"], duration, **config)
+            records.append({"case_index": index, "case": case["name"], **record})
+    groups = []
+    for policy in BUFFER_POLICIES:
+        for variant in VARIANTS:
+            matched = []
+            for row in records:
+                buffer = next(b for b in row["assessments"] if b["buffer_policy"] == policy)
+                check = next(v for v in buffer["variants"] if v["variant"] == variant)
+                matched.append((row, buffer, check))
+            groups.append({"buffer_policy": policy, "variant": variant, "holds": len(matched),
+                           "safe_left_pairs": sum(r["left_pair_safe"] for r, b, v in matched),
+                           "raw_condition_passes": sum(v["condition_passed"] for r, b, v in matched),
+                           "passes_with_safe_left": sum(r["left_pair_safe"] and v["condition_passed"] for r, b, v in matched),
+                           "passes_with_safe_left_and_unsafe_proxy": sum(r["left_pair_safe"] and v["condition_passed"] and r["constraint_path_status"] == "unsafe" for r, b, v in matched),
+                           "passes_with_safe_left_and_unsafe_jump": sum(r["left_pair_safe"] and v["condition_passed"] and not r["right_pair_safe"] for r, b, v in matched),
+                           "safe_holds_rejected_with_safe_left": sum(r["left_pair_safe"] and not v["condition_passed"] and r["constraint_path_status"] == "safe" for r, b, v in matched),
+                           "valid_local_implication_ingredients": sum(v["one_hold_implication_ingredients"] for r, b, v in matched),
+                           "invalid_backward_bounds": sum(not b["backward_difference_bound_valid"] for r, b, v in matched),
+                           "zero_deltas": sum(not b["positive_delta"] for r, b, v in matched),
+                           "invalid_endpoint_lower_bounds": sum(not v["endpoint_lower_bound_valid"] for r, b, v in matched),
+                           "disagreements_with_exact_history_condition": sum(v["condition_passed"] != b["variants"][0]["condition_passed"] for r, b, v in matched)})
+    return {"records": records, "groups": groups,
+            "scope": "Local affine state-input proxy and numerical-condition audit of Tan 2411.17079v2; alternative bounds and diagnostic input pairings are not new controllers or full paper replications"}
+
+
+def verify_zocbf_contract_study(spec, stored):
+    expected = zocbf_contract_study(spec)
+    encode = lambda value: json.dumps(value, sort_keys=True, allow_nan=False)
+    if encode(stored) != encode(expected):
+        raise ValueError("ZOCBF contract evidence does not match exact regeneration")
+    return {"status": "verified", "holds": len(expected["records"]),
+            "buffer_assessments": sum(len(r["assessments"]) for r in expected["records"]),
+            "condition_assessments": sum(len(b["variants"]) for r in expected["records"] for b in r["assessments"]),
+            "scope": "Deterministic local-condition regeneration with independent proxy sign references; no global ZOCBF existence or physical rollover guarantee verified"}

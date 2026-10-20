@@ -32,6 +32,10 @@ the new right value is `h_right=h(x,u_new)`. Their jump is exactly
 h(t) = h_right - (v+tau*u_new)*t - u_new*t²/2.
 ```
 
+The terminal value uses the current held input, namely the left limit before
+the next update. A future command jump is not part of this hold; it requires
+its own next-step argument.
+
 For gamma in (0,1], the Eq. (4) residual is
 `h_end_new - (1-gamma)*h_left - delta`. Previous-pair safety and a nonnegative
 residual imply `h_end_new>=delta`. If a proven bound satisfies

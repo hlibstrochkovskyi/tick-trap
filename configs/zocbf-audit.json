@@ -1,0 +1,16 @@
+{
+  "base": {"a_max": "1", "tau": "0", "sigma": "0", "gamma": "0.5"},
+  "durations": ["0.1", "0.2", "0.4", "1"],
+  "cases": [
+    {"name": "state_only_stationary", "d": "1", "v": "0", "previous_action": "0", "action": "0"},
+    {"name": "stale_endpoint_jump", "d": "10", "v": "0", "previous_action": "0", "action": "1", "sigma": "20", "tau": "0.3"},
+    {"name": "jump_then_recover", "d": "1", "v": "-10", "previous_action": "0", "action": "1", "sigma": "5"},
+    {"name": "reset_excludes_safe_contract", "d": "2", "v": "0", "previous_action": "1", "action": "0", "sigma": "2"},
+    {"name": "reset_admits_outside_contract", "d": "1.25", "v": "0", "previous_action": "0", "action": "1", "sigma": "1"},
+    {"name": "euler_error", "d": "0.1", "v": "-0.45", "previous_action": "0", "action": "10", "a_max": "10", "gamma": "1"},
+    {"name": "curved_hidden_collision", "d": "0.06", "v": "1", "previous_action": "0", "action": "-4.25", "a_max": "10", "gamma": "1"},
+    {"name": "monotone_departing", "d": "1", "v": "-2", "previous_action": "0", "action": "0", "tau": "0.3", "sigma": "0.5"},
+    {"name": "barrier_tangent", "d": "0.45", "v": "1.2", "previous_action": "0", "action": "-2", "tau": "0.3", "a_max": "10", "gamma": "1"},
+    {"name": "left_pair_unsafe", "d": "1", "v": "0", "previous_action": "1", "action": "0", "sigma": "2"}
+  ]
+}
