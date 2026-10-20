@@ -1,0 +1,65 @@
+{
+  "source_git_commit": "c99c98e4551d2c0e9e0b8ef531425c6de26de61e",
+  "source_sha256": "43939220b9107efaad7579b9db0001568ca663b3d495415e00c454c6f3e845f3",
+  "archive": "zocbf-evidence.tar.gz",
+  "archive_bytes": 28441,
+  "archive_sha256": "f4ea1baa2419197ee4c89b1a15266a54459890bf65ad897b20bd23bc28084d89",
+  "uncompressed_bytes": 1159854,
+  "files": [
+    {
+      "path": "audit.json",
+      "bytes": 965131,
+      "sha256": "040201a1405b857005e6294c0a1b58f1bf935d872f3b48295909a9176bfcde14"
+    },
+    {
+      "path": "ci-jobs.json",
+      "bytes": 13439,
+      "sha256": "c9a328ac94d183722bd8b43352fcb427c07714bb806ce7712f0e5804a8e5acfa"
+    },
+    {
+      "path": "ci-run.json",
+      "bytes": 14502,
+      "sha256": "9f9e929e543bf5fa21caeeb846782741ada800457c12d31b222b738f4c7a4675"
+    },
+    {
+      "path": "config.json",
+      "bytes": 1341,
+      "sha256": "a8f09d042285648085149d5162e5794399eac3d0ae0262aa417fa4f48d9f4c72"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 3289,
+      "sha256": "4036ddf62d3a5b7ca7dcbf5fd5d86ed75927865018bd55baabbaa063565975ae"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 3289,
+      "sha256": "4036ddf62d3a5b7ca7dcbf5fd5d86ed75927865018bd55baabbaa063565975ae"
+    },
+    {
+      "path": "report.md",
+      "bytes": 3442,
+      "sha256": "3697662bd8abb3416556a84d76ffc5409d87bc0e863943c5b321122ba8829c07"
+    },
+    {
+      "path": "summary.csv",
+      "bytes": 2663,
+      "sha256": "efd1d89a1cb1725ad196e7edc75b5cec067c5e233e6244164c66233fcf974a46"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 150953,
+      "sha256": "0f50a2efe36c45f6e77c20e7589ae035d273014f9ae5fa436db09f74b2194de6"
+    },
+    {
+      "path": "verification/metadata.json",
+      "bytes": 1538,
+      "sha256": "c2ff23c9eecd6d54e0e258b43624c19c7ce92376c900c4228a6d8bfc1f99539a"
+    },
+    {
+      "path": "verification/verification.json",
+      "bytes": 267,
+      "sha256": "cdea16293b7b5e17e63b5197e3027a159f2cfdf4e9274926bf56c61850ca54b8"
+    }
+  ]
+}
