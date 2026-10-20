@@ -1,0 +1,1284 @@
+{
+  "scope": "Restricted wall specializations of Breeden 2103.03677v1 Theorems 1\u20133; exact model, observations and held actuation. Fixed and gamma/T-matched gains are separate. Geometric safety, barrier preservation and viability are distinct; no global feasibility or full paper reproduction claim.",
+  "source": {
+    "schema_version": 1,
+    "project": "tick-trap",
+    "version": "0.2.0",
+    "created_utc": "2026-10-20T04:34:05.860555+00:00",
+    "python": "3.12.13 (main, Jun 11 2026, 04:03:26) [Clang 22.1.3 ]",
+    "platform": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+    "machine": "x86_64",
+    "processor": "",
+    "logical_cpu_count": 12,
+    "dependencies": "Python standard library only",
+    "argv": [
+      "/home/hlibstrochkovskyi/Projects/Tick-Trap/tick-trap/src/tick_trap/__main__.py",
+      "wall-conditions",
+      "--output",
+      "results/breeden-final"
+    ],
+    "source_sha256": "276a79e09080d2a385459c3a3a3dac6f505de5e14488005736638df77a3bd317",
+    "git_commit": "037ab01aa803855654704f1afbc0c90c5fd6d76c",
+    "git_status": "",
+    "configuration_sha256": "d6d1cd04a446914a8324807d87f37be86979c02c2f4382ba182a280f77e03a5e",
+    "configuration": {
+      "base": {
+        "a_max": "10",
+        "tau": "0.3",
+        "gamma": "1",
+        "cbf_gain": "2",
+        "nominal": "0",
+        "horizon": "2",
+        "seed": 20261020
+      },
+      "durations": [
+        "0.02",
+        "0.1",
+        "0.2",
+        "0.4"
+      ],
+      "gain_policies": [
+        "fixed",
+        "matched"
+      ],
+      "grid_points": 21,
+      "cases": [
+        {
+          "name": "approach",
+          "d": "0.6",
+          "v": "1"
+        },
+        {
+          "name": "barrier_boundary",
+          "d": "0.3",
+          "v": "1"
+        },
+        {
+          "name": "rest",
+          "d": "0.6",
+          "v": "0"
+        },
+        {
+          "name": "departing",
+          "d": "0.6",
+          "v": "-1"
+        },
+        {
+          "name": "fast_departing",
+          "d": "1",
+          "v": "-20"
+        },
+        {
+          "name": "domain_excluded_viable",
+          "d": "0.1",
+          "v": "1"
+        },
+        {
+          "name": "domain_admitted_nonviable",
+          "d": "4",
+          "v": "10"
+        },
+        {
+          "name": "near_barrier",
+          "d": "0.35",
+          "v": "1"
+        }
+      ]
+    },
+    "clock": {
+      "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+      "resolution_seconds": 1e-09,
+      "monotonic": true
+    },
+    "arithmetic": "exact rational inputs and dynamics; floats are display/learning estimates",
+    "safety_boundary": "nonnegative clearance; contact at zero is permitted",
+    "timing_scope": "empirical controller runtime; offline certification measured separately"
+  },
+  "verification": {
+    "status": "verified",
+    "single_hold_cases": 64,
+    "fixed_control_checks": 1344,
+    "runs": 256,
+    "executed_holds": 5744,
+    "excluded_fields": [
+      "certification_ns",
+      "certification_ns_total",
+      "deadline_missed",
+      "deadline_misses",
+      "solve_ns",
+      "solve_ns_total"
+    ],
+    "scope": "Exact scientific-record regeneration using the declared model and controllers; independent algebraic signs cross-check fixed-control minima. Timing and deadline observations, physical-model validity and original paper experiments are not verified."
+  },
+  "source_artifacts": {
+    "study.json": {
+      "sha256": "3eacdd84f3f0f06518261ed4de4a5430590dd10be18cf11244c163d0fdd2f47f"
+    },
+    "runs.json": {
+      "sha256": "1b5053d4bf60b6ef8fcfb9552eb8901e449b1094519f065ed0162dfcf1b33879"
+    },
+    "metadata.json": {
+      "sha256": "695ab8597c8a5d3a5aa3521206b42d7197d1479219a0d814a5a846fead13268c"
+    },
+    "verification/verification.json": {
+      "sha256": "785d252c4b4c4b400b2dbe15eb423c168b96f44b2143e7159cc7f3b527604654"
+    }
+  },
+  "matched_cases": 64,
+  "control_cases": 1344,
+  "rollout_totals": [
+    {
+      "gain_policy": "fixed",
+      "method": "continuous_cbf",
+      "runs": 32,
+      "viable_in_domain_runs": 24,
+      "viable_in_domain_completed_barrier_horizons": 24,
+      "initially_nonviable_runs": 4,
+      "initial_domain_exclusions": 4,
+      "terminations": {
+        "horizon": 24,
+        "outside_domain": 4,
+        "infeasible": 4
+      },
+      "barrier_horizons": 24,
+      "applicable_controls": 588,
+      "accepted_safe": 316,
+      "accepted_unsafe": 4,
+      "safe_excluded": 83,
+      "unsafe_rejected": 185
+    },
+    {
+      "gain_policy": "fixed",
+      "method": "breeden",
+      "runs": 32,
+      "viable_in_domain_runs": 24,
+      "viable_in_domain_completed_barrier_horizons": 11,
+      "initially_nonviable_runs": 4,
+      "initial_domain_exclusions": 4,
+      "terminations": {
+        "horizon": 11,
+        "infeasible": 17,
+        "outside_domain": 4
+      },
+      "barrier_horizons": 11,
+      "applicable_controls": 588,
+      "accepted_safe": 140,
+      "accepted_unsafe": 0,
+      "safe_excluded": 259,
+      "unsafe_rejected": 189
+    },
+    {
+      "gain_policy": "fixed",
+      "method": "breeden_reachable",
+      "runs": 32,
+      "viable_in_domain_runs": 24,
+      "viable_in_domain_completed_barrier_horizons": 16,
+      "initially_nonviable_runs": 4,
+      "initial_domain_exclusions": 4,
+      "terminations": {
+        "horizon": 16,
+        "infeasible": 12,
+        "outside_domain": 4
+      },
+      "barrier_horizons": 16,
+      "applicable_controls": 588,
+      "accepted_safe": 177,
+      "accepted_unsafe": 0,
+      "safe_excluded": 222,
+      "unsafe_rejected": 189
+    },
+    {
+      "gain_policy": "fixed",
+      "method": "breeden_second_order",
+      "runs": 32,
+      "viable_in_domain_runs": 24,
+      "viable_in_domain_completed_barrier_horizons": 24,
+      "initially_nonviable_runs": 4,
+      "initial_domain_exclusions": 4,
+      "terminations": {
+        "horizon": 24,
+        "outside_domain": 4,
+        "infeasible": 4
+      },
+      "barrier_horizons": 24,
+      "applicable_controls": 588,
+      "accepted_safe": 355,
+      "accepted_unsafe": 0,
+      "safe_excluded": 44,
+      "unsafe_rejected": 189
+    },
+    {
+      "gain_policy": "matched",
+      "method": "continuous_cbf",
+      "runs": 32,
+      "viable_in_domain_runs": 24,
+      "viable_in_domain_completed_barrier_horizons": 24,
+      "initially_nonviable_runs": 4,
+      "initial_domain_exclusions": 4,
+      "terminations": {
+        "horizon": 24,
+        "outside_domain": 4,
+        "infeasible": 4
+      },
+      "barrier_horizons": 24,
+      "applicable_controls": 588,
+      "accepted_safe": 397,
+      "accepted_unsafe": 11,
+      "safe_excluded": 2,
+      "unsafe_rejected": 178
+    },
+    {
+      "gain_policy": "matched",
+      "method": "breeden",
+      "runs": 32,
+      "viable_in_domain_runs": 24,
+      "viable_in_domain_completed_barrier_horizons": 8,
+      "initially_nonviable_runs": 4,
+      "initial_domain_exclusions": 4,
+      "terminations": {
+        "horizon": 8,
+        "infeasible": 20,
+        "outside_domain": 4
+      },
+      "barrier_horizons": 8,
+      "applicable_controls": 588,
+      "accepted_safe": 162,
+      "accepted_unsafe": 0,
+      "safe_excluded": 237,
+      "unsafe_rejected": 189
+    },
+    {
+      "gain_policy": "matched",
+      "method": "breeden_reachable",
+      "runs": 32,
+      "viable_in_domain_runs": 24,
+      "viable_in_domain_completed_barrier_horizons": 12,
+      "initially_nonviable_runs": 4,
+      "initial_domain_exclusions": 4,
+      "terminations": {
+        "horizon": 12,
+        "infeasible": 16,
+        "outside_domain": 4
+      },
+      "barrier_horizons": 12,
+      "applicable_controls": 588,
+      "accepted_safe": 219,
+      "accepted_unsafe": 0,
+      "safe_excluded": 180,
+      "unsafe_rejected": 189
+    },
+    {
+      "gain_policy": "matched",
+      "method": "breeden_second_order",
+      "runs": 32,
+      "viable_in_domain_runs": 24,
+      "viable_in_domain_completed_barrier_horizons": 24,
+      "initially_nonviable_runs": 4,
+      "initial_domain_exclusions": 4,
+      "terminations": {
+        "horizon": 24,
+        "outside_domain": 4,
+        "infeasible": 4
+      },
+      "barrier_horizons": 24,
+      "applicable_controls": 588,
+      "accepted_safe": 355,
+      "accepted_unsafe": 0,
+      "safe_excluded": 44,
+      "unsafe_rejected": 189
+    }
+  ],
+  "groups": [
+    {
+      "duration_exact": "1/50",
+      "gain_policy": "fixed",
+      "method": "continuous_cbf",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 80,
+      "accepted_unsafe": 0,
+      "safe_excluded": 47,
+      "unsafe_rejected": 20,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/50",
+      "gain_policy": "fixed",
+      "method": "breeden",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 68,
+      "accepted_unsafe": 0,
+      "safe_excluded": 59,
+      "unsafe_rejected": 20,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/50",
+      "gain_policy": "fixed",
+      "method": "breeden_reachable",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 73,
+      "accepted_unsafe": 0,
+      "safe_excluded": 54,
+      "unsafe_rejected": 20,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/50",
+      "gain_policy": "fixed",
+      "method": "breeden_second_order",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 127,
+      "accepted_unsafe": 0,
+      "safe_excluded": 0,
+      "unsafe_rejected": 20,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/50",
+      "gain_policy": "matched",
+      "method": "continuous_cbf",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 127,
+      "accepted_unsafe": 1,
+      "safe_excluded": 0,
+      "unsafe_rejected": 19,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/50",
+      "gain_policy": "matched",
+      "method": "breeden",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 105,
+      "accepted_unsafe": 0,
+      "safe_excluded": 22,
+      "unsafe_rejected": 20,
+      "rollouts": 8,
+      "completed_barrier_horizons": 4,
+      "completed_geometric_horizons": 4,
+      "infeasible_stops": 3,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/50",
+      "gain_policy": "matched",
+      "method": "breeden_reachable",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 106,
+      "accepted_unsafe": 0,
+      "safe_excluded": 21,
+      "unsafe_rejected": 20,
+      "rollouts": 8,
+      "completed_barrier_horizons": 5,
+      "completed_geometric_horizons": 5,
+      "infeasible_stops": 2,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/50",
+      "gain_policy": "matched",
+      "method": "breeden_second_order",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 127,
+      "accepted_unsafe": 0,
+      "safe_excluded": 0,
+      "unsafe_rejected": 20,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/10",
+      "gain_policy": "fixed",
+      "method": "continuous_cbf",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 80,
+      "accepted_unsafe": 0,
+      "safe_excluded": 26,
+      "unsafe_rejected": 41,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/10",
+      "gain_policy": "fixed",
+      "method": "breeden",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 34,
+      "accepted_unsafe": 0,
+      "safe_excluded": 72,
+      "unsafe_rejected": 41,
+      "rollouts": 8,
+      "completed_barrier_horizons": 3,
+      "completed_geometric_horizons": 3,
+      "infeasible_stops": 4,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/10",
+      "gain_policy": "fixed",
+      "method": "breeden_reachable",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 50,
+      "accepted_unsafe": 0,
+      "safe_excluded": 56,
+      "unsafe_rejected": 41,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/10",
+      "gain_policy": "fixed",
+      "method": "breeden_second_order",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 101,
+      "accepted_unsafe": 0,
+      "safe_excluded": 5,
+      "unsafe_rejected": 41,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/10",
+      "gain_policy": "matched",
+      "method": "continuous_cbf",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 106,
+      "accepted_unsafe": 1,
+      "safe_excluded": 0,
+      "unsafe_rejected": 40,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/10",
+      "gain_policy": "matched",
+      "method": "breeden",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 26,
+      "accepted_unsafe": 0,
+      "safe_excluded": 80,
+      "unsafe_rejected": 41,
+      "rollouts": 8,
+      "completed_barrier_horizons": 2,
+      "completed_geometric_horizons": 2,
+      "infeasible_stops": 5,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/10",
+      "gain_policy": "matched",
+      "method": "breeden_reachable",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 58,
+      "accepted_unsafe": 0,
+      "safe_excluded": 48,
+      "unsafe_rejected": 41,
+      "rollouts": 8,
+      "completed_barrier_horizons": 3,
+      "completed_geometric_horizons": 3,
+      "infeasible_stops": 4,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/10",
+      "gain_policy": "matched",
+      "method": "breeden_second_order",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 101,
+      "accepted_unsafe": 0,
+      "safe_excluded": 5,
+      "unsafe_rejected": 41,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/5",
+      "gain_policy": "fixed",
+      "method": "continuous_cbf",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 80,
+      "accepted_unsafe": 0,
+      "safe_excluded": 8,
+      "unsafe_rejected": 59,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/5",
+      "gain_policy": "fixed",
+      "method": "breeden",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 21,
+      "accepted_unsafe": 0,
+      "safe_excluded": 67,
+      "unsafe_rejected": 59,
+      "rollouts": 8,
+      "completed_barrier_horizons": 1,
+      "completed_geometric_horizons": 1,
+      "infeasible_stops": 6,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/5",
+      "gain_policy": "fixed",
+      "method": "breeden_reachable",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 33,
+      "accepted_unsafe": 0,
+      "safe_excluded": 55,
+      "unsafe_rejected": 59,
+      "rollouts": 8,
+      "completed_barrier_horizons": 3,
+      "completed_geometric_horizons": 3,
+      "infeasible_stops": 4,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/5",
+      "gain_policy": "fixed",
+      "method": "breeden_second_order",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 77,
+      "accepted_unsafe": 0,
+      "safe_excluded": 11,
+      "unsafe_rejected": 59,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/5",
+      "gain_policy": "matched",
+      "method": "continuous_cbf",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 87,
+      "accepted_unsafe": 3,
+      "safe_excluded": 1,
+      "unsafe_rejected": 56,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/5",
+      "gain_policy": "matched",
+      "method": "breeden",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 21,
+      "accepted_unsafe": 0,
+      "safe_excluded": 67,
+      "unsafe_rejected": 59,
+      "rollouts": 8,
+      "completed_barrier_horizons": 1,
+      "completed_geometric_horizons": 1,
+      "infeasible_stops": 6,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/5",
+      "gain_policy": "matched",
+      "method": "breeden_reachable",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 34,
+      "accepted_unsafe": 0,
+      "safe_excluded": 54,
+      "unsafe_rejected": 59,
+      "rollouts": 8,
+      "completed_barrier_horizons": 3,
+      "completed_geometric_horizons": 3,
+      "infeasible_stops": 4,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "1/5",
+      "gain_policy": "matched",
+      "method": "breeden_second_order",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 77,
+      "accepted_unsafe": 0,
+      "safe_excluded": 11,
+      "unsafe_rejected": 59,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "2/5",
+      "gain_policy": "fixed",
+      "method": "continuous_cbf",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 76,
+      "accepted_unsafe": 4,
+      "safe_excluded": 2,
+      "unsafe_rejected": 65,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "2/5",
+      "gain_policy": "fixed",
+      "method": "breeden",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 17,
+      "accepted_unsafe": 0,
+      "safe_excluded": 61,
+      "unsafe_rejected": 69,
+      "rollouts": 8,
+      "completed_barrier_horizons": 1,
+      "completed_geometric_horizons": 1,
+      "infeasible_stops": 6,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "2/5",
+      "gain_policy": "fixed",
+      "method": "breeden_reachable",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 21,
+      "accepted_unsafe": 0,
+      "safe_excluded": 57,
+      "unsafe_rejected": 69,
+      "rollouts": 8,
+      "completed_barrier_horizons": 1,
+      "completed_geometric_horizons": 1,
+      "infeasible_stops": 6,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "2/5",
+      "gain_policy": "fixed",
+      "method": "breeden_second_order",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 50,
+      "accepted_unsafe": 0,
+      "safe_excluded": 28,
+      "unsafe_rejected": 69,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "2/5",
+      "gain_policy": "matched",
+      "method": "continuous_cbf",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 77,
+      "accepted_unsafe": 6,
+      "safe_excluded": 1,
+      "unsafe_rejected": 63,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "2/5",
+      "gain_policy": "matched",
+      "method": "breeden",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 10,
+      "accepted_unsafe": 0,
+      "safe_excluded": 68,
+      "unsafe_rejected": 69,
+      "rollouts": 8,
+      "completed_barrier_horizons": 1,
+      "completed_geometric_horizons": 1,
+      "infeasible_stops": 6,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "2/5",
+      "gain_policy": "matched",
+      "method": "breeden_reachable",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 21,
+      "accepted_unsafe": 0,
+      "safe_excluded": 57,
+      "unsafe_rejected": 69,
+      "rollouts": 8,
+      "completed_barrier_horizons": 1,
+      "completed_geometric_horizons": 1,
+      "infeasible_stops": 6,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    },
+    {
+      "duration_exact": "2/5",
+      "gain_policy": "matched",
+      "method": "breeden_second_order",
+      "states": 8,
+      "applicable_controls": 147,
+      "accepted_safe": 50,
+      "accepted_unsafe": 0,
+      "safe_excluded": 28,
+      "unsafe_rejected": 69,
+      "rollouts": 8,
+      "completed_barrier_horizons": 6,
+      "completed_geometric_horizons": 6,
+      "infeasible_stops": 1,
+      "outside_domain_stops": 1,
+      "collisions": 0
+    }
+  ],
+  "identical_second_order_gain_mode_pairs": 32,
+  "examples": [
+    {
+      "name": "approach",
+      "duration_exact": "1/10",
+      "gain_policy": "fixed",
+      "comparison_gain_exact": "2",
+      "initial_barrier_exact": "3/10",
+      "initial_viable": true,
+      "selected": {
+        "continuous_cbf": {
+          "status": "feasible",
+          "action_exact": "-4/3",
+          "residual_exact": "0",
+          "effective_gain_exact": "2",
+          "details": {
+            "upper_action_bound_exact": "-4/3"
+          }
+        },
+        "breeden": {
+          "status": "infeasible",
+          "action_exact": null,
+          "residual_exact": null,
+          "effective_gain_exact": "2",
+          "details": {
+            "source": "Breeden et al. 2021, Theorem 1, Eq. (11)",
+            "reachable_speed_bound_exact": "2",
+            "lipschitz_sum_upper_exact": "386007662723/125000000000",
+            "flow_norm_upper_exact": "5099019513593/500000000000",
+            "margin_exact": "1968260604621002257893739/625000000000000000000000",
+            "upper_action_bound_exact": "-2218260604621002257893739/187500000000000000000000"
+          }
+        },
+        "breeden_reachable": {
+          "status": "feasible",
+          "action_exact": "-23/3",
+          "residual_exact": "0",
+          "effective_gain_exact": "2",
+          "details": {
+            "source": "Breeden et al. 2103.03677v1, Theorem 2, Eq. (14)",
+            "margin_exact": "19/10",
+            "reachable_error_polynomial_exact": [
+              "0",
+              "18",
+              "10"
+            ],
+            "supremum_time_exact": "1/10",
+            "supremum_control_exact": "10",
+            "reachability_scope": "all measurable admissible acceleration histories, closed-horizon supremum",
+            "upper_action_bound_exact": "-23/3"
+          }
+        },
+        "breeden_second_order": {
+          "status": "feasible",
+          "action_exact": "0",
+          "residual_exact": "-5",
+          "effective_gain_exact": "10",
+          "details": {
+            "source": "Breeden et al. 2103.03677v1, Theorem 3, Eqs. (18)-(19)",
+            "second_derivative_upper_exact": "10",
+            "margin_exact": "1/2",
+            "effective_gain_exact": "10",
+            "upper_action_bound_exact": "5"
+          }
+        }
+      },
+      "control_intervals": {
+        "continuous_cbf": {
+          "lower_exact": "-10",
+          "upper_exact": "-4/3",
+          "width_exact": "26/3"
+        },
+        "breeden": null,
+        "breeden_reachable": {
+          "lower_exact": "-10",
+          "upper_exact": "-23/3",
+          "width_exact": "7/3"
+        },
+        "breeden_second_order": {
+          "lower_exact": "-10",
+          "upper_exact": "5",
+          "width_exact": "15"
+        }
+      },
+      "counts": {
+        "continuous_cbf": {
+          "applicable": 21,
+          "accepted_safe": 9,
+          "accepted_unsafe": 0,
+          "safe_excluded": 7,
+          "unsafe_rejected": 5
+        },
+        "breeden": {
+          "applicable": 21,
+          "accepted_safe": 0,
+          "accepted_unsafe": 0,
+          "safe_excluded": 16,
+          "unsafe_rejected": 5
+        },
+        "breeden_reachable": {
+          "applicable": 21,
+          "accepted_safe": 3,
+          "accepted_unsafe": 0,
+          "safe_excluded": 13,
+          "unsafe_rejected": 5
+        },
+        "breeden_second_order": {
+          "applicable": 21,
+          "accepted_safe": 16,
+          "accepted_unsafe": 0,
+          "safe_excluded": 0,
+          "unsafe_rejected": 5
+        }
+      }
+    },
+    {
+      "name": "approach",
+      "duration_exact": "1/10",
+      "gain_policy": "matched",
+      "comparison_gain_exact": "10",
+      "initial_barrier_exact": "3/10",
+      "initial_viable": true,
+      "selected": {
+        "continuous_cbf": {
+          "status": "feasible",
+          "action_exact": "0",
+          "residual_exact": "-20/3",
+          "effective_gain_exact": "10",
+          "details": {
+            "upper_action_bound_exact": "20/3"
+          }
+        },
+        "breeden": {
+          "status": "infeasible",
+          "action_exact": null,
+          "residual_exact": null,
+          "effective_gain_exact": "10",
+          "details": {
+            "source": "Breeden et al. 2021, Theorem 1, Eq. (11)",
+            "reachable_speed_bound_exact": "2",
+            "lipschitz_sum_upper_exact": "286007662723/25000000000",
+            "flow_norm_upper_exact": "5099019513593/500000000000",
+            "margin_exact": "1458358653261702257893739/125000000000000000000000",
+            "upper_action_bound_exact": "-1208358653261702257893739/37500000000000000000000"
+          }
+        },
+        "breeden_reachable": {
+          "status": "infeasible",
+          "action_exact": null,
+          "residual_exact": null,
+          "effective_gain_exact": "10",
+          "details": {
+            "source": "Breeden et al. 2103.03677v1, Theorem 2, Eq. (14)",
+            "margin_exact": "11/2",
+            "reachable_error_polynomial_exact": [
+              "0",
+              "50",
+              "50"
+            ],
+            "supremum_time_exact": "1/10",
+            "supremum_control_exact": "10",
+            "reachability_scope": "all measurable admissible acceleration histories, closed-horizon supremum",
+            "upper_action_bound_exact": "-35/3"
+          }
+        },
+        "breeden_second_order": {
+          "status": "feasible",
+          "action_exact": "0",
+          "residual_exact": "-5",
+          "effective_gain_exact": "10",
+          "details": {
+            "source": "Breeden et al. 2103.03677v1, Theorem 3, Eqs. (18)-(19)",
+            "second_derivative_upper_exact": "10",
+            "margin_exact": "1/2",
+            "effective_gain_exact": "10",
+            "upper_action_bound_exact": "5"
+          }
+        }
+      },
+      "control_intervals": {
+        "continuous_cbf": {
+          "lower_exact": "-10",
+          "upper_exact": "20/3",
+          "width_exact": "50/3"
+        },
+        "breeden": null,
+        "breeden_reachable": null,
+        "breeden_second_order": {
+          "lower_exact": "-10",
+          "upper_exact": "5",
+          "width_exact": "15"
+        }
+      },
+      "counts": {
+        "continuous_cbf": {
+          "applicable": 21,
+          "accepted_safe": 16,
+          "accepted_unsafe": 1,
+          "safe_excluded": 0,
+          "unsafe_rejected": 4
+        },
+        "breeden": {
+          "applicable": 21,
+          "accepted_safe": 0,
+          "accepted_unsafe": 0,
+          "safe_excluded": 16,
+          "unsafe_rejected": 5
+        },
+        "breeden_reachable": {
+          "applicable": 21,
+          "accepted_safe": 0,
+          "accepted_unsafe": 0,
+          "safe_excluded": 16,
+          "unsafe_rejected": 5
+        },
+        "breeden_second_order": {
+          "applicable": 21,
+          "accepted_safe": 16,
+          "accepted_unsafe": 0,
+          "safe_excluded": 0,
+          "unsafe_rejected": 5
+        }
+      }
+    },
+    {
+      "name": "barrier_boundary",
+      "duration_exact": "1/10",
+      "gain_policy": "fixed",
+      "comparison_gain_exact": "2",
+      "initial_barrier_exact": "0",
+      "initial_viable": true,
+      "selected": {
+        "continuous_cbf": {
+          "status": "feasible",
+          "action_exact": "-10/3",
+          "residual_exact": "0",
+          "effective_gain_exact": "2",
+          "details": {
+            "upper_action_bound_exact": "-10/3"
+          }
+        },
+        "breeden": {
+          "status": "infeasible",
+          "action_exact": null,
+          "residual_exact": null,
+          "effective_gain_exact": "2",
+          "details": {
+            "source": "Breeden et al. 2021, Theorem 1, Eq. (11)",
+            "reachable_speed_bound_exact": "2",
+            "lipschitz_sum_upper_exact": "386007662723/125000000000",
+            "flow_norm_upper_exact": "5099019513593/500000000000",
+            "margin_exact": "1968260604621002257893739/625000000000000000000000",
+            "upper_action_bound_exact": "-2593260604621002257893739/187500000000000000000000"
+          }
+        },
+        "breeden_reachable": {
+          "status": "feasible",
+          "action_exact": "-29/3",
+          "residual_exact": "0",
+          "effective_gain_exact": "2",
+          "details": {
+            "source": "Breeden et al. 2103.03677v1, Theorem 2, Eq. (14)",
+            "margin_exact": "19/10",
+            "reachable_error_polynomial_exact": [
+              "0",
+              "18",
+              "10"
+            ],
+            "supremum_time_exact": "1/10",
+            "supremum_control_exact": "10",
+            "reachability_scope": "all measurable admissible acceleration histories, closed-horizon supremum",
+            "upper_action_bound_exact": "-29/3"
+          }
+        },
+        "breeden_second_order": {
+          "status": "feasible",
+          "action_exact": "-5",
+          "residual_exact": "0",
+          "effective_gain_exact": "10",
+          "details": {
+            "source": "Breeden et al. 2103.03677v1, Theorem 3, Eqs. (18)-(19)",
+            "second_derivative_upper_exact": "10",
+            "margin_exact": "1/2",
+            "effective_gain_exact": "10",
+            "upper_action_bound_exact": "-5"
+          }
+        }
+      },
+      "control_intervals": {
+        "continuous_cbf": {
+          "lower_exact": "-10",
+          "upper_exact": "-10/3",
+          "width_exact": "20/3"
+        },
+        "breeden": null,
+        "breeden_reachable": {
+          "lower_exact": "-10",
+          "upper_exact": "-29/3",
+          "width_exact": "1/3"
+        },
+        "breeden_second_order": {
+          "lower_exact": "-10",
+          "upper_exact": "-5",
+          "width_exact": "5"
+        }
+      },
+      "counts": {
+        "continuous_cbf": {
+          "applicable": 21,
+          "accepted_safe": 7,
+          "accepted_unsafe": 0,
+          "safe_excluded": 0,
+          "unsafe_rejected": 14
+        },
+        "breeden": {
+          "applicable": 21,
+          "accepted_safe": 0,
+          "accepted_unsafe": 0,
+          "safe_excluded": 7,
+          "unsafe_rejected": 14
+        },
+        "breeden_reachable": {
+          "applicable": 21,
+          "accepted_safe": 1,
+          "accepted_unsafe": 0,
+          "safe_excluded": 6,
+          "unsafe_rejected": 14
+        },
+        "breeden_second_order": {
+          "applicable": 21,
+          "accepted_safe": 6,
+          "accepted_unsafe": 0,
+          "safe_excluded": 1,
+          "unsafe_rejected": 14
+        }
+      }
+    },
+    {
+      "name": "barrier_boundary",
+      "duration_exact": "1/10",
+      "gain_policy": "matched",
+      "comparison_gain_exact": "10",
+      "initial_barrier_exact": "0",
+      "initial_viable": true,
+      "selected": {
+        "continuous_cbf": {
+          "status": "feasible",
+          "action_exact": "-10/3",
+          "residual_exact": "0",
+          "effective_gain_exact": "10",
+          "details": {
+            "upper_action_bound_exact": "-10/3"
+          }
+        },
+        "breeden": {
+          "status": "infeasible",
+          "action_exact": null,
+          "residual_exact": null,
+          "effective_gain_exact": "10",
+          "details": {
+            "source": "Breeden et al. 2021, Theorem 1, Eq. (11)",
+            "reachable_speed_bound_exact": "2",
+            "lipschitz_sum_upper_exact": "286007662723/25000000000",
+            "flow_norm_upper_exact": "5099019513593/500000000000",
+            "margin_exact": "1458358653261702257893739/125000000000000000000000",
+            "upper_action_bound_exact": "-1583358653261702257893739/37500000000000000000000"
+          }
+        },
+        "breeden_reachable": {
+          "status": "infeasible",
+          "action_exact": null,
+          "residual_exact": null,
+          "effective_gain_exact": "10",
+          "details": {
+            "source": "Breeden et al. 2103.03677v1, Theorem 2, Eq. (14)",
+            "margin_exact": "11/2",
+            "reachable_error_polynomial_exact": [
+              "0",
+              "50",
+              "50"
+            ],
+            "supremum_time_exact": "1/10",
+            "supremum_control_exact": "10",
+            "reachability_scope": "all measurable admissible acceleration histories, closed-horizon supremum",
+            "upper_action_bound_exact": "-65/3"
+          }
+        },
+        "breeden_second_order": {
+          "status": "feasible",
+          "action_exact": "-5",
+          "residual_exact": "0",
+          "effective_gain_exact": "10",
+          "details": {
+            "source": "Breeden et al. 2103.03677v1, Theorem 3, Eqs. (18)-(19)",
+            "second_derivative_upper_exact": "10",
+            "margin_exact": "1/2",
+            "effective_gain_exact": "10",
+            "upper_action_bound_exact": "-5"
+          }
+        }
+      },
+      "control_intervals": {
+        "continuous_cbf": {
+          "lower_exact": "-10",
+          "upper_exact": "-10/3",
+          "width_exact": "20/3"
+        },
+        "breeden": null,
+        "breeden_reachable": null,
+        "breeden_second_order": {
+          "lower_exact": "-10",
+          "upper_exact": "-5",
+          "width_exact": "5"
+        }
+      },
+      "counts": {
+        "continuous_cbf": {
+          "applicable": 21,
+          "accepted_safe": 7,
+          "accepted_unsafe": 0,
+          "safe_excluded": 0,
+          "unsafe_rejected": 14
+        },
+        "breeden": {
+          "applicable": 21,
+          "accepted_safe": 0,
+          "accepted_unsafe": 0,
+          "safe_excluded": 7,
+          "unsafe_rejected": 14
+        },
+        "breeden_reachable": {
+          "applicable": 21,
+          "accepted_safe": 0,
+          "accepted_unsafe": 0,
+          "safe_excluded": 7,
+          "unsafe_rejected": 14
+        },
+        "breeden_second_order": {
+          "applicable": 21,
+          "accepted_safe": 6,
+          "accepted_unsafe": 0,
+          "safe_excluded": 1,
+          "unsafe_rejected": 14
+        }
+      }
+    }
+  ]
+}

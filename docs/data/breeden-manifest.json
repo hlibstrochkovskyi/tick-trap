@@ -1,0 +1,80 @@
+{
+  "source_git_commit": "037ab01aa803855654704f1afbc0c90c5fd6d76c",
+  "source_sha256": "276a79e09080d2a385459c3a3a3dac6f505de5e14488005736638df77a3bd317",
+  "archive": "breeden-evidence.tar.gz",
+  "archive_bytes": 1397063,
+  "archive_sha256": "8376bb11e11bb583031bc75302572d0a7be5f16a2e87423b250064238e973262",
+  "uncompressed_bytes": 20871995,
+  "files": [
+    {
+      "path": "ci-jobs.json",
+      "bytes": 13439,
+      "sha256": "db79c13f58e0bb63a8147125dea785ac5720f0e14fda5cc03b12af164f4bd9e1"
+    },
+    {
+      "path": "ci-run.json",
+      "bytes": 14496,
+      "sha256": "7d73f5059208a3a104a2fa16a9bc46266016ceb52347fd65ddaeb630a4c2ecac"
+    },
+    {
+      "path": "conditions.csv",
+      "bytes": 2058,
+      "sha256": "4da58c2dd77a51bc4b8e0fd998deb87f504eb7d3cdaa8a0395a8869f33e20b0f"
+    },
+    {
+      "path": "conditions.md",
+      "bytes": 3481,
+      "sha256": "3474a9437ef84dad2cea40df0cd7bc85e93c082a9808f63bb37e85edc07fdca8"
+    },
+    {
+      "path": "config.json",
+      "bytes": 681,
+      "sha256": "68c897b2098569148ebd68ac9523e00cb5f189f2d68f338d8ed8f665551b421b"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 2279,
+      "sha256": "695ab8597c8a5d3a5aa3521206b42d7197d1479219a0d814a5a846fead13268c"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 2279,
+      "sha256": "695ab8597c8a5d3a5aa3521206b42d7197d1479219a0d814a5a846fead13268c"
+    },
+    {
+      "path": "report.md",
+      "bytes": 1426,
+      "sha256": "77b072194f1f92b4710e392cf0f9c163d0e265700f26a27689526664f887c7d7"
+    },
+    {
+      "path": "runs.json",
+      "bytes": 15963791,
+      "sha256": "1b5053d4bf60b6ef8fcfb9552eb8901e449b1094519f065ed0162dfcf1b33879"
+    },
+    {
+      "path": "study.json",
+      "bytes": 4794539,
+      "sha256": "3eacdd84f3f0f06518261ed4de4a5430590dd10be18cf11244c163d0fdd2f47f"
+    },
+    {
+      "path": "summary.csv",
+      "bytes": 34181,
+      "sha256": "0004bc0d2beb319a1010746c8a909a502f41fad12d48e54ef536f8762683521a"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 37157,
+      "sha256": "ec3ed5bf9ac2b93b22e6c57388edfe47bc1ac6ee241ad5e0c97d911f0a7c43a5"
+    },
+    {
+      "path": "verification/metadata.json",
+      "bytes": 1634,
+      "sha256": "c9ced917dbaf6d50c83b12d6fce56f72fb899dcfbdb31f122efb680155daa6e1"
+    },
+    {
+      "path": "verification/verification.json",
+      "bytes": 554,
+      "sha256": "785d252c4b4c4b400b2dbe15eb423c168b96f44b2143e7159cc7f3b527604654"
+    }
+  ]
+}
