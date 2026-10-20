@@ -34,6 +34,14 @@ class CliTests(unittest.TestCase):
             self.assertEqual(len(read_json(root/"output/study.json")["single_hold_cases"]), 2)
             self.assertIn("Matched gain", (root/"output/conditions.md").read_text())
             self.assertTrue((root/"output/conditions.csv").exists())
+            # A test fixture identifies its own snapshot; the test suite may run
+            # from an installed wheel or an intentionally dirty development tree.
+            metadata = json.loads((root/"output/metadata.json").read_text())
+            metadata.update(git_status="", git_commit="test-fixture")
+            (root/"output/metadata.json").write_text(json.dumps(metadata))
+            self.assertEqual(self.invoke("verify-wall-study", "--study", str(root/"output/study.json"),
+                                         "--output", str(root/"verification")), 0)
+            self.assertEqual(read_json(root/"verification/verification.json")["runs"], 8)
 
     def test_allocation_audit_artifacts_and_invalid_evidence(self):
         from tick_trap.certification_study import certification_study

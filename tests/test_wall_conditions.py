@@ -4,7 +4,7 @@ import unittest
 
 from tick_trap.controllers import decide
 from tick_trap.dynamics import WallState
-from tick_trap.wall_conditions import wall_condition_study
+from tick_trap.wall_conditions import wall_condition_study, verify_wall_condition_study
 
 
 class WallConditionStudyTests(unittest.TestCase):
@@ -82,6 +82,35 @@ class WallConditionStudyTests(unittest.TestCase):
             spec["cases"][0].update(changed)
             with self.assertRaises(ValueError):
                 wall_condition_study(spec)
+
+    def test_exact_replay_ignores_only_measured_times_and_deadline_observations(self):
+        spec = self.spec()
+        study = wall_condition_study(spec)
+        runs = study.pop("runs")
+        runs[0]["solve_ns_total"] = 999
+        runs[0]["records"][0]["deadline_missed"] = True
+        result = verify_wall_condition_study(spec, study, runs)
+        self.assertEqual(result["status"], "verified")
+        self.assertEqual(result["runs"], 32)
+
+    def test_replay_rejects_changed_states_actions_constraints_and_truth_labels(self):
+        spec = self.spec()
+        original = wall_condition_study(spec)
+        original_runs = original.pop("runs")
+        changes = [
+            lambda s, r: r[0]["records"][0].__setitem__("action_exact", "-10"),
+            lambda s, r: r[0]["records"][0]["end_state"].__setitem__("d_exact", "100"),
+            lambda s, r: r[0]["records"][0].__setitem__("barrier_safe", False),
+            lambda s, r: s["single_hold_cases"][0]["controls"][0].__setitem__("joint_safe", False),
+            lambda s, r: s["single_hold_cases"][0]["selected"]["breeden_second_order"]["details"].__setitem__("margin_exact", "0"),
+            lambda s, r: s["groups"][0].__setitem__("accepted_safe", 999),
+            lambda s, r: r.pop(),
+        ]
+        for change in changes:
+            study, runs = deepcopy(original), deepcopy(original_runs)
+            change(study, runs)
+            with self.assertRaises(ValueError):
+                verify_wall_condition_study(spec, study, runs)
 
 
 if __name__ == "__main__":

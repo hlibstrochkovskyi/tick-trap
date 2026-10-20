@@ -17,7 +17,7 @@ from .planar_experiments import PlanarConfig, load_planar_grid, run_planar
 from .planar_reporting import write_planar_runs
 from .reporting import counterexample_svg, provenance, read_json, write_json, write_runs
 from .verification import verify_planar_runs
-from .wall_conditions import wall_condition_study
+from .wall_conditions import wall_condition_study, verify_wall_condition_study
 
 
 def main(argv=None):
@@ -32,6 +32,11 @@ def main(argv=None):
     allocation.add_argument("--study", default="results/audit-final/auxiliary-total-work/study.json")
     allocation.add_argument("--metadata", help="Input metadata (defaults to metadata.json beside the study)")
     allocation.add_argument("--output", default="results/allocation-audit")
+    wall_verification = sub.add_parser("verify-wall-study", help="Regenerate scientific fields in a saved wall condition study")
+    wall_verification.add_argument("--study", default="results/breeden-study/study.json")
+    wall_verification.add_argument("--runs", help="Defaults to runs.json beside the study")
+    wall_verification.add_argument("--metadata", help="Defaults to metadata.json beside the study")
+    wall_verification.add_argument("--output", default="results/breeden-verification")
     for command, help_text, default in [
         ("run", "Run a single wall configuration", "configs/wall.json"),
         ("sweep", "Run a reproducible Cartesian experiment grid", "configs/baselines.json"),
@@ -62,6 +67,23 @@ def main(argv=None):
             write_json(output/"metadata.json", provenance(result))
             (output/"counterexample.svg").write_text(counterexample_svg())
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
+        elif args.command == "verify-wall-study":
+            study_path = Path(args.study)
+            runs_path = Path(args.runs) if args.runs else study_path.with_name("runs.json")
+            metadata_path = Path(args.metadata) if args.metadata else study_path.with_name("metadata.json")
+            source = read_json(metadata_path)
+            if source["git_status"] != "":
+                raise ValueError("Wall study must identify a clean source snapshot")
+            # Display floats remain floats for comparison; scientific quantities
+            # are already carried by canonical exact rational fields.
+            result = verify_wall_condition_study(source["configuration"], json.loads(study_path.read_text()), json.loads(runs_path.read_text()))
+            output.mkdir(parents=True, exist_ok=True)
+            write_json(output/"verification.json", result)
+            write_json(output/"metadata.json", provenance({"input_source_commit": source["git_commit"],
+                       "study_sha256": hashlib.sha256(study_path.read_bytes()).hexdigest(),
+                       "runs_sha256": hashlib.sha256(runs_path.read_bytes()).hexdigest(),
+                       "input_metadata_sha256": hashlib.sha256(metadata_path.read_bytes()).hexdigest()}))
+            print(f"Verified {result['runs']} wall runs, {result['executed_holds']} holds and {result['fixed_control_checks']} fixed controls.")
         elif args.command == "allocation-audit":
             study_path = Path(args.study)
             metadata_path = Path(args.metadata) if args.metadata else study_path.with_name("metadata.json")

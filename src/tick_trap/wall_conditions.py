@@ -2,6 +2,7 @@
 
 from fractions import Fraction
 from itertools import product
+import json
 
 from .algebraic_reference import exact_sign_reference
 from .controllers import decide
@@ -138,3 +139,30 @@ def wall_condition_study(spec):
                        "collisions": sum(r["collision_observed"] for r in trajectories)})
     return {"methods": methods, "single_hold_cases": comparisons, "groups": groups, "runs": runs,
             "scope": "Restricted wall specializations of Breeden 2103.03677v1 Theorems 1–3; exact model, observations and held actuation. Fixed and gamma/T-matched gains are separate. Geometric safety, barrier preservation and viability are distinct; no global feasibility or full paper reproduction claim."}
+
+
+def verify_wall_condition_study(spec, study, runs):
+    """Regenerate all scientific fields; exclude empirical timing observations.
+
+    This is a consistency replay using the same controllers and exact model,
+    including the independent algebraic signs for the fixed-control reference.
+    It is not an independent implementation of the complete experiment.
+    """
+    timing_fields = {"solve_ns", "solve_ns_total", "certification_ns", "certification_ns_total",
+                     "deadline_missed", "deadline_misses"}
+    def scientific(value):
+        if isinstance(value, dict):
+            return {k: scientific(v) for k, v in value.items() if k not in timing_fields}
+        if isinstance(value, list):
+            return [scientific(v) for v in value]
+        return value
+    expected = wall_condition_study(spec)
+    expected_runs = expected.pop("runs")
+    encode = lambda value: json.dumps(scientific(value), sort_keys=True, allow_nan=False)
+    if encode(study) != encode(expected) or encode(runs) != encode(expected_runs):
+        raise ValueError("Wall study scientific evidence disagrees with exact regeneration")
+    return {"status": "verified", "single_hold_cases": len(study["single_hold_cases"]),
+            "fixed_control_checks": sum(len(c["controls"]) for c in study["single_hold_cases"]),
+            "runs": len(runs), "executed_holds": sum(r["executed_steps"] for r in runs),
+            "excluded_fields": sorted(timing_fields),
+            "scope": "Exact scientific-record regeneration using the declared model and controllers; independent algebraic signs cross-check fixed-control minima. Timing and deadline observations, physical-model validity and original paper experiments are not verified."}
