@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from .benchmark import benchmark
+from .allocation_audit import allocation_audit
 from .certification_study import certification_study
 from .dynamics import Circle, PlanarState, WallState
 from .experiments import RunConfig, load_grid, run
@@ -26,6 +27,10 @@ def main(argv=None):
     verification = sub.add_parser("verify", help="Replay exact planar run records and retained-plan proofs")
     verification.add_argument("--runs", default="results/continuations/runs.json")
     verification.add_argument("--output", default="results/verification")
+    allocation = sub.add_parser("allocation-audit", help="Replay certification evidence and trace shared subdivision work")
+    allocation.add_argument("--study", default="results/audit-final/auxiliary-total-work/study.json")
+    allocation.add_argument("--metadata", help="Input metadata (defaults to metadata.json beside the study)")
+    allocation.add_argument("--output", default="results/allocation-audit")
     for command, help_text, default in [
         ("run", "Run a single wall configuration", "configs/wall.json"),
         ("sweep", "Run a reproducible Cartesian experiment grid", "configs/baselines.json"),
@@ -55,6 +60,40 @@ def main(argv=None):
             write_json(output/"metadata.json", provenance(result))
             (output/"counterexample.svg").write_text(counterexample_svg())
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
+        elif args.command == "allocation-audit":
+            study_path = Path(args.study)
+            metadata_path = Path(args.metadata) if args.metadata else study_path.with_name("metadata.json")
+            source = read_json(metadata_path)
+            if source["git_status"] != "" or not source["git_commit"] or not source["source_sha256"]:
+                raise ValueError("Input study must identify a clean source snapshot")
+            result = allocation_audit(source["configuration"], read_json(study_path))
+            output.mkdir(parents=True, exist_ok=True)
+            write_json(output/"audit.json", result)
+            spec = {"study_file": str(study_path.resolve()), "study_sha256": hashlib.sha256(study_path.read_bytes()).hexdigest(),
+                    "input_metadata_file": str(metadata_path.resolve()),
+                    "input_metadata_sha256": hashlib.sha256(metadata_path.read_bytes()).hexdigest(),
+                    "input_source_commit": source["git_commit"], "input_source_sha256": source["source_sha256"]}
+            write_json(output/"metadata.json", provenance(spec))
+            columns = ["strategy", "tolerance_exact", "budget", "controls", "accepted", "rejected", "unknown",
+                       "allocation_limited_controls", "unknown_at_full_per_polynomial_limits", "allocation_limited_unknown_queries",
+                       "total_subdivisions", "subdivisions_after_sign_decisions"]
+            with (output/"summary.csv").open("w", newline="") as stream:
+                writer = csv.DictWriter(stream, fieldnames=columns, extrasaction="ignore")
+                writer.writeheader()
+                writer.writerows(result["groups"])
+            lines = ["# Certification work allocation audit", "", result["scope"], "",
+                     "| Strategy | Tolerance | Budget | Accepted | Rejected | Unknown | Allocation-limited unknown controls | Unknown at full per-polynomial limits | Splits beyond sign decisions |",
+                     "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
+            for g in result["groups"]:
+                lines.append(f"| {g['strategy']} | {g['tolerance_exact']} | {g['budget']} | {g['accepted']} | {g['rejected']} | {g['unknown']} | "
+                             f"{g['allocation_limited_controls']} | {g['unknown_at_full_per_polynomial_limits']} | {g['subdivisions_after_sign_decisions']} |")
+            lines += ["", "Full per-polynomial allowances can spend more total work than the shared budget. They are an offline counterfactual.",
+                      "Refinement after a sign decision can still be needed for the minimum-enclosure width request.",
+                      "Unknown at the full allowance means unresolved at these limits, not mathematically undecidable.",
+                      "These traces do not change controller decisions, certify a fallback, or bound elapsed computation time.",
+                      "[Exact query traces](audit.json) · [Input hashes and replay source](metadata.json)", ""]
+            (output/"report.md").write_text("\n".join(lines))
+            print(f"Replayed {result['property_configurations']} property configurations and {result['replayed_queries']} polynomial queries.")
         elif args.command == "verify":
             result = verify_planar_runs(read_json(args.runs))
             output.mkdir(parents=True, exist_ok=True)

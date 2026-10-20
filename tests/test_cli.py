@@ -23,6 +23,30 @@ class CliTests(unittest.TestCase):
             self.assertIn("<svg", (Path(folder)/"counterexample.svg").read_text())
             self.assertEqual(read_json(Path(folder)/"metadata.json")["project"], "tick-trap")
 
+    def test_allocation_audit_artifacts_and_invalid_evidence(self):
+        from tick_trap.certification_study import certification_study
+        spec = {"base": {"grid_points": 2}, "budget_scope": "per_control", "repeats": 1,
+                "budgets": [8], "strategies": ["minimum", "sign", "auxiliary_sign"],
+                "cases": [dict(name="precision", p=["1.67", 0], v=[-1, 0], nominal=[1, -1],
+                               duration=1, a_max=2, obstacles=[dict(center=[0, 0], radius=1)])]}
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            study = root/"study.json"
+            study.write_text(json.dumps(certification_study(spec)))
+            source = {"configuration": spec, "git_status": "", "git_commit": "test-fixture", "source_sha256": "test-fixture"}
+            (root/"metadata.json").write_text(json.dumps(source))
+            output = root/"output"
+            self.assertEqual(self.invoke("allocation-audit", "--study", str(study), "--output", str(output)), 0)
+            self.assertEqual(read_json(output/"audit.json")["status"], "verified")
+            self.assertEqual(read_json(output/"metadata.json")["configuration"]["input_source_commit"], "test-fixture")
+            self.assertIn("offline counterfactual", (output/"report.md").read_text())
+            self.assertTrue((output/"summary.csv").is_file())
+            invalid = json.loads(study.read_text())
+            invalid["measurements"].pop()
+            study.write_text(json.dumps(invalid))
+            self.assertEqual(self.invoke("allocation-audit", "--study", str(study), "--output", str(root/"invalid")), 2)
+            self.assertFalse((root/"invalid/audit.json").exists())
+
     def test_run_and_sweep_artifacts(self):
         with tempfile.TemporaryDirectory() as folder:
             config = Path(folder)/"config.json"
