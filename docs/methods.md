@@ -16,6 +16,8 @@ violation. This removes solver tolerance as a confound in the initial experiment
 | `continuous_cbf` | `-v-tau*u+k*(d-tau*v)>=0` at updates | Emulated continuous feedback; no hold guarantee |
 | `endpoint` | `d(T)>=(1-gamma)*d(0)` | Sampled endpoint constraint only |
 | `breeden` | Continuous CBF condition tightened by a reachable-tube margin | Published sampled-data sufficient condition, specialized here |
+| `breeden_reachable` | Exact reachable-error margin for the wall barrier | Breeden v1 Theorem 2 specialization |
+| `breeden_second_order` | Second-derivative upper bound; effective gain gamma/T | Breeden v1 Theorem 3 specialization |
 | `zocbf` | `d(T)>=(1-gamma)*d(0)+delta` | Published zero-order condition with a local flow bound |
 | `exact_hold` | `min d(t)>=0` and viable terminal state | Restricted-system reference, not a novel controller |
 
@@ -41,6 +43,11 @@ enclosures. The state and input model must match; the inequalities must remain
 feasible at each update. This implements their sufficient condition on a simple
 system, not their controller's published experiments or their least conservative
 variant.
+
+Two additional published conditions are now specialized on the same wall model.
+The [derivation and assumptions](breeden-wall.md) give the exact reachable-error
+supremum and second-order bound, including the latter's distinct effective gain
+gamma/T. The original `breeden` implementation remains unchanged.
 
 ## Zero-order condition
 
