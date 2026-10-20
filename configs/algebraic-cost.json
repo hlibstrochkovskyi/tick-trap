@@ -1,0 +1,311 @@
+{
+  "base": {
+    "grid_points": 5,
+    "command_quantum": "1e-6",
+    "tolerance": "1e-14",
+    "max_subdivisions": 4096
+  },
+  "cases": [
+    {
+      "name": "short_safe_near_obstacle",
+      "p": [
+        "1.2",
+        "0"
+      ],
+      "v": [
+        "-0.1",
+        "0"
+      ],
+      "nominal": [
+        "0",
+        "0"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "1"
+        }
+      ],
+      "duration": "0.1",
+      "a_max": "2"
+    },
+    {
+      "name": "multiple_obstacle_approach",
+      "p": [
+        "-2",
+        "0.3"
+      ],
+      "v": [
+        "1",
+        "0"
+      ],
+      "nominal": [
+        "2",
+        "0"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "0.5"
+        },
+        {
+          "center": [
+            "1.2",
+            "-0.7"
+          ],
+          "radius": "0.4"
+        }
+      ],
+      "duration": "0.4",
+      "a_max": "2"
+    },
+    {
+      "name": "unrelaxed_stationary_state",
+      "p": [
+        "-0.6",
+        "0.3"
+      ],
+      "v": [
+        "0",
+        "0"
+      ],
+      "nominal": [
+        "2.6",
+        "0.4"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "0.5"
+        },
+        {
+          "center": [
+            "1.2",
+            "-0.7"
+          ],
+          "radius": "0.4"
+        }
+      ],
+      "duration": "0.4",
+      "a_max": "2"
+    },
+    {
+      "name": "relaxed_stationary_state",
+      "p": [
+        "-0.52",
+        "0.3"
+      ],
+      "v": [
+        "0",
+        "0"
+      ],
+      "nominal": [
+        "2.52",
+        "0.4"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "0.5"
+        },
+        {
+          "center": [
+            "1.2",
+            "-0.7"
+          ],
+          "radius": "0.4"
+        }
+      ],
+      "duration": "0.4",
+      "a_max": "2"
+    },
+    {
+      "name": "interior_braking_margin",
+      "p": [
+        "1.67",
+        "0"
+      ],
+      "v": [
+        "-1",
+        "0"
+      ],
+      "nominal": [
+        "1",
+        "0"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "1"
+        }
+      ],
+      "duration": "1",
+      "a_max": "2"
+    },
+    {
+      "name": "auxiliary_tangent_positive",
+      "p": [
+        "1.231168",
+        "0"
+      ],
+      "v": [
+        "-0.90112",
+        "0"
+      ],
+      "nominal": [
+        "0.8704",
+        "0"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "0.599999999"
+        }
+      ],
+      "duration": "1",
+      "a_max": "2"
+    },
+    {
+      "name": "auxiliary_exact_tangent",
+      "p": [
+        "1.231168",
+        "0"
+      ],
+      "v": [
+        "-0.90112",
+        "0"
+      ],
+      "nominal": [
+        "0.8704",
+        "0"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "0.6"
+        }
+      ],
+      "duration": "1",
+      "a_max": "2"
+    },
+    {
+      "name": "auxiliary_tangent_negative",
+      "p": [
+        "1.231168",
+        "0"
+      ],
+      "v": [
+        "-0.90112",
+        "0"
+      ],
+      "nominal": [
+        "0.8704",
+        "0"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "0.600000001"
+        }
+      ],
+      "duration": "1",
+      "a_max": "2"
+    },
+    {
+      "name": "geometric_sign_inferred",
+      "p": [
+        "-0.3",
+        "1.06"
+      ],
+      "v": [
+        "1",
+        "0"
+      ],
+      "nominal": [
+        "0",
+        "0"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "1"
+        }
+      ],
+      "duration": "1",
+      "a_max": "1",
+      "lambda1": "3"
+    },
+    {
+      "name": "negative_geometry_auxiliary_unknown",
+      "p": [
+        "2",
+        "0"
+      ],
+      "v": [
+        "-1",
+        "0"
+      ],
+      "nominal": [
+        "0",
+        "0"
+      ],
+      "obstacles": [
+        {
+          "center": [
+            "0",
+            "0"
+          ],
+          "radius": "1"
+        }
+      ],
+      "duration": "2.9",
+      "a_max": "1"
+    }
+  ],
+  "strategies": [
+    "sacbf_relaxed",
+    "minimum",
+    "sign",
+    "auxiliary_sign",
+    "sturm"
+  ],
+  "tolerances": [
+    "1e-6",
+    "1e-12"
+  ],
+  "budgets": [
+    0,
+    8,
+    64
+  ],
+  "repeats": 5,
+  "seed": 20261020,
+  "budget_scope": "per_control"
+}

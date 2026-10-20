@@ -38,3 +38,14 @@ An algebraic `safe` result never changes an online `unknown` certificate or its
 recorded work budget. Offline comparisons store both answers. A disagreement
 between resolved answers is an error. Reference work is excluded from timed
 online predicates and measured separately.
+
+The optional `sturm` strategy in `certification-study` additionally reruns this
+same algebra inside the measured region on both h and psi. It rebuilds all
+polynomials and sign evidence, rather than looking up offline answers. Its
+single parameter-free measurement group is reused across numerical settings.
+It is an offline cost comparator, not an online controller, and never replaces
+a recorded Bernstein unknown. Zero subdivisions do not imply zero work: exact
+rational coefficient growth is not bounded by a Bernstein split allowance or
+a hard execution deadline. Agreement with its own offline reference is not
+an independent validation of the algebraic method; the factored test cases and
+resolved Bernstein comparisons supply separate checks.

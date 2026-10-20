@@ -318,7 +318,7 @@ def main(argv=None):
                     lines.append(f"| {pair['baseline']} / {pair['candidate']} | {pair['tolerance_exact']} | {pair['budget']} | {d['p10']:.3f} | {d['median']:.3f} | {d['p90']:.3f} |")
                 lines += ["", "All strategies target continuous h and psi safety at the same declared controls.",
                           "auxiliary_sign certifies psi and derives h by linear comparison; it reports no numerical geometric minimum.",
-                          "SACBF rejection is a failed sufficient condition; polynomial rejection has a negative witness.",
+                          "SACBF rejection is a failed sufficient condition; Bernstein rejection has a negative witness; Sturm rejection has an exact algebraic sign proof.",
                           "Initial-domain exclusions are not counted as rejections. Unknown reference signs remain unknown.",
                           "Minimum and sign queries use identical tolerances/budgets; sign stopping need not attain the minimum width.",
                           f"Subdivision budget scope: {result['budget_scope']}. Native SACBF has no subdivisions; its repeated measurements are reused across tolerance/budget comparisons.",
