@@ -9,12 +9,16 @@ continuous-trajectory safety, and viability. It starts with analytically solvabl
 wall braking and planar acceleration-controlled robots. There is no claim of a
 new safety controller or publication-level novelty.
 
-The [latest certification audit](docs/validation-audit.md) passes 150 tests and
-compares four strategies using matched commands and explicit work budgets.
+The [certification audit](docs/validation-audit.md) compares four strategies
+using matched commands and explicit work budgets.
 It adds an independent exact polynomial sign reference and distinguishes an
 unresolved offline oracle from a valid online comparison proof. The
 [source-hashed summary](docs/data/audit-summary.json) links to complete archived
 evidence; all guarantees remain conditional on the declared ideal model.
+
+The [work allocation follow-up](docs/validation-allocation.md) replays 20,160
+polynomial queries to explain which unresolved decisions result from prior
+queries consuming a shared budget. The current suite passes 159 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 

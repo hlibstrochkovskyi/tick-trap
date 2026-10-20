@@ -1,5 +1,9 @@
 # Certification audit — 20 October 2026
 
+This is the completed audit snapshot. The [subsequent allocation
+replay](validation-allocation.md) explains its shared-budget result with per-query
+evidence and extends the suite to 159 tests, retaining the original study data.
+
 This milestone strengthens the existing instrument, without introducing a new
 controller. All 150 tests pass in a fresh clone and virtual environment. The
 [hosted CI run](https://github.com/hlibstrochkovskyi/tick-trap/actions/runs/39338053136)

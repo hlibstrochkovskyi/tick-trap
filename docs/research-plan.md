@@ -40,6 +40,12 @@ is a later extension requiring its own validity argument.
    unnecessary minimum refinement. This is established numerical engineering,
    not an original algorithm. Remaining work includes broader algebra/CCD
    baselines, full selected paper reproductions, and robust learning assumptions.
+   The subsequent [certification audit](validation-audit.md) expands this to 259
+   commands, adds an independently coded exact algebraic sign reference, and
+   compares per-polynomial with shared total budgets. The [allocation
+   replay](validation-allocation.md) now traces why some shared-budget decisions
+   are lost. These diagnostics preserve every existing predicate and unknown;
+   they do not establish a new algorithm or sufficient same-budget improvement.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.
