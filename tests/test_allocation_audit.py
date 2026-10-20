@@ -126,6 +126,24 @@ class AllocationAuditTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 allocation_audit(self.spec, study)
 
+    def test_algebraic_comparator_is_replayed_without_a_fictitious_split_budget(self):
+        spec = self.spec | {"strategies": ["sturm", "auxiliary_sign"]}
+        study = certification_study(spec)
+        report = allocation_audit(spec, study)
+        exact = [r for r in report["measurements"] if r["strategy"] == "sturm"]
+        self.assertTrue(exact)
+        self.assertTrue(all(r["budget"] is None and not r["trace"] and r["status"] != "unknown" for r in exact))
+        for change in (
+                lambda r: r["result"]["proofs"][0]["evidence"].__setitem__("status", "unsafe"),
+                lambda r: r["result"].__setitem__("work_scope", "equal subdivision work"),
+                lambda r: r.__setitem__("budget", 0)):
+            tampered = deepcopy(study)
+            row = next(r for r in tampered["measurements"] if r["strategy"] == "sturm"
+                       and r["result"]["proofs"][0]["status"] == "safe")
+            change(row)
+            with self.assertRaises(ValueError):
+                allocation_audit(spec, tampered)
+
 
 if __name__ == "__main__":
     unittest.main()

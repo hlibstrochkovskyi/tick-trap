@@ -10,7 +10,7 @@ import json
 
 from .algebraic_reference import exact_sign_reference
 from .barrier_paths import auxiliary_polynomial
-from .certification_study import STRATEGIES
+from .certification_study import PARAMETER_FREE, STRATEGIES
 from .dynamics import Circle, PlanarState
 from .numbers import positive, q, vector2
 from .planar_control import candidate_actions, hocbf_constraints
@@ -70,8 +70,8 @@ def allocation_audit(spec, study):
     budgets = [_integer(b, "budget") for b in spec.get("budgets", [256])]
     _require(tolerances and budgets and len(set(tolerances)) == len(tolerances) and len(set(budgets)) == len(budgets),
              "Invalid or duplicate numerical settings")
-    settings = ([(s, None, None) for s in strategies if s == "sacbf_relaxed"] +
-                [(s, str(t), b) for t in tolerances for b in budgets for s in strategies if s != "sacbf_relaxed"])
+    settings = ([(s, None, None) for s in strategies if s in PARAMETER_FREE] +
+                [(s, str(t), b) for t in tolerances for b in budgets for s in strategies if s not in PARAMETER_FREE])
     _require(study["strategies"] == strategies and _integer(study["seed"], "study seed") == _integer(spec.get("seed", 20261019), "seed")
              and _integer(study["repeats"], "study repeats", 1) == _integer(spec.get("repeats", 5), "repeats", 1), "Study configuration mismatch")
     base, cases = spec.get("base", {}), spec.get("cases", [])
@@ -147,6 +147,14 @@ def allocation_audit(spec, study):
                     assessments = [sacbf_assessment(state, action, o, duration, lambda1, lambda2, True) for o in obstacles]
                     result = {"status": "accepted" if all(a["accepted"] for a in assessments) else "rejected",
                               "subdivisions": 0, "assessments": assessments}
+                    counterfactual = result["status"]
+                elif strategy == "sturm":
+                    # Reconstruct from independently regenerated signs rather
+                    # than accepting the timed comparator's saved algebra.
+                    proofs = [{"property": name, "status": evidence[name]["status"], "goal": "exact_sign",
+                               "evidence": evidence[name]} for evidence in independent for name in ("h", "psi")]
+                    result = {"status": _decision([p["status"] for p in proofs]), "subdivisions": 0, "proofs": proofs,
+                              "work_scope": "Exact rational algebra; no subdivision budget or hard runtime bound"}
                     counterfactual = result["status"]
                 else:
                     tolerance = positive(tolerance_text)

@@ -13,7 +13,8 @@ from .planar_audit import audit_cases
 from .polynomial import certify_minimum, certify_sign
 from .sampling import sacbf_assessment
 
-STRATEGIES = ("sacbf_relaxed", "minimum", "sign", "auxiliary_sign")
+STRATEGIES = ("sacbf_relaxed", "minimum", "sign", "auxiliary_sign", "sturm")
+PARAMETER_FREE = ("sacbf_relaxed", "sturm")
 
 
 def _integer(value, name, minimum=0):
@@ -24,10 +25,24 @@ def _integer(value, name, minimum=0):
 
 def _evaluate(strategy, state, action, obstacles, duration, lambda1, lambda2, tolerance, budget,
               budget_scope="per_polynomial"):
+    if strategy not in STRATEGIES:
+        raise ValueError("Unsupported property-evaluation strategy")
     if strategy == "sacbf_relaxed":
         assessments = [sacbf_assessment(state, action, o, duration, lambda1, lambda2, True) for o in obstacles]
         return {"status": "accepted" if all(a["accepted"] for a in assessments) else "rejected",
                 "subdivisions": 0, "assessments": assessments}
+    if strategy == "sturm":
+        proofs = []
+        for obstacle in obstacles:
+            h = obstacle.polynomial(state, action)
+            psi = tuple(lambda1*c+((i+1)*h[i+1] if i+1 < len(h) else 0) for i, c in enumerate(h))
+            for name, polynomial in (("h", h), ("psi", psi)):
+                evidence = exact_sign_reference(polynomial, duration)
+                proofs.append({"property": name, "status": evidence["status"], "goal": "exact_sign",
+                               "evidence": evidence})
+        return {"status": "rejected" if any(p["status"] == "unsafe" for p in proofs) else "accepted",
+                "subdivisions": 0, "proofs": proofs,
+                "work_scope": "Exact rational algebra; no subdivision budget or hard runtime bound"}
     certifier = certify_sign if strategy == "sign" else certify_minimum
     proofs, implications, used = [], [], 0
     def available():
@@ -81,7 +96,7 @@ def paired_comparisons(rows, strategies, tolerances, budgets):
         for budget in budgets:
             matched = {}
             for row in rows:
-                if row["strategy"] == "sacbf_relaxed" or (row["tolerance_exact"], row["budget"]) == (str(tolerance), budget):
+                if row["strategy"] in PARAMETER_FREE or (row["tolerance_exact"], row["budget"]) == (str(tolerance), budget):
                     matched.setdefault((row["case_index"], row["candidate_index"]), {})[row["strategy"]] = row
             for baseline, candidate in combinations(strategies, 2):
                 transitions, ratios, differences, repeated_ratios = {}, [], [], []
@@ -113,6 +128,10 @@ def certification_study(spec):
     Every strategy targets both path properties at every obstacle; auxiliary_sign
     derives the geometric property rather than querying its polynomial sign.
     Repeated measurements are interleaved in a seeded shuffled order per control.
+    The optional sturm comparator reruns the independent algebraic reference
+    inside the measured region; it does not read cached offline answers or
+    replace any online unknown. Its finite-degree algebra has no subdivision
+    allowance, so its zero split count is not an equal-work comparison.
     Costs include polynomial/condition construction and exact evidence assembly,
     but exclude candidate generation, control selection and offline reference work.
     """
@@ -135,8 +154,8 @@ def certification_study(spec):
     if len(set(tolerances)) != len(tolerances) or len(set(budgets)) != len(budgets):
         raise ValueError("Duplicate tolerances or budgets would duplicate matched queries")
     reference = audit_cases({"base": spec.get("base", {}), "cases": spec.get("cases", [])})
-    settings = ([(s, None, None) for s in strategies if s == "sacbf_relaxed"] +
-                [(s, t, b) for t in tolerances for b in budgets for s in strategies if s != "sacbf_relaxed"])
+    settings = ([(s, None, None) for s in strategies if s in PARAMETER_FREE] +
+                [(s, t, b) for t in tolerances for b in budgets for s in strategies if s not in PARAMETER_FREE])
     rng, rows = Random(seed), []
     for case_index, (case, evidence) in enumerate(zip(spec["cases"], reference)):
         config = spec.get("base", {}) | case

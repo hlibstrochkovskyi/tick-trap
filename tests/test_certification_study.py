@@ -107,6 +107,34 @@ class CertificationStudyTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             certification_study(self.spec() | {"budget_scope": "unknown"})
 
+    def test_sturm_is_measured_once_and_paired_without_a_subdivision_allowance(self):
+        result = certification_study(self.spec() | {"strategies": ["sacbf_relaxed", "minimum", "sign", "auxiliary_sign", "sturm"]})
+        self.assertEqual(len(result["groups"]), 8)
+        self.assertEqual(len(result["paired_comparisons"]), 20)
+        exact = [r for r in result["measurements"] if r["strategy"] == "sturm"]
+        self.assertEqual(len(exact), result["reference"][0]["candidate_count"])
+        for row in exact:
+            self.assertIsNone(row["budget"])
+            self.assertIsNone(row["tolerance_exact"])
+            self.assertEqual(row["result"]["subdivisions"], 0)
+            self.assertEqual(row["result"]["status"], "accepted" if row["independent_reference_status"] == "safe" else "rejected")
+            self.assertEqual([p["property"] for p in row["result"]["proofs"]], ["h", "psi"])
+            self.assertEqual(len(row["all_predicate_ns"]), result["repeats"])
+        for pair in result["paired_comparisons"]:
+            self.assertEqual(pair["controls"], len(exact))
+
+    def test_exact_tangency_is_resolved_without_changing_a_bernstein_unknown(self):
+        spec = {"base": {"grid_points": 2}, "strategies": ["auxiliary_sign", "sturm"], "repeats": 1,
+                "budgets": [0, 8], "tolerances": ["1e-12"], "cases": [
+                    {"name": "exact_tangent", "p": ["1.231168", 0], "v": ["-0.90112", 0],
+                     "nominal": ["0.8704", 0], "duration": 1, "a_max": 2,
+                     "obstacles": [{"center": [0, 0], "radius": "0.6"}]}]}
+        result = certification_study(spec)
+        first = [r for r in result["measurements"] if r["candidate_index"] == 0]
+        self.assertEqual(next(r["result"]["status"] for r in first if r["strategy"] == "sturm"), "accepted")
+        self.assertTrue(all(r["result"]["status"] == "unknown" for r in first if r["strategy"] == "auxiliary_sign"))
+        self.assertTrue(all(r["reference_status"] == "unknown" for r in first))
+
 
 if __name__ == "__main__":
     unittest.main()

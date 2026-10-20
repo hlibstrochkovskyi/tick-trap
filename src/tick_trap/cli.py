@@ -294,7 +294,7 @@ def main(argv=None):
                     writer.writeheader()
                     writer.writerows(result["groups"])
                 lines = ["# tick-trap matched high-order certification cost", "", result["scope"], "",
-                         "| Strategy | Width tolerance | Splits per polynomial | Queries | Accepted | Rejected | Unknown | Reference-safe excluded | Reference-safe unresolved | Total splits | Median per-control time (µs) |",
+                         "| Strategy | Width tolerance | Bernstein split budget | Queries | Accepted | Rejected | Unknown | Reference-safe excluded | Reference-safe unresolved | Total splits | Median per-control time (µs) |",
                          "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
                 for row in result["groups"]:
                     lines.append(f"| {row['strategy']} | {row['tolerance_exact']} | {row['budget']} | {row['queries']} | "
@@ -322,6 +322,8 @@ def main(argv=None):
                           "Initial-domain exclusions are not counted as rejections. Unknown reference signs remain unknown.",
                           "Minimum and sign queries use identical tolerances/budgets; sign stopping need not attain the minimum width.",
                           f"Subdivision budget scope: {result['budget_scope']}. Native SACBF has no subdivisions; its repeated measurements are reused across tolerance/budget comparisons.",
+                          "Optional sturm reruns exact algebra inside the timed region; it is not a cache lookup or an online controller.",
+                          "Sturm has no subdivision allowance or hard runtime bound; zero splits do not mean zero cost or equal work. Its one measured group is reused across numerical settings.",
                           "Independent exact algebraic signs distinguish safe/unsafe h-and-psi paths; unsafe psi alone does not mean collision.",
                           "Online unknowns remain unknown even if the independent offline reference resolves their signs.",
                           "Paired ratios divide the baseline per-control median by the candidate median; full repeat distributions and query order are saved.",
