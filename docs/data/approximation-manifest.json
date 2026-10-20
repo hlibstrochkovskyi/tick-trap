@@ -1,0 +1,70 @@
+{
+  "source_git_commit": "aa1c40ed93cbbd6f0976a7b35de8a39f55f2b63d",
+  "source_sha256": "90f32744e802f22d5f281c800dab65b3ef90f46a748be719269abc8e0fc8037d",
+  "archive": "approximation-evidence.tar.gz",
+  "archive_bytes": 20185,
+  "archive_sha256": "6c472a45f01d9879be02a361956ac6c5386258f106d2f379d46a08f4ee01b59f",
+  "uncompressed_bytes": 537477,
+  "files": [
+    {
+      "path": "audit.json",
+      "bytes": 424896,
+      "sha256": "d09d3a4b5a68f267117ba95b80d7a34e7c82dc5040cafbdbc7cad8206851617e"
+    },
+    {
+      "path": "ci-jobs.json",
+      "bytes": 13439,
+      "sha256": "080957b9df0970815641a63f2406dc428fc4d7a5fad198fd23238079bac1f360"
+    },
+    {
+      "path": "ci-run.json",
+      "bytes": 14520,
+      "sha256": "2b0a053a0ecd32065c7a0e9b773941d860a0b5677fa886966a78fde6cff4cddb"
+    },
+    {
+      "path": "config.json",
+      "bytes": 983,
+      "sha256": "bcf498fb3d41f997f7a6ecb2fe65a695ce5135d6e2999bcd381a781a64ae2ca5"
+    },
+    {
+      "path": "dilations.csv",
+      "bytes": 400,
+      "sha256": "0cff4708414a7bfeb3d298d366121f4bbf1c39cf866c546280a4574de077b784"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 2759,
+      "sha256": "a1739cd860af784da772d739da5f0b87fbbb2c59395dc01b5be4c630c9bba95c"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 2759,
+      "sha256": "a1739cd860af784da772d739da5f0b87fbbb2c59395dc01b5be4c630c9bba95c"
+    },
+    {
+      "path": "report.md",
+      "bytes": 1674,
+      "sha256": "47b2ed585ae1b19dc9a48e81a3f11bf99edfefc8824928674a282fe4bd9b5b91"
+    },
+    {
+      "path": "summary.csv",
+      "bytes": 456,
+      "sha256": "642f2170da6b79a19785bd7f213658f92a16a70b7fa77ec4d182273ea2d299c8"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 73744,
+      "sha256": "ea0414bea9d78661a5401d35f6be740985faf7e7e8b09f16946c6a9c4461aeaf"
+    },
+    {
+      "path": "verification/metadata.json",
+      "bytes": 1562,
+      "sha256": "dc49f97bc8c5a4086915818b5fe37c3d0a1473cfd110ecf5cb14988e31f26cf1"
+    },
+    {
+      "path": "verification/verification.json",
+      "bytes": 285,
+      "sha256": "b08ee455038475a5afd006d31b020967ee6301d3172e00b33ae02faa2847a2d0"
+    }
+  ]
+}
