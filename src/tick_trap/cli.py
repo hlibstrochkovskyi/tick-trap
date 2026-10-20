@@ -19,6 +19,7 @@ from .planar_reporting import write_planar_runs
 from .reporting import counterexample_svg, provenance, read_json, write_json, write_runs
 from .verification import verify_planar_runs
 from .wall_conditions import wall_condition_study, verify_wall_condition_study
+from .zocbf_audit import zocbf_contract_study, verify_zocbf_contract_study
 
 
 def main(argv=None):
@@ -42,6 +43,10 @@ def main(argv=None):
     approximation_verification.add_argument("--audit", default="results/approximation-audit/audit.json")
     approximation_verification.add_argument("--metadata", help="Defaults to metadata.json beside the audit")
     approximation_verification.add_argument("--output", default="results/approximation-verification")
+    zocbf_verification = sub.add_parser("verify-zocbf", help="Regenerate a saved local ZOCBF contract audit")
+    zocbf_verification.add_argument("--audit", default="results/zocbf-audit/audit.json")
+    zocbf_verification.add_argument("--metadata", help="Defaults to metadata.json beside the audit")
+    zocbf_verification.add_argument("--output", default="results/zocbf-verification")
     for command, help_text, default in [
         ("run", "Run a single wall configuration", "configs/wall.json"),
         ("sweep", "Run a reproducible Cartesian experiment grid", "configs/baselines.json"),
@@ -54,6 +59,7 @@ def main(argv=None):
         ("planar-audit", "Audit admitted controls against the trajectory certificates", "configs/planar-audit.json"),
         ("wall-conditions", "Compare published sampled-data wall conditions", "configs/breeden-study.json"),
         ("approximation-audit", "Separate approximate endpoints, sampled sets and continuous paths", "configs/approximation-audit.json"),
+        ("zocbf-audit", "Audit local zero-order buffers, input pairing and prediction margins", "configs/zocbf-audit.json"),
     ]:
         item = sub.add_parser(command, help=help_text)
         item.add_argument("--config", default=default)
@@ -73,6 +79,19 @@ def main(argv=None):
             write_json(output/"metadata.json", provenance(result))
             (output/"counterexample.svg").write_text(counterexample_svg())
             print("Safe samples; unsafe continuous trajectory. Minimum: -0.01 m at 0.1 s. Initial state: nonviable.")
+        elif args.command == "verify-zocbf":
+            audit_path = Path(args.audit)
+            metadata_path = Path(args.metadata) if args.metadata else audit_path.with_name("metadata.json")
+            source = read_json(metadata_path)
+            if source["git_status"] != "":
+                raise ValueError("ZOCBF audit must identify a clean source snapshot")
+            result = verify_zocbf_contract_study(source["configuration"], read_json(audit_path))
+            output.mkdir(parents=True, exist_ok=True)
+            write_json(output/"verification.json", result)
+            write_json(output/"metadata.json", provenance({"input_source_commit": source["git_commit"],
+                       "audit_sha256": hashlib.sha256(audit_path.read_bytes()).hexdigest(),
+                       "input_metadata_sha256": hashlib.sha256(metadata_path.read_bytes()).hexdigest()}))
+            print(f"Verified {result['holds']} holds, {result['buffer_assessments']} buffers and {result['condition_assessments']} condition assessments.")
         elif args.command == "verify-approximation":
             audit_path = Path(args.audit)
             metadata_path = Path(args.metadata) if args.metadata else audit_path.with_name("metadata.json")
@@ -147,7 +166,31 @@ def main(argv=None):
             print(f"Verified {result['runs']} runs, {result['executed_holds']} holds and {result['retained_plans']} retained plans.")
         else:
             spec = read_json(args.config)
-            if args.command == "approximation-audit":
+            if args.command == "zocbf-audit":
+                result = zocbf_contract_study(spec)
+                output.mkdir(parents=True, exist_ok=True)
+                write_json(output/"audit.json", result)
+                write_json(output/"metadata.json", provenance(spec))
+                with (output/"summary.csv").open("w", newline="") as stream:
+                    writer = csv.DictWriter(stream, fieldnames=list(result["groups"][0]))
+                    writer.writeheader()
+                    writer.writerows(result["groups"])
+                lines = ["# Local zero-order constraint contracts", "", result["scope"], "",
+                         "| Buffer | Variant | Holds | Passes with safe left pair | Those passes / unsafe proxy | Valid local implication ingredients | Disagreements with exact history condition |",
+                         "| --- | --- | ---: | ---: | ---: | ---: | ---: |"]
+                for g in result["groups"]:
+                    lines.append(f"| {g['buffer_policy']} | {g['variant']} | {g['holds']} | {g['passes_with_safe_left']} | "
+                                 f"{g['passes_with_safe_left_and_unsafe_proxy']} | {g['valid_local_implication_ingredients']} | "
+                                 f"{g['disagreements_with_exact_history_condition']} |")
+                lines += ["", "The proxy h=d-tau*v-sigma*u is not a physical rollover model and need not imply geometric clearance.",
+                          "The endpoint uses the current held input, the left limit before the next update. Input jumps and previous-pair premises are recorded separately.",
+                          "Only norm_tube uses the local norm-product recipe. Other buffers are explicitly derived offline references; zero buffers are not the paper's positive global constant.",
+                          "Reset-start changes the paper's recurrence but may have a separate valid one-hold argument. A stale endpoint input may evaluate the wrong constraint.",
+                          "Prediction-error tightening follows the published construction; no new controller or recursive-feasibility guarantee is asserted.",
+                          "[Exact evidence](audit.json) · [Source and configuration](metadata.json)", ""]
+                (output/"report.md").write_text("\n".join(lines))
+                print(f"Audited {len(result['records'])} local ZOCBF proxy holds; no global controller certified.")
+            elif args.command == "approximation-audit":
                 result = approximation_study(spec)
                 output.mkdir(parents=True, exist_ok=True)
                 write_json(output/"audit.json", result)

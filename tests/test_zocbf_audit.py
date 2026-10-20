@@ -84,6 +84,14 @@ class ZocbfAuditTests(unittest.TestCase):
                     if variant["one_hold_implication_ingredients"]:
                         self.assertEqual(result["constraint_path_status"], "safe")
 
+    def test_unit_gamma_can_certify_a_new_hold_even_when_the_left_pair_is_unsafe(self):
+        result = audit_zocbf_hold(WallState(1, 0), 1, 0, "0.1", a_max=1, sigma=2, gamma=1)
+        _, correct = assessment(result)
+        self.assertFalse(result["left_pair_safe"])
+        self.assertEqual(correct["endpoint_target_exact"], "0")
+        self.assertTrue(correct["one_hold_implication_ingredients"])
+        self.assertEqual(result["constraint_path_status"], "safe")
+
     def test_invalid_commands_and_parameters_are_rejected(self):
         for extra in ({"action": 11}, {"previous_action": -11}, {"tau": -1}, {"sigma": -1},
                       {"gamma": 0}, {"gamma": 2}, {"duration": 0}):

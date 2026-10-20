@@ -45,7 +45,10 @@ def audit_zocbf_hold(state, previous_action, action, duration, a_max=10, tau=0, 
         raise ArithmeticError("Independent sign reference disagrees with the exact held proxy minimum")
     d_min, d_time = state.minimum(action, duration)
     speed_bound = abs(state.v)+a*duration
-    norm = sqrt_upper(1+tau*tau)*sqrt_upper(speed_bound**2+a*a)*duration
+    root_scale = 10**12
+    gradient_bound = sqrt_upper(1+tau*tau, root_scale)
+    flow_bound = sqrt_upper(speed_bound**2+a*a, root_scale)
+    norm = gradient_bound*flow_bound*duration
     projected = (speed_bound+tau*a)*duration
     candidate = max(abs(state.v+tau*action), abs(state.v+(tau+duration)*action))*duration
     backward = final-minimum
@@ -71,15 +74,17 @@ def audit_zocbf_hold(state, previous_action, action, duration, a_max=10, tau=0, 
                      "stale_end_input": (left, stale_final, q(0))}
         variants = []
         for name, (start, predicted, margin) in endpoints.items():
-            residual = predicted-(1-gamma)*start-delta-margin
+            target = (1-gamma)*start
+            residual = predicted-target-delta-margin
             passed = residual >= 0
             lower_valid = final >= predicted-margin
-            sufficient = start >= 0 and bound_valid and lower_valid and passed
+            sufficient = target >= 0 and bound_valid and lower_valid and passed
             if sufficient and minimum < 0:
                 raise ArithmeticError("Valid one-hold implication admitted an unsafe proxy path")
             if name == "reset_start_input" and bound_valid and passed and minimum < 0:
                 raise ArithmeticError("Reset-start condition contradicts its separate valid hold-bound argument")
             variants.append({"variant": name, "start_value_exact": str(start), "predicted_end_value_exact": str(predicted),
+                             "endpoint_target_exact": str(target), "endpoint_target_nonnegative": target >= 0,
                              "prediction_margin_exact": str(margin), "residual_exact": str(residual),
                              "condition_passed": passed, "endpoint_lower_bound_valid": lower_valid,
                              "one_hold_implication_ingredients": sufficient,
@@ -103,6 +108,8 @@ def audit_zocbf_hold(state, previous_action, action, duration, a_max=10, tau=0, 
             "independent_sign_reference": independent, "geometric_minimum_exact": str(d_min),
             "geometric_minimum_time_exact": str(d_time), "geometric_path_status": "safe" if d_min >= 0 else "unsafe",
             "initial_viable": state.viability_margin(a) >= 0,
+            "gradient_norm_upper_exact": str(gradient_bound), "flow_norm_upper_exact": str(flow_bound),
+            "square_root_enclosure_scale": root_scale,
             "reachable_speed_bound_exact": str(speed_bound), "oracle_backward_drop_exact": str(backward),
             "euler_endpoint_error_bound_exact": str(prediction_error), "assessments": assessments,
             "scope": "Exact local held-input proxy diagnostics; no global ZOCBF, recursive feasibility, rollover model or new controller certified"}

@@ -124,9 +124,12 @@ explicit prior art, not a new tick-trap safety algorithm.
 
 Quadratic extrema are exact rational calculations and independent algebraic
 sign references check the actual held proxy. `one_hold_implication_ingredients`
-requires an appropriate nonnegative starting value, a valid backward bound,
+requires a nonnegative endpoint target `(1-gamma)*h_start`, a valid backward bound,
 a valid lower endpoint prediction and a passing condition. It concerns only
 this proxy and hold, not geometric collision avoidance or future feasibility.
-Left-pair-unsafe starts are retained as a separate premise failure. No global
+Left-pair-unsafe starts remain failures of the published safe-left recursion
+premise. When gamma=1 the endpoint target is zero even for a negative left
+value, so a valid local argument can still certify the new hold. This does not
+certify the preceding interval or establish the full theorem. No global
 ZOCBF existence, attraction theorem, uniform recursive feasibility, nonlinear
 rollover dynamics or approximate-model confidence guarantee is established.
