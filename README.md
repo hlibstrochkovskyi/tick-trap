@@ -21,7 +21,10 @@ polynomial queries to explain which unresolved decisions result from prior
 queries consuming a shared budget. The [published wall-condition
 comparison](docs/validation-breeden.md) adds Breeden's tighter reachable-error
 and second-order conditions, with matched gain policies and exact saved-record
-regeneration. The current suite passes 174 tests.
+regeneration. The [approximation contract audit](docs/validation-approximation.md)
+separates map accuracy, sampled checks, continuous paths and enlarged-set
+observations without claiming a Taylor controller reproduction. The current
+suite passes 187 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 

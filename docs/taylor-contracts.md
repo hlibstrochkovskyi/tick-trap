@@ -101,3 +101,7 @@ physical-safety guarantee. Full original-system replication, admissibility and
 uniform-family proofs, nonlinear approximation bounds and actuation uncertainty
 remain separate research gates. Exact endpoint prediction alone is insufficient
 to settle those questions, even when endpoint checks are satisfied.
+
+The [validation ledger](validation-approximation.md) gives the source revision,
+complete evidence, exact examples and remaining theorem gates. Radius zero is
+included as an exact-set diagnostic, not as the paper's positive-radius theorem.

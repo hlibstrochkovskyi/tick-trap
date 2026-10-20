@@ -24,6 +24,10 @@ is a later extension requiring its own validity argument.
    rate-matched gains. Its stronger published second-order comparator avoids
    many stops seen with the original Lipschitz baseline in this restricted grid;
    that improvement must be credited to the prior art.
+   The [Taylor contract audit](validation-approximation.md) now reconstructs the
+   sampled/practical-safety distinction and verifies exact wall-map errors,
+   path observations and normalized set distances. It does not supply an
+   applicable global controller family or reproduce the paper's optimizer.
 3. Measure where sufficient conditions exclude safe controls, lose recursive
    feasibility, or cost too much. Separate initial-set restrictions from actual
    safety violations. Extend uncertainty/delay models with justified bounds before
@@ -33,7 +37,7 @@ is a later extension requiring its own validity argument.
    The [sampling-aware comparison](validation-sampling.md) now includes a stronger
    modern condition and its permitted relaxation. The audit distinguishes
    geometric safety from auxiliary-set preservation and identifies specific
-   controls preserving both properties that the Taylor test excludes. A next
+   controls preserving both properties that Liu's Taylor-bound test excludes. A next
    experiment must preserve this same property when comparing precision and cost;
    a geometric-only reference cannot by itself measure every high-order exclusion.
    Two high-order polynomial references now preserve both properties and compare
@@ -57,15 +61,15 @@ is a later extension requiring its own validity argument.
 
 ## Literature ledger
 
-Sources were initially checked on 19 October 2026; the Breeden reading was expanded
-on 20 October. Access depth is recorded to prevent
+Sources were initially checked on 19 October 2026; the Breeden and Taylor readings
+were expanded on 20 October. Access depth is recorded to prevent
 abstract-level reading from becoming a claim of proof reconstruction.
 
 | Reference | Access and implementation status | Required next comparison |
 | --- | --- | --- |
 | [Hsu, Hu, Fisac (2024)](https://doi.org/10.1146/annurev-control-071723-102940) | Publisher overview accessed; taxonomy reference | Align filter guarantees, feasible sets, and backup assumptions |
 | [Breeden, Garg, Panagou (2021), v1](https://arxiv.org/html/2103.03677v1) | Section III Theorems 1–3 examined; exact wall reductions and hold arguments derived, implemented and compared; uniform feasibility not assumed | Full original examples and remaining theorem/physical-margin comparison; no unicycle or spacecraft reproduction claim |
-| [Taylor et al. (2022), v2](https://arxiv.org/html/2203.11470v2) | Formulation and practical-safety discussion accessed; not implemented | Reconstruct consistency assumptions, set enlargement, and rate dependence |
+| [Taylor et al. (2022), v2](https://arxiv.org/html/2203.11470v2) | Definitions 3–8, Theorem 3 proof and synthesis scope examined; exact affine-map and normalized-distance diagnostics implemented | Actual admissible SD-BF family, uniform-domain proof, constructive enlargement and original-system replication; no optimizer reproduction claim |
 | [Tan et al., 2411.17079v2 (2025)](https://arxiv.org/html/2411.17079v2) | Eq. (4), Lemma 1 and associated argument examined; local wall specialization implemented | Compare tighter flow/constraint bounds and original experiments |
 | [Liu, Xiao, Belta (2025), v1](https://arxiv.org/html/2511.11897v1) | Section IV, Theorem 2 and relaxation argument examined; linear-gain planar condition and zero-target feasibility envelope implemented with exact candidate-specific bounds | Full slack-penalized QP, bound-estimation recipe, temporal constraints and original experiments remain open |
 | [Pagnini, Malis (2026)](https://www.sciencedirect.com/science/article/abs/pii/S0947358026001354) | Publisher abstract and accessible sections checked; full proof pending | Segment guarantees versus curved physical trajectories |
