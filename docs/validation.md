@@ -1,5 +1,9 @@
 # Foundation validation — 19 October 2026
 
+This is the historical foundation snapshot. The [current audit
+ledger](validation-audit.md) records the later tests, independent reference,
+termination correction and complete reproducible evidence.
+
 The first tick-trap foundation passes 40 automated checks under Python 3.12.13.
 The checks cover independent analytical cases, explicit infeasibility, signed
 velocity viability, published-condition constants, exact delayed dynamics,

@@ -91,3 +91,16 @@ interpreted as their exact binary values. Arithmetic certificates cover these
 values and the ideal dynamics, not an uncertainty neighbourhood of physical
 measurements. Float fields in reports are for display; rational fields carry the
 certificate and exact executed wall state.
+
+An additional [offline algebraic sign reference](algebraic-reference.md) uses
+square-free decomposition and Sturm counting for rational degree <=4 inputs.
+It is independent of the Bernstein implementation and resolves repeated roots
+and exact tangencies without a floating epsilon. It supplies signs, not minimum
+enclosures, and never replaces an online unknown automatically.
+
+The [execution evidence audit](execution-evidence.md) distinguishes unresolved
+offline geometry from recognized, replay-validated online comparison proofs.
+Raw oracle statuses and bounds are retained even when another valid argument
+proves the executed hold safe. The [current validation ledger](validation-audit.md)
+separates mathematical arguments, finite experimental observations and remaining
+verification limits.

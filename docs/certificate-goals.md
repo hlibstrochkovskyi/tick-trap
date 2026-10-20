@@ -42,6 +42,12 @@ check both properties at every obstacle, including after an earlier negative
 witness, so the timed query scope is consistent. They use the same tolerance
 and per-polynomial subdivision budget.
 
+The later [auxiliary audit](auxiliary-certification.md) also compares a shared
+total subdivision allowance per control. Minimum/sign proof-prefix equivalence
+is a per-polynomial statement: different allocations to later properties under
+a shared allowance can yield different decisions. The original experiments
+below retain their original semantics.
+
 Five repeats by default are shuffled with a recorded seed for every control.
 Every setting's exact evidence must remain unchanged across repeats; measurement
 order and all elapsed times are retained. Reported cost includes constructing

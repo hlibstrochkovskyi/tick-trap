@@ -1,11 +1,20 @@
 # tick-trap
 
+[![tests](https://github.com/hlibstrochkovskyi/tick-trap/actions/workflows/tests.yml/badge.svg)](https://github.com/hlibstrochkovskyi/tick-trap/actions/workflows/tests.yml)
+
 Continuous-time safety analysis for sampled robot control.
 
 tick-trap is a small research instrument for comparing sampled-state safety,
 continuous-trajectory safety, and viability. It starts with analytically solvable
 wall braking and planar acceleration-controlled robots. There is no claim of a
 new safety controller or publication-level novelty.
+
+The [latest certification audit](docs/validation-audit.md) passes 150 tests and
+compares four strategies using matched commands and explicit work budgets.
+It adds an independent exact polynomial sign reference and distinguishes an
+unresolved offline oracle from a valid online comparison proof. The
+[source-hashed summary](docs/data/audit-summary.json) links to complete archived
+evidence; all guarantees remain conditional on the declared ideal model.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 

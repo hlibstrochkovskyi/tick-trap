@@ -1,5 +1,10 @@
 # High-order certification cost — 20 October 2026
 
+This is the earlier minimum/sign snapshot. The subsequent [certification
+audit](validation-audit.md) adds auxiliary-only comparisons, an independent
+algebraic reference and matched total-work limits; the numbers below retain
+their original source revisions and per-polynomial budget semantics.
+
 This milestone compares the same continuous-time properties: nonnegative
 geometric barrier `h` and auxiliary barrier `psi=h_dot+lambda1*h`. It adds a
 polynomial reference preserving both, a sign-stopping query, and a paired cost
@@ -165,3 +170,8 @@ for that implication. Its independent evidence is useful, but these timings do
 not describe the cheapest possible implementation. Measuring a version that
 uses this implication, while retaining the offline geometric oracle, is a
 further engineering comparison before claiming an optimized trade-off.
+
+That auxiliary-only engineering comparison is now recorded in the
+[audit ledger](validation-audit.md), together with the finite-work decision
+differences and its remaining unresolved exact tangency. It establishes no
+publication-level novelty.
