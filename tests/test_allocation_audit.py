@@ -113,7 +113,8 @@ class AllocationAuditTests(unittest.TestCase):
 
     def test_configuration_mismatch_is_rejected(self):
         for change in ({"budget_scope": "per_polynomial"}, {"budgets": [0, 4]}, {"repeats": 2}, {"seed": 123},
-                       {"strategies": ["minimum"]}, {"tolerances": ["1e-6"]}):
+                       {"strategies": ["minimum"]}, {"tolerances": ["1e-6"]}, {"unexpected": 1},
+                       {"base": {"grid_points": 2, "duration_typo": "0.1"}}):
             with self.assertRaises(ValueError):
                 allocation_audit(self.spec | change, self.study)
 

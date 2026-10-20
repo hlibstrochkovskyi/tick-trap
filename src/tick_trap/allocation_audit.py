@@ -59,6 +59,8 @@ def allocation_audit(spec, study):
     the input are not verified here. They are not used to establish these results.
     """
     _require(isinstance(spec, dict) and isinstance(study, dict), "Expected configuration and study objects")
+    _require(not set(spec)-{"base", "cases", "tolerances", "budgets", "repeats", "seed", "strategies", "budget_scope"},
+             "Unknown certification study field")
     strategies = spec.get("strategies", list(STRATEGIES[:3]))
     _require(isinstance(strategies, list) and strategies and all(isinstance(s, str) and s in STRATEGIES for s in strategies)
              and len(set(strategies)) == len(strategies), "Invalid strategies")
@@ -101,6 +103,9 @@ def allocation_audit(spec, study):
 
     for case_index, case in enumerate(cases):
         config, reference = base | case, study["reference"][case_index]
+        _require(not set(config)-{"name", "p", "v", "nominal", "obstacles", "duration", "a_max", "lambda1", "lambda2",
+                                  "gamma", "grid_points", "command_quantum", "tolerance", "max_subdivisions"},
+                 "Unknown candidate audit configuration field")
         state, nominal = PlanarState(config["p"], config["v"]), vector2(config["nominal"])
         obstacles = tuple(Circle(**o) if isinstance(o, dict) else o for o in config["obstacles"])
         duration, a_max = positive(config["duration"]), positive(config["a_max"])
