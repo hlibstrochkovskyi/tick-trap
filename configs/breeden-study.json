@@ -1,0 +1,16 @@
+{
+  "base": {"a_max": "10", "tau": "0.3", "gamma": "1", "cbf_gain": "2", "nominal": "0", "horizon": "2", "seed": 20261020},
+  "durations": ["0.02", "0.1", "0.2", "0.4"],
+  "gain_policies": ["fixed", "matched"],
+  "grid_points": 21,
+  "cases": [
+    {"name": "approach", "d": "0.6", "v": "1"},
+    {"name": "barrier_boundary", "d": "0.3", "v": "1"},
+    {"name": "rest", "d": "0.6", "v": "0"},
+    {"name": "departing", "d": "0.6", "v": "-1"},
+    {"name": "fast_departing", "d": "1", "v": "-20"},
+    {"name": "domain_excluded_viable", "d": "0.1", "v": "1"},
+    {"name": "domain_admitted_nonviable", "d": "4", "v": "10"},
+    {"name": "near_barrier", "d": "0.35", "v": "1"}
+  ]
+}
