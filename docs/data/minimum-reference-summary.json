@@ -1,0 +1,2992 @@
+{
+  "source": {
+    "schema_version": 1,
+    "project": "tick-trap",
+    "version": "0.2.0",
+    "created_utc": "2026-10-21T22:31:42.780818+00:00",
+    "python": "3.12.13 (main, Jun 11 2026, 04:03:26) [Clang 22.1.3 ]",
+    "platform": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+    "machine": "x86_64",
+    "processor": "",
+    "logical_cpu_count": 12,
+    "dependencies": "Python standard library only",
+    "argv": [
+      "scripts/audit-minimum-reference.py",
+      "--output",
+      "results/minimum-reference-final"
+    ],
+    "source_sha256": "f706cc0e4b6c0c3b92cfd69f42016e173beb8abd2748aac0be762fda2c036d6d",
+    "git_commit": "b49b1faf4e72b582d67ec82d32f1ca3dbd42167d",
+    "git_status": "",
+    "configuration_sha256": "1923ef89b2f99ad1af98b1f6769939c6dcfd03b595bd638018b5b17db4e84915",
+    "configuration": {
+      "input_archive": "docs/data/algebraic-evidence.tar.gz",
+      "input_manifest": "docs/data/algebraic-manifest.json",
+      "settings": {
+        "tolerances": [
+          "1e-6",
+          "1e-12"
+        ],
+        "budgets": [
+          0,
+          8,
+          64
+        ]
+      }
+    },
+    "clock": {
+      "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+      "resolution_seconds": 1e-09,
+      "monotonic": true
+    },
+    "arithmetic": "exact rational inputs and dynamics; floats are display/learning estimates",
+    "safety_boundary": "nonnegative clearance; contact at zero is permitted",
+    "timing_scope": "No timing samples collected; deterministic offline minimum-enclosure cross-check"
+  },
+  "input_dependencies": {
+    "archive_path": "docs/data/algebraic-evidence.tar.gz",
+    "archive_sha256": "e90628344051b0bec6a01cb4f544e08efbb648ad5216db9a34ca4d0a9552e114",
+    "manifest_path": "docs/data/algebraic-manifest.json",
+    "manifest_sha256": "e65c6a952b29b787e6cae5ceed496e4a711218317e21d1dfcc853c34b12a8232",
+    "source_git_commit": "5a46e9469ad56fe640675a04c66aafd2a654183c",
+    "source_sha256": "9d23e76eb8a22eca7e89eee8cea94fc3f4ba3a6de248336f769406daebec805d",
+    "study_sha256": "b8fb1ff5a461c957cbb8efd0eaace35f81190b33054293fad9ebc1d52b79eb61",
+    "metadata_sha256": "d1ce1f54df1ba70ed58ca4257ee619f7d7366de00b8e8cc5c133f88169efb154"
+  },
+  "verification": {
+    "status": "verified",
+    "controls": 259,
+    "property_uses": 672,
+    "unique_queries": 550,
+    "enclosure_comparisons": 3300,
+    "scope": "Deterministic replay of independent and Bernstein bounds, original saved minima and exact source predicates; not a formal program proof or online certificate substitution"
+  },
+  "source_artifacts": {
+    "audit.json": {
+      "sha256": "08d629880acff25b1a95a4c8183dfdbf6cb3d8cb8c34d89ef79ab9f48d688b80"
+    },
+    "metadata.json": {
+      "sha256": "af78763346adb6be5ce8fad16f935e0014bf22a90972ef3ebf25d95307643512"
+    }
+  },
+  "verification_artifacts": {
+    "verification.json": {
+      "sha256": "445034a038417b1510ffc2eac20a6b23c4ca96c4f19aa350068fb5f5ec083fc6"
+    },
+    "metadata.json": {
+      "sha256": "e31188715808f0d10e18b1d114a7a892b1d3068e779f75952705b65fb4f76895"
+    }
+  },
+  "counts": {
+    "cases": 10,
+    "applicable_cases": 10,
+    "controls": 259,
+    "property_uses": 672,
+    "unique_queries": 550
+  },
+  "source_predicate_replay": {
+    "status": "verified",
+    "property_configurations": 5180,
+    "replayed_queries": 10080
+  },
+  "groups": [
+    {
+      "tolerance_exact": "1/1000000",
+      "budget": 0,
+      "unique_queries": 550,
+      "overlapping_matched_enclosures": 550,
+      "overlapping_archived_enclosures": 550,
+      "stationary": {
+        "safe": 330,
+        "unsafe": 124,
+        "unknown": 96,
+        "precision_reached": 351,
+        "budget_exhausted": 199,
+        "subdivisions": 0,
+        "root_count_calls": 542
+      },
+      "bernstein": {
+        "safe": 388,
+        "unsafe": 74,
+        "unknown": 88,
+        "precision_reached": 353,
+        "budget_exhausted": 197,
+        "subdivisions": 0
+      }
+    },
+    {
+      "tolerance_exact": "1/1000000",
+      "budget": 8,
+      "unique_queries": 550,
+      "overlapping_matched_enclosures": 550,
+      "overlapping_archived_enclosures": 550,
+      "stationary": {
+        "safe": 408,
+        "unsafe": 135,
+        "unknown": 7,
+        "precision_reached": 354,
+        "budget_exhausted": 196,
+        "subdivisions": 1571,
+        "root_count_calls": 3684
+      },
+      "bernstein": {
+        "safe": 411,
+        "unsafe": 135,
+        "unknown": 4,
+        "precision_reached": 389,
+        "budget_exhausted": 161,
+        "subdivisions": 1536
+      }
+    },
+    {
+      "tolerance_exact": "1/1000000",
+      "budget": 64,
+      "unique_queries": 550,
+      "overlapping_matched_enclosures": 550,
+      "overlapping_archived_enclosures": 550,
+      "stationary": {
+        "safe": 411,
+        "unsafe": 136,
+        "unknown": 3,
+        "precision_reached": 550,
+        "budget_exhausted": 0,
+        "subdivisions": 4048,
+        "root_count_calls": 8638
+      },
+      "bernstein": {
+        "safe": 411,
+        "unsafe": 135,
+        "unknown": 4,
+        "precision_reached": 550,
+        "budget_exhausted": 0,
+        "subdivisions": 1883
+      }
+    },
+    {
+      "tolerance_exact": "1/1000000000000",
+      "budget": 0,
+      "unique_queries": 550,
+      "overlapping_matched_enclosures": 550,
+      "overlapping_archived_enclosures": 550,
+      "stationary": {
+        "safe": 330,
+        "unsafe": 124,
+        "unknown": 96,
+        "precision_reached": 351,
+        "budget_exhausted": 199,
+        "subdivisions": 0,
+        "root_count_calls": 542
+      },
+      "bernstein": {
+        "safe": 388,
+        "unsafe": 74,
+        "unknown": 88,
+        "precision_reached": 352,
+        "budget_exhausted": 198,
+        "subdivisions": 0
+      }
+    },
+    {
+      "tolerance_exact": "1/1000000000000",
+      "budget": 8,
+      "unique_queries": 550,
+      "overlapping_matched_enclosures": 550,
+      "overlapping_archived_enclosures": 550,
+      "stationary": {
+        "safe": 408,
+        "unsafe": 135,
+        "unknown": 7,
+        "precision_reached": 354,
+        "budget_exhausted": 196,
+        "subdivisions": 1571,
+        "root_count_calls": 3684
+      },
+      "bernstein": {
+        "safe": 411,
+        "unsafe": 135,
+        "unknown": 4,
+        "precision_reached": 354,
+        "budget_exhausted": 196,
+        "subdivisions": 1570
+      }
+    },
+    {
+      "tolerance_exact": "1/1000000000000",
+      "budget": 64,
+      "unique_queries": 550,
+      "overlapping_matched_enclosures": 550,
+      "overlapping_archived_enclosures": 550,
+      "stationary": {
+        "safe": 412,
+        "unsafe": 136,
+        "unknown": 2,
+        "precision_reached": 550,
+        "budget_exhausted": 0,
+        "subdivisions": 7964,
+        "root_count_calls": 16470
+      },
+      "bernstein": {
+        "safe": 412,
+        "unsafe": 136,
+        "unknown": 2,
+        "precision_reached": 550,
+        "budget_exhausted": 0,
+        "subdivisions": 3823
+      }
+    }
+  ],
+  "examples": [
+    {
+      "query_index": 367,
+      "polynomial_exact": [
+        "46344537263999999/500000000000000000",
+        "-32737728/48828125",
+        "13811008/9765625",
+        "-1584128/1953125",
+        "147968/390625"
+      ],
+      "duration_exact": "1",
+      "reference_tolerance_exact": "1/100000000000000",
+      "reference_budget": 4096,
+      "archived_bernstein": {
+        "status": "safe",
+        "lower_exact": "1383504056860415030428637399/576460752303423488000000000000000000",
+        "upper_exact": "5534027877540784755337127721/2305843009213693952000000000000000000",
+        "witness_time_exact": "1258291/4194304",
+        "subdivisions": 22
+      },
+      "complete_sign_reference": {
+        "status": "safe",
+        "method": "square_free_sturm",
+        "duration_exact": "1",
+        "endpoint_values_exact": [
+          "46344537263999999/500000000000000000",
+          "202096084143999999/500000000000000000"
+        ],
+        "leading_coefficient_exact": "147968/390625",
+        "square_free_factors": [
+          {
+            "coefficients_exact": [
+              "46344537263999999/189399040000000000",
+              "-511527/289000",
+              "215797/57800",
+              "-182/85",
+              "1"
+            ],
+            "multiplicity": 1
+          }
+        ],
+        "odd_factor_exact": [
+          "46344537263999999/500000000000000000",
+          "-32737728/48828125",
+          "13811008/9765625",
+          "-1584128/1953125",
+          "147968/390625"
+        ],
+        "count_polynomial_exact": [
+          "46344537263999999/500000000000000000",
+          "-32737728/48828125",
+          "13811008/9765625",
+          "-1584128/1953125",
+          "147968/390625"
+        ],
+        "sturm_chain_exact": [
+          [
+            "46344537263999999/500000000000000000",
+            "-32737728/48828125",
+            "13811008/9765625",
+            "-1584128/1953125",
+            "147968/390625"
+          ],
+          [
+            "-32737728/48828125",
+            "27622016/9765625",
+            "-4752384/1953125",
+            "591872/390625"
+          ],
+          [
+            "-25199021999999983/8500000000000000000",
+            "4128224/33203125",
+            "-149024/390625"
+          ],
+          [
+            "1110471612927721217226899/1694347578125000000000000",
+            "-370157209584952401345873/169434757812500000000000"
+          ],
+          [
+            "462936899279019853996574053232052722010926333332269439/237052525618889927166508128957123329933865280500000000000000000"
+          ]
+        ],
+        "endpoint_variations": [
+          2,
+          2
+        ],
+        "interior_odd_roots": 0,
+        "probe_time_exact": "1/6",
+        "odd_probe_value_exact": "679033273263999919/40500000000000000000"
+      },
+      "uses": [
+        {
+          "case": "auxiliary_tangent_positive",
+          "case_index": 5,
+          "candidate_index": 0,
+          "obstacle_index": 0,
+          "property": "psi",
+          "action_exact": [
+            "544/625",
+            "0"
+          ]
+        }
+      ],
+      "assessments": [
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-288889797456000001/500000000000000000",
+            "upper_exact": "16653616303999999/500000000000000000",
+            "witness_time_exact": "1/2",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 0,
+            "root_count_calls": 1,
+            "polynomial_exact": [
+              "46344537263999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 0,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "0",
+                "right_exact": "1",
+                "roots": 1,
+                "value_lower_exact": "-288889797456000001/500000000000000000",
+                "value_upper_exact": "418233812143999999/500000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-37464046416000001/500000000000000000",
+            "upper_exact": "46344537263999999/500000000000000000",
+            "witness_time_exact": "0",
+            "subdivisions": 0,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-37464046416000001/500000000000000000",
+            "upper_exact": "16653616303999999/500000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "1383504056860415030428637399/576460752303423488000000000000000000",
+            "upper_exact": "5534027877540784755337127721/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-2908935500484379/2000000000000000000",
+            "upper_exact": "17431364515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 8,
+            "root_count_calls": 17,
+            "polynomial_exact": [
+              "46344537263999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 8,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "19/64",
+                "right_exact": "77/256",
+                "roots": 1,
+                "value_lower_exact": "-2908935500484379/2000000000000000000",
+                "value_upper_exact": "2894916229515621/2000000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-6487064515641/8000000000000000000",
+            "upper_exact": "17431364515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-6487064515641/8000000000000000000",
+            "upper_exact": "17431364515561/32000000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "1383504056860415030428637399/576460752303423488000000000000000000",
+            "upper_exact": "5534027877540784755337127721/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-99448618300598986616070031/140737488355328000000000000000000",
+            "upper_exact": "21617569445811460055033641/9007199254740992000000000000000000",
+            "witness_time_exact": "314573/1048576",
+            "precision_reached": true,
+            "budget_exhausted": false,
+            "stopping_reason": "precision_reached",
+            "subdivisions": 19,
+            "root_count_calls": 39,
+            "polynomial_exact": [
+              "46344537263999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 64,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "78643/262144",
+                "right_exact": "157287/524288",
+                "roots": 1,
+                "value_lower_exact": "-99448618300598986616070031/140737488355328000000000000000000",
+                "value_upper_exact": "100123850133941926023929969/140737488355328000000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-94582758078893/384000000000000000000",
+            "upper_exact": "17431364515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 9,
+            "precision_reached": true,
+            "budget_exhausted": false
+          },
+          "matched_intersection": {
+            "lower_exact": "-94582758078893/384000000000000000000",
+            "upper_exact": "21617569445811460055033641/9007199254740992000000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "1383504056860415030428637399/576460752303423488000000000000000000",
+            "upper_exact": "5534027877540784755337127721/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-288889797456000001/500000000000000000",
+            "upper_exact": "16653616303999999/500000000000000000",
+            "witness_time_exact": "1/2",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 0,
+            "root_count_calls": 1,
+            "polynomial_exact": [
+              "46344537263999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 0,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "0",
+                "right_exact": "1",
+                "roots": 1,
+                "value_lower_exact": "-288889797456000001/500000000000000000",
+                "value_upper_exact": "418233812143999999/500000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-37464046416000001/500000000000000000",
+            "upper_exact": "46344537263999999/500000000000000000",
+            "witness_time_exact": "0",
+            "subdivisions": 0,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-37464046416000001/500000000000000000",
+            "upper_exact": "16653616303999999/500000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "1383504056860415030428637399/576460752303423488000000000000000000",
+            "upper_exact": "5534027877540784755337127721/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-2908935500484379/2000000000000000000",
+            "upper_exact": "17431364515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 8,
+            "root_count_calls": 17,
+            "polynomial_exact": [
+              "46344537263999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 8,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "19/64",
+                "right_exact": "77/256",
+                "roots": 1,
+                "value_lower_exact": "-2908935500484379/2000000000000000000",
+                "value_upper_exact": "2894916229515621/2000000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-6487064515641/8000000000000000000",
+            "upper_exact": "17431364515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-6487064515641/8000000000000000000",
+            "upper_exact": "17431364515561/32000000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "1383504056860415030428637399/576460752303423488000000000000000000",
+            "upper_exact": "5534027877540784755337127721/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "safe",
+            "lower_exact": "408223794283913869183451994399550261872592429169/170141183460469231731687303715884105728000000000000000000",
+            "upper_exact": "26133685757750002831282585308678275195857398982441/10889035741470030830827987437816582766592000000000000000000",
+            "witness_time_exact": "329853488333/1099511627776",
+            "precision_reached": true,
+            "budget_exhausted": false,
+            "stopping_reason": "precision_reached",
+            "subdivisions": 39,
+            "root_count_calls": 79,
+            "polynomial_exact": [
+              "46344537263999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 64,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "82463372083/274877906944",
+                "right_exact": "164926744167/549755813888",
+                "roots": 1,
+                "value_lower_exact": "408223794283913869183451994399550261872592429169/170141183460469231731687303715884105728000000000000000000",
+                "value_upper_exact": "408453885645773370516004571666294179809232429169/170141183460469231731687303715884105728000000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "safe",
+            "lower_exact": "1013209797302524311789907/422212465065984000000000000000000",
+            "upper_exact": "84460696227758620337961/35184372088832000000000000000000",
+            "witness_time_exact": "78643/262144",
+            "subdivisions": 19,
+            "precision_reached": true,
+            "budget_exhausted": false
+          },
+          "matched_intersection": {
+            "lower_exact": "1013209797302524311789907/422212465065984000000000000000000",
+            "upper_exact": "26133685757750002831282585308678275195857398982441/10889035741470030830827987437816582766592000000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "1383504056860415030428637399/576460752303423488000000000000000000",
+            "upper_exact": "26133685757750002831282585308678275195857398982441/10889035741470030830827987437816582766592000000000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "query_index": 401,
+      "polynomial_exact": [
+        "22629168/244140625",
+        "-32737728/48828125",
+        "13811008/9765625",
+        "-1584128/1953125",
+        "147968/390625"
+      ],
+      "duration_exact": "1",
+      "reference_tolerance_exact": "1/100000000000000",
+      "reference_budget": 4096,
+      "archived_bernstein": {
+        "status": "unknown",
+        "lower_exact": "-111840952309514529/36893488147419103232000000000000",
+        "upper_exact": "298242534738493729/147573952589676412928000000000000",
+        "witness_time_exact": "1258291/4194304",
+        "subdivisions": 22
+      },
+      "complete_sign_reference": {
+        "status": "safe",
+        "method": "square_free_sturm",
+        "duration_exact": "1",
+        "endpoint_values_exact": [
+          "22629168/244140625",
+          "98679728/244140625"
+        ],
+        "leading_coefficient_exact": "147968/390625",
+        "square_free_factors": [
+          {
+            "coefficients_exact": [
+              "157147/57800",
+              "-131/85",
+              "1"
+            ],
+            "multiplicity": 1
+          },
+          {
+            "coefficients_exact": [
+              "-3/10",
+              "1"
+            ],
+            "multiplicity": 2
+          }
+        ],
+        "odd_factor_exact": [
+          "10057408/9765625",
+          "-1140224/1953125",
+          "147968/390625"
+        ],
+        "count_polynomial_exact": [
+          "10057408/9765625",
+          "-1140224/1953125",
+          "147968/390625"
+        ],
+        "sturm_chain_exact": [
+          [
+            "10057408/9765625",
+            "-1140224/1953125",
+            "147968/390625"
+          ],
+          [
+            "-1140224/1953125",
+            "295936/390625"
+          ],
+          [
+            "-314432/390625"
+          ]
+        ],
+        "endpoint_variations": [
+          1,
+          1
+        ],
+        "interior_odd_roots": 0,
+        "probe_time_exact": "1/4",
+        "odd_probe_value_exact": "8863328/9765625"
+      },
+      "uses": [
+        {
+          "case": "auxiliary_exact_tangent",
+          "case_index": 6,
+          "candidate_index": 0,
+          "obstacle_index": 0,
+          "property": "psi",
+          "action_exact": [
+            "544/625",
+            "0"
+          ]
+        }
+      ],
+      "assessments": [
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-141059472/244140625",
+            "upper_exact": "8131648/244140625",
+            "witness_time_exact": "1/2",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 0,
+            "root_count_calls": 1,
+            "polynomial_exact": [
+              "22629168/244140625",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 0,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "0",
+                "right_exact": "1",
+                "roots": 1,
+                "value_lower_exact": "-141059472/244140625",
+                "value_upper_exact": "204215728/244140625",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-18292992/244140625",
+            "upper_exact": "22629168/244140625",
+            "witness_time_exact": "0",
+            "subdivisions": 0,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-18292992/244140625",
+            "upper_exact": "8131648/244140625"
+          },
+          "archived_intersection": {
+            "lower_exact": "-111840952309514529/36893488147419103232000000000000",
+            "upper_exact": "298242534738493729/147573952589676412928000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-186172179231/128000000000000",
+            "upper_exact": "1110692129/2048000000000000",
+            "witness_time_exact": "77/256",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 8,
+            "root_count_calls": 17,
+            "polynomial_exact": [
+              "22629168/244140625",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 8,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "19/64",
+                "right_exact": "77/256",
+                "roots": 1,
+                "value_lower_exact": "-186172179231/128000000000000",
+                "value_upper_exact": "185274331489/128000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-416400929/512000000000000",
+            "upper_exact": "1110692129/2048000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-416400929/512000000000000",
+            "upper_exact": "1110692129/2048000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-111840952309514529/36893488147419103232000000000000",
+            "upper_exact": "298242534738493729/147573952589676412928000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-6386328849431699125719/9007199254740992000000000000",
+            "upper_exact": "18640156638576929/576460752303423488000000000000",
+            "witness_time_exact": "314573/1048576",
+            "precision_reached": true,
+            "budget_exhausted": false,
+            "stopping_reason": "precision_reached",
+            "subdivisions": 19,
+            "root_count_calls": 39,
+            "polynomial_exact": [
+              "22629168/244140625",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 64,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "78643/262144",
+                "right_exact": "157287/524288",
+                "roots": 1,
+                "value_lower_exact": "-6386328849431699125719/9007199254740992000000000000",
+                "value_upper_exact": "6386309130378919283241/9007199254740992000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-6112278917/24576000000000000",
+            "upper_exact": "1110692129/2048000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 9,
+            "precision_reached": true,
+            "budget_exhausted": false
+          },
+          "matched_intersection": {
+            "lower_exact": "-6112278917/24576000000000000",
+            "upper_exact": "18640156638576929/576460752303423488000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-111840952309514529/36893488147419103232000000000000",
+            "upper_exact": "298242534738493729/147573952589676412928000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-141059472/244140625",
+            "upper_exact": "8131648/244140625",
+            "witness_time_exact": "1/2",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 0,
+            "root_count_calls": 1,
+            "polynomial_exact": [
+              "22629168/244140625",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 0,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "0",
+                "right_exact": "1",
+                "roots": 1,
+                "value_lower_exact": "-141059472/244140625",
+                "value_upper_exact": "204215728/244140625",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-18292992/244140625",
+            "upper_exact": "22629168/244140625",
+            "witness_time_exact": "0",
+            "subdivisions": 0,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-18292992/244140625",
+            "upper_exact": "8131648/244140625"
+          },
+          "archived_intersection": {
+            "lower_exact": "-111840952309514529/36893488147419103232000000000000",
+            "upper_exact": "298242534738493729/147573952589676412928000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-186172179231/128000000000000",
+            "upper_exact": "1110692129/2048000000000000",
+            "witness_time_exact": "77/256",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 8,
+            "root_count_calls": 17,
+            "polynomial_exact": [
+              "22629168/244140625",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 8,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "19/64",
+                "right_exact": "77/256",
+                "roots": 1,
+                "value_lower_exact": "-186172179231/128000000000000",
+                "value_upper_exact": "185274331489/128000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-416400929/512000000000000",
+            "upper_exact": "1110692129/2048000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-416400929/512000000000000",
+            "upper_exact": "1110692129/2048000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-111840952309514529/36893488147419103232000000000000",
+            "upper_exact": "298242534738493729/147573952589676412928000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-7362923579514883306180547532607004341719/10889035741470030830827987437816582766592000000000000",
+            "upper_exact": "20495070535652764891626864929/696898287454081973172991196020261297061888000000000000",
+            "witness_time_exact": "329853488333/1099511627776",
+            "precision_reached": true,
+            "budget_exhausted": false,
+            "stopping_reason": "precision_reached",
+            "subdivisions": 39,
+            "root_count_calls": 79,
+            "polynomial_exact": [
+              "22629168/244140625",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 64,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "82463372083/274877906944",
+                "right_exact": "164926744167/549755813888",
+                "roots": 1,
+                "value_lower_exact": "-7362923579514883306180547532607004341719/10889035741470030830827987437816582766592000000000000",
+                "value_upper_exact": "7362923579493201977184397539003743603241/10889035741470030830827987437816582766592000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-6407552730390917/27021597764222976000000000000",
+            "upper_exact": "1165010235556129/2251799813685248000000000000",
+            "witness_time_exact": "78643/262144",
+            "subdivisions": 19,
+            "precision_reached": true,
+            "budget_exhausted": false
+          },
+          "matched_intersection": {
+            "lower_exact": "-6407552730390917/27021597764222976000000000000",
+            "upper_exact": "20495070535652764891626864929/696898287454081973172991196020261297061888000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-111840952309514529/36893488147419103232000000000000",
+            "upper_exact": "20495070535652764891626864929/696898287454081973172991196020261297061888000000000000"
+          }
+        }
+      ]
+    },
+    {
+      "query_index": 435,
+      "polynomial_exact": [
+        "46344534863999999/500000000000000000",
+        "-32737728/48828125",
+        "13811008/9765625",
+        "-1584128/1953125",
+        "147968/390625"
+      ],
+      "duration_exact": "1",
+      "reference_tolerance_exact": "1/100000000000000",
+      "reference_budget": 4096,
+      "archived_bernstein": {
+        "status": "unsafe",
+        "lower_exact": "-1383507554196017711971362601/576460752303423488000000000000000000",
+        "upper_exact": "-5534018566684946214262872279/2305843009213693952000000000000000000",
+        "witness_time_exact": "1258291/4194304",
+        "subdivisions": 22
+      },
+      "complete_sign_reference": {
+        "status": "unsafe",
+        "method": "square_free_sturm",
+        "duration_exact": "1",
+        "endpoint_values_exact": [
+          "46344534863999999/500000000000000000",
+          "202096081743999999/500000000000000000"
+        ],
+        "leading_coefficient_exact": "147968/390625",
+        "square_free_factors": [
+          {
+            "coefficients_exact": [
+              "46344534863999999/189399040000000000",
+              "-511527/289000",
+              "215797/57800",
+              "-182/85",
+              "1"
+            ],
+            "multiplicity": 1
+          }
+        ],
+        "odd_factor_exact": [
+          "46344534863999999/500000000000000000",
+          "-32737728/48828125",
+          "13811008/9765625",
+          "-1584128/1953125",
+          "147968/390625"
+        ],
+        "count_polynomial_exact": [
+          "46344534863999999/500000000000000000",
+          "-32737728/48828125",
+          "13811008/9765625",
+          "-1584128/1953125",
+          "147968/390625"
+        ],
+        "sturm_chain_exact": [
+          [
+            "46344534863999999/500000000000000000",
+            "-32737728/48828125",
+            "13811008/9765625",
+            "-1584128/1953125",
+            "147968/390625"
+          ],
+          [
+            "-32737728/48828125",
+            "27622016/9765625",
+            "-4752384/1953125",
+            "591872/390625"
+          ],
+          [
+            "-25198981199999983/8500000000000000000",
+            "4128224/33203125",
+            "-149024/390625"
+          ],
+          [
+            "1110471654272278817226899/1694347578125000000000000",
+            "-370157212815047601345873/169434757812500000000000"
+          ],
+          [
+            "-462936905748143272200639288941884987116733705867730561/237052529756063045306668143999676676333865280500000000000000000"
+          ]
+        ],
+        "endpoint_variations": [
+          3,
+          1
+        ],
+        "interior_odd_roots": 2,
+        "probe_time_exact": "1/6",
+        "odd_probe_value_exact": "679033078863999919/40500000000000000000"
+      },
+      "uses": [
+        {
+          "case": "auxiliary_tangent_negative",
+          "case_index": 7,
+          "candidate_index": 0,
+          "obstacle_index": 0,
+          "property": "psi",
+          "action_exact": [
+            "544/625",
+            "0"
+          ]
+        }
+      ],
+      "assessments": [
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 0,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-288889799856000001/500000000000000000",
+            "upper_exact": "16653613903999999/500000000000000000",
+            "witness_time_exact": "1/2",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 0,
+            "root_count_calls": 1,
+            "polynomial_exact": [
+              "46344534863999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 0,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "0",
+                "right_exact": "1",
+                "roots": 1,
+                "value_lower_exact": "-288889799856000001/500000000000000000",
+                "value_upper_exact": "418233809743999999/500000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-37464048816000001/500000000000000000",
+            "upper_exact": "46344534863999999/500000000000000000",
+            "witness_time_exact": "0",
+            "subdivisions": 0,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-37464048816000001/500000000000000000",
+            "upper_exact": "16653613903999999/500000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-1383507554196017711971362601/576460752303423488000000000000000000",
+            "upper_exact": "-5534018566684946214262872279/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 8,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-2908945100484379/2000000000000000000",
+            "upper_exact": "17277764515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 8,
+            "root_count_calls": 17,
+            "polynomial_exact": [
+              "46344534863999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 8,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "19/64",
+                "right_exact": "77/256",
+                "roots": 1,
+                "value_lower_exact": "-2908945100484379/2000000000000000000",
+                "value_upper_exact": "2894906629515621/2000000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-6525464515641/8000000000000000000",
+            "upper_exact": "17277764515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-6525464515641/8000000000000000000",
+            "upper_exact": "17277764515561/32000000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-1383507554196017711971362601/576460752303423488000000000000000000",
+            "upper_exact": "-5534018566684946214262872279/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000",
+          "budget": 64,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unsafe",
+            "lower_exact": "-100124158244704561016070031/140737488355328000000000000000000",
+            "upper_exact": "-21616986976945301544966359/9007199254740992000000000000000000",
+            "witness_time_exact": "314573/1048576",
+            "precision_reached": true,
+            "budget_exhausted": false,
+            "stopping_reason": "precision_reached",
+            "subdivisions": 19,
+            "root_count_calls": 39,
+            "polynomial_exact": [
+              "46344534863999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000",
+            "max_subdivisions": 64,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "78643/262144",
+                "right_exact": "157287/524288",
+                "roots": 1,
+                "value_lower_exact": "-100124158244704561016070031/140737488355328000000000000000000",
+                "value_upper_exact": "99448310189836351623929969/140737488355328000000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-96425958078893/384000000000000000000",
+            "upper_exact": "17277764515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 9,
+            "precision_reached": true,
+            "budget_exhausted": false
+          },
+          "matched_intersection": {
+            "lower_exact": "-96425958078893/384000000000000000000",
+            "upper_exact": "-21616986976945301544966359/9007199254740992000000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-1383507554196017711971362601/576460752303423488000000000000000000",
+            "upper_exact": "-5534018566684946214262872279/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 0,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-288889799856000001/500000000000000000",
+            "upper_exact": "16653613903999999/500000000000000000",
+            "witness_time_exact": "1/2",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 0,
+            "root_count_calls": 1,
+            "polynomial_exact": [
+              "46344534863999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 0,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "0",
+                "right_exact": "1",
+                "roots": 1,
+                "value_lower_exact": "-288889799856000001/500000000000000000",
+                "value_upper_exact": "418233809743999999/500000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-37464048816000001/500000000000000000",
+            "upper_exact": "46344534863999999/500000000000000000",
+            "witness_time_exact": "0",
+            "subdivisions": 0,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-37464048816000001/500000000000000000",
+            "upper_exact": "16653613903999999/500000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-1383507554196017711971362601/576460752303423488000000000000000000",
+            "upper_exact": "-5534018566684946214262872279/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 8,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unknown",
+            "lower_exact": "-2908945100484379/2000000000000000000",
+            "upper_exact": "17277764515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "precision_reached": false,
+            "budget_exhausted": true,
+            "stopping_reason": "budget_exhausted",
+            "subdivisions": 8,
+            "root_count_calls": 17,
+            "polynomial_exact": [
+              "46344534863999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 8,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "19/64",
+                "right_exact": "77/256",
+                "roots": 1,
+                "value_lower_exact": "-2908945100484379/2000000000000000000",
+                "value_upper_exact": "2894906629515621/2000000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unknown",
+            "lower_exact": "-6525464515641/8000000000000000000",
+            "upper_exact": "17277764515561/32000000000000000000",
+            "witness_time_exact": "77/256",
+            "subdivisions": 8,
+            "precision_reached": false,
+            "budget_exhausted": true
+          },
+          "matched_intersection": {
+            "lower_exact": "-6525464515641/8000000000000000000",
+            "upper_exact": "17277764515561/32000000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-1383507554196017711971362601/576460752303423488000000000000000000",
+            "upper_exact": "-5534018566684946214262872279/2305843009213693952000000000000000000"
+          }
+        },
+        {
+          "tolerance_exact": "1/1000000000000",
+          "budget": 64,
+          "stationary": {
+            "method": "stationary_sturm_interval_horner",
+            "goal": "minimum",
+            "status": "unsafe",
+            "lower_exact": "-408453886326338443128647063436693445621807570831/170141183460469231731687303715884105728000000000000000000",
+            "upper_exact": "-26133685801306145156691754392841322083784201017559/10889035741470030830827987437816582766592000000000000000000",
+            "witness_time_exact": "329853488333/1099511627776",
+            "precision_reached": true,
+            "budget_exhausted": false,
+            "stopping_reason": "precision_reached",
+            "subdivisions": 39,
+            "root_count_calls": 79,
+            "polynomial_exact": [
+              "46344534863999999/500000000000000000",
+              "-32737728/48828125",
+              "13811008/9765625",
+              "-1584128/1953125",
+              "147968/390625"
+            ],
+            "duration_exact": "1",
+            "tolerance_exact": "1/1000000000000",
+            "max_subdivisions": 64,
+            "derivative_exact": [
+              "-32737728/48828125",
+              "27622016/9765625",
+              "-4752384/1953125",
+              "591872/390625"
+            ],
+            "square_free_derivative_exact": [
+              "-511527/1156000",
+              "215797/115600",
+              "-273/170",
+              "1"
+            ],
+            "stationary_roots_open": 1,
+            "initial_root_count_proof": {
+              "count_polynomial_exact": [
+                "-511527/1156000",
+                "215797/115600",
+                "-273/170",
+                "1"
+              ],
+              "removed_endpoint_factors_exact": [],
+              "sturm_chain_exact": [
+                [
+                  "-511527/1156000",
+                  "215797/115600",
+                  "-273/170",
+                  "1"
+                ],
+                [
+                  "215797/115600",
+                  "-273/85",
+                  "3"
+                ],
+                [
+                  "129007/1179120",
+                  "-4657/6936"
+                ],
+                [
+                  "-142709100625/100283688976"
+                ]
+              ],
+              "endpoint_variations": [
+                2,
+                1
+              ],
+              "open_roots": 1
+            },
+            "exact_stationary_points": [],
+            "stationary_boxes": [
+              {
+                "left_exact": "82463372083/274877906944",
+                "right_exact": "164926744167/549755813888",
+                "roots": 1,
+                "value_lower_exact": "-408453886326338443128647063436693445621807570831/170141183460469231731687303715884105728000000000000000000",
+                "value_upper_exact": "-408223794964478941796094486169949527685167570831/170141183460469231731687303715884105728000000000000000000",
+                "root_count_proof": {
+                  "count_polynomial_exact": [
+                    "-511527/1156000",
+                    "215797/115600",
+                    "-273/170",
+                    "1"
+                  ],
+                  "removed_endpoint_factors_exact": [],
+                  "sturm_chain_exact": [
+                    [
+                      "-511527/1156000",
+                      "215797/115600",
+                      "-273/170",
+                      "1"
+                    ],
+                    [
+                      "215797/115600",
+                      "-273/85",
+                      "3"
+                    ],
+                    [
+                      "129007/1179120",
+                      "-4657/6936"
+                    ],
+                    [
+                      "-142709100625/100283688976"
+                    ]
+                  ],
+                  "endpoint_variations": [
+                    2,
+                    1
+                  ],
+                  "open_roots": 1
+                }
+              }
+            ],
+            "scope": "Offline degree<=4 minimum enclosure, independent of Bernstein; constant polynomials need no stationary-root isolation. No online unknown, model assumption or execution decision is changed"
+          },
+          "matched_bernstein": {
+            "status": "unsafe",
+            "lower_exact": "-1013410035014198888210093/422212465065984000000000000000000",
+            "upper_exact": "-84424289798634979662039/35184372088832000000000000000000",
+            "witness_time_exact": "78643/262144",
+            "subdivisions": 19,
+            "precision_reached": true,
+            "budget_exhausted": false
+          },
+          "matched_intersection": {
+            "lower_exact": "-1013410035014198888210093/422212465065984000000000000000000",
+            "upper_exact": "-26133685801306145156691754392841322083784201017559/10889035741470030830827987437816582766592000000000000000000"
+          },
+          "archived_intersection": {
+            "lower_exact": "-1383507554196017711971362601/576460752303423488000000000000000000",
+            "upper_exact": "-26133685801306145156691754392841322083784201017559/10889035741470030830827987437816582766592000000000000000000"
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "Deterministic offline independent minimum-enclosure cross-check on exact archived planar h and psi polynomials. Complete signs, minimum widths, split counts and execution decisions remain separate; no timing or equal primitive-work claim"
+}
