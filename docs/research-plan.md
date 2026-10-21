@@ -73,6 +73,12 @@ is a later extension requiring its own validity argument.
    illustrate why value-width accuracy and sign resolution must remain separate.
    This closes the restricted independent minimum-enclosure gap, not formal
    program verification, physical validity or a general performance comparison.
+   The [decision-replay audit](validation-decision-replay.md) now checks declared
+   cohort coverage and regenerates full scientific records, including rejected
+   candidate prefixes, failure labels and task flags. It reproduces 24 archived
+   tasks and a 24-case matrix spanning all twelve planar methods. This adds
+   implementation fidelity to physical proof replay; it is not an independent
+   program proof or a reproduction of the source papers' experiments.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.

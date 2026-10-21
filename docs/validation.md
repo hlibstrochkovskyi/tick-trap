@@ -85,9 +85,11 @@ and [zero-order contract audit](validation-zocbf.md). The
 [algebraic cost comparison](validation-algebraic.md) adds timed exact signs and
 checks the recorded measurement layout and statistics. The
 [minimum-reference audit](validation-minimum-reference.md) independently
-cross-checks original and matched numerical value bounds. These ledgers distinguish
+cross-checks original and matched numerical value bounds. The
+[decision-replay audit](validation-decision-replay.md) verifies full controller
+choices, task summaries and declared cohort coverage. These ledgers distinguish
 exact local arguments, finite experimental results and unreproduced paper
-assumptions. The current suite has 219 passing tests; the earlier counts above
+assumptions. The current suite has 230 passing tests; the earlier counts above
 describe their original snapshots.
 
 ## Reproduce locally
