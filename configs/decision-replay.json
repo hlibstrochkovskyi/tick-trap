@@ -1,0 +1,35 @@
+{
+  "input_archive": "docs/data/audit-evidence.tar.gz",
+  "input_manifest": "docs/data/audit-manifest.json",
+  "runs_member": "auxiliary-baselines/runs.json",
+  "metadata_member": "auxiliary-baselines/metadata.json",
+  "generated": {
+    "base": {"p": [-2, 0], "v": [0, 0], "goal": [-2, 0], "horizon": "0.1"},
+    "cases": [
+      {"name": "stationary_nominal", "method": "nominal"},
+      {"name": "stationary_hocbf", "method": "hocbf"},
+      {"name": "stationary_endpoint", "method": "endpoint_candidates"},
+      {"name": "stationary_segment", "method": "segment_candidates"},
+      {"name": "stationary_zocbf", "method": "zocbf_candidates"},
+      {"name": "stationary_sacbf", "method": "sacbf_candidates"},
+      {"name": "stationary_relaxed_sacbf", "method": "sacbf_relaxed_candidates"},
+      {"name": "stationary_high_order_minimum", "method": "high_order_trajectory_candidates"},
+      {"name": "stationary_high_order_sign", "method": "high_order_sign_candidates"},
+      {"name": "stationary_auxiliary", "method": "auxiliary_sign_candidates"},
+      {"name": "stationary_trajectory", "method": "trajectory_candidates"},
+      {"name": "stationary_backup", "method": "backup_candidates"},
+      {"name": "candidate_limit", "method": "trajectory_candidates", "max_candidates": 0},
+      {"name": "qp_infeasible", "method": "hocbf", "p": [2, 0], "v": [-1, 0], "a_max": "0.1", "obstacles": [{"center": [0, 0], "radius": 1}]},
+      {"name": "outside_high_order_domain", "method": "hocbf", "v": [10, 0]},
+      {"name": "backup_lattice_initialization", "method": "backup_candidates", "v": ["1/3", 0]},
+      {"name": "initially_unsafe", "method": "nominal", "p": [0, 0]},
+      {"name": "finite_search_exhausted", "method": "endpoint_candidates", "p": ["1.01", 0], "v": [-1, 0], "a_max": "0.1", "obstacles": [{"center": [0, 0], "radius": 1}]},
+      {"name": "unresolved_polynomial_search", "method": "trajectory_candidates", "p": ["0.04", 0], "v": [-1, 0], "obstacles": [{"center": [-1, 0], "radius": 1}], "nominal_policy": "constant", "nominal": [10, 0], "a_max": "10", "duration": "0.2", "horizon": "0.2", "max_subdivisions": 0},
+      {"name": "valid_comparison_oracle_unknown", "method": "auxiliary_sign_candidates", "p": ["-0.3", "1.06"], "v": [1, 0], "obstacles": [{"center": [0, 0], "radius": 1}], "nominal_policy": "constant", "nominal": [0, 0], "lambda1": "3", "a_max": "1", "duration": "1", "horizon": "2", "max_subdivisions": 0, "oracle_max_subdivisions": 0, "max_candidates": 1},
+      {"name": "uncertified_execution_stops", "method": "nominal", "p": ["-0.3", "1.06"], "v": [1, 0], "obstacles": [{"center": [0, 0], "radius": 1}], "nominal_policy": "constant", "nominal": [0, 0], "lambda1": "3", "a_max": "1", "duration": "1", "horizon": "2", "max_subdivisions": 0, "oracle_max_subdivisions": 0},
+      {"name": "faithful_collision_record", "method": "endpoint_candidates", "p": ["0.04", 0], "v": [-1, 0], "obstacles": [{"center": [-1, 0], "radius": 1}], "nominal_policy": "constant", "nominal": [10, 0], "a_max": "10", "duration": "0.2", "horizon": "0.2"},
+      {"name": "backup_prefix_and_terminal_hold", "method": "backup_candidates", "v": [1, 0], "horizon": "0.6", "max_candidates": 0},
+      {"name": "rejected_candidate_prefix", "method": "sacbf_candidates", "p": ["-0.6", "0.3"], "nominal_policy": "constant", "nominal": ["2.6", "0.4"]}
+    ]
+  }
+}
