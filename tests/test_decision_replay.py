@@ -23,6 +23,18 @@ class DecisionReplayTests(unittest.TestCase):
         self.assertEqual(result["physical_artifact_replay"]["executed_holds"], len(PLANAR_METHODS))
         self.assertEqual(len(result["groups"]), len(PLANAR_METHODS))
 
+    def test_declared_cohort_checks_missing_reordered_or_replaced_configurations(self):
+        runs = list(self.runs.values())
+        grid = {"base": {"p": [-2, 0], "v": [0, 0], "goal": [-2, 0], "horizon": "0.1"},
+                "grid": {"method": list(PLANAR_METHODS)}}
+        self.assertTrue(verify_planar_decisions(runs, grid)["declared_coverage_checked"])
+        for altered in (runs[:-1], list(reversed(runs)), [runs[0]]*len(runs)):
+            with self.assertRaisesRegex(VerificationError, "Declared planar cohort"):
+                verify_planar_decisions(altered, grid)
+        configs = [r["config"] for r in runs]
+        self.assertTrue(verify_planar_decisions(runs, configs)["declared_coverage_checked"])
+        self.assertTrue(verify_planar_decisions(runs[:1], configs[0])["declared_coverage_checked"])
+
     def test_safe_trajectory_does_not_validate_fabricated_endpoint_segment_or_zero_order_evidence(self):
         for method in ("endpoint_candidates", "segment_candidates", "zocbf_candidates"):
             run = deepcopy(self.runs[method])

@@ -8,7 +8,7 @@ from collections import Counter
 from hashlib import sha256
 import json
 
-from .planar_experiments import PlanarConfig, run_planar
+from .planar_experiments import PlanarConfig, load_planar_grid, run_planar
 from .verification import VerificationError, verify_planar_runs
 
 TIMING_FIELDS = {
@@ -72,7 +72,7 @@ def _difference(saved, expected, path="$"):
     return None
 
 
-def verify_planar_decisions(runs):
+def verify_planar_decisions(runs, specification=None):
     """Replay full scientific records after checking original physical evidence.
 
     The current runner/controllers are used for regeneration, so this is an
@@ -80,6 +80,18 @@ def verify_planar_decisions(runs):
     Older revisions with changed algorithms or scientific schemas can legitimately
     fail this stricter check; their original physical proof is not revoked.
     """
+    if specification is not None:
+        if isinstance(specification, list):
+            configurations = [PlanarConfig(**config) for config in specification]
+        elif isinstance(specification, dict) and set(specification) <= {"base", "grid"}:
+            configurations = list(load_planar_grid(specification))
+        elif isinstance(specification, dict):
+            configurations = [PlanarConfig(**specification)]
+        else:
+            raise VerificationError("Expected a planar configuration, grid or explicit configuration list")
+        mismatch = _difference([r["config"] for r in runs], [c.record() for c in configurations])
+        if mismatch:
+            raise VerificationError(f"Declared planar cohort differs at {mismatch}")
     physical = verify_planar_runs(runs)
     rows = []
     for index, saved in enumerate(runs):
@@ -105,10 +117,11 @@ def verify_planar_decisions(runs):
                        **{k: sum(r[k] for r in group) for k in
                           ("decision_updates", "executed_holds", "failed_decisions", "checked_candidates")},
                        "terminations": dict(Counter(r["termination"] for r in group))})
-    return {"status": "verified", "runs": len(rows),
+    return {"status": "verified", "runs": len(rows), "declared_coverage_checked": specification is not None,
             "decision_updates": sum(r["decision_updates"] for r in rows),
             "failed_decisions": sum(r["failed_decisions"] for r in rows),
             "checked_candidates": sum(r["checked_candidates"] for r in rows),
             "physical_artifact_replay": physical, "groups": groups, "per_run": rows,
-            "excluded_timing_fields": TIMING_FIELDS, "excluded_display_fields": DISPLAY_FIELDS,
+            "excluded_timing_fields": {k: list(v) for k, v in TIMING_FIELDS.items()},
+            "excluded_display_fields": {k: list(v) for k, v in DISPLAY_FIELDS.items()},
             "scope": "Strict scientific-record regeneration under the current declared planar implementation, including candidate order, failed decisions, nominal policy, retained plans and task flags. Uses the same runner/controllers and certificate engine; not independent program verification, physical-model validation, timing authentication or an execution-policy change."}

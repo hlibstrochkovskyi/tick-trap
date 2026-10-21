@@ -9,6 +9,7 @@ from .benchmark import benchmark
 from .allocation_audit import allocation_audit
 from .approximation_audit import approximation_study, verify_approximation_study
 from .certification_study import certification_study
+from .decision_replay import verify_planar_decisions
 from .dynamics import Circle, PlanarState, WallState
 from .experiments import RunConfig, load_grid, run
 from .learning import learning_study
@@ -30,6 +31,10 @@ def main(argv=None):
     verification = sub.add_parser("verify", help="Replay exact planar run records and retained-plan proofs")
     verification.add_argument("--runs", default="results/continuations/runs.json")
     verification.add_argument("--output", default="results/verification")
+    decisions = sub.add_parser("verify-decisions", help="Regenerate full planar decisions and scientific task records")
+    decisions.add_argument("--runs", default="results/auxiliary-baselines/runs.json")
+    decisions.add_argument("--metadata", help="Defaults to metadata.json beside the runs")
+    decisions.add_argument("--output", default="results/decision-verification")
     allocation = sub.add_parser("allocation-audit", help="Replay certification evidence and trace shared subdivision work")
     allocation.add_argument("--study", default="results/audit-final/auxiliary-total-work/study.json")
     allocation.add_argument("--metadata", help="Input metadata (defaults to metadata.json beside the study)")
@@ -156,6 +161,21 @@ def main(argv=None):
                       "[Exact query traces](audit.json) · [Input hashes and replay source](metadata.json)", ""]
             (output/"report.md").write_text("\n".join(lines))
             print(f"Replayed {result['property_configurations']} property configurations and {result['replayed_queries']} polynomial queries.")
+        elif args.command == "verify-decisions":
+            runs_path = Path(args.runs)
+            metadata_path = Path(args.metadata) if args.metadata else runs_path.with_name("metadata.json")
+            source = json.loads(metadata_path.read_text())
+            if source["git_status"] != "" or not source["git_commit"] or not source["source_sha256"]:
+                raise ValueError("Input runs must identify a clean source snapshot")
+            result = verify_planar_decisions(json.loads(runs_path.read_text()), source["configuration"])
+            output.mkdir(parents=True, exist_ok=True)
+            write_json(output/"verification.json", result)
+            verification_source = provenance({"runs_sha256": hashlib.sha256(runs_path.read_bytes()).hexdigest(),
+                                 "input_metadata_sha256": hashlib.sha256(metadata_path.read_bytes()).hexdigest(),
+                                 "input_source_commit": source["git_commit"], "input_source_sha256": source["source_sha256"]})
+            verification_source["timing_scope"] = "No saved clocks or deadlines authenticated; regeneration timing is excluded"
+            write_json(output/"metadata.json", verification_source)
+            print(f"Reproduced {result['runs']} planar runs, {result['decision_updates']} decisions and {result['checked_candidates']} candidate assessments.")
         elif args.command == "verify":
             result = verify_planar_runs(read_json(args.runs))
             output.mkdir(parents=True, exist_ok=True)

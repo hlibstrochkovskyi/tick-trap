@@ -65,3 +65,23 @@ Per-run hashes use the retained scientific projection with sorted JSON keys.
 They tie the report to the checked record contents, but do not authenticate an
 arbitrary source file or manifest. Input hashes, exact source revisions and
 the mathematical verification scope must accompany published results.
+
+## Declared coverage and command
+
+The function optionally accepts the generating specification as a second
+argument. A single configuration, the existing base/grid schema, or an explicit
+configuration list defines the expected ordered cohort. Missing, reordered or
+replaced configurations are rejected even if every remaining trace is valid.
+Without that argument, individual trace fidelity is checked but declared cohort
+coverage is not; the result records `declared_coverage_checked` explicitly.
+
+```sh
+PYTHONPATH=src python -m tick_trap verify-decisions --runs results/auxiliary-baselines/runs.json --output results/decision-verification
+```
+
+The command always uses the input metadata's configuration for coverage. It
+requires a clean input source identifier, defaults to `metadata.json` beside
+the runs, and accepts an explicit `--metadata` path. The output records the
+checking revision, input revision, exact run-file and input-metadata hashes,
+per-run scientific hashes, coverage, and exclusions. Generation and checking
+revisions may differ; this is explicitly a current-implementation replay.

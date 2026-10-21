@@ -114,6 +114,25 @@ class CliTests(unittest.TestCase):
             self.assertEqual(self.invoke("allocation-audit", "--study", str(study), "--output", str(root/"invalid")), 2)
             self.assertFalse((root/"invalid/audit.json").exists())
 
+    def test_decision_replay_artifacts_and_changed_method_evidence(self):
+        from tick_trap.planar_experiments import PlanarConfig, run_planar
+        config = dict(method="endpoint_candidates", p=[-2, 0], v=[0, 0], goal=[-2, 0], horizon="0.1")
+        run = run_planar(PlanarConfig(**config))
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            runs_path = root/"runs.json"
+            runs_path.write_text(json.dumps([run]))
+            (root/"metadata.json").write_text(json.dumps({"configuration": config, "git_status": "",
+                 "git_commit": "test-fixture", "source_sha256": "test-fixture"}))
+            self.assertEqual(self.invoke("verify-decisions", "--runs", str(runs_path), "--output", str(root/"verified")), 0)
+            evidence = read_json(root/"verified/verification.json")
+            self.assertTrue(evidence["declared_coverage_checked"])
+            self.assertEqual(evidence["decision_updates"], 1)
+            run["records"][0]["details"]["checked"][-1]["margins_exact"][0] = "999"
+            runs_path.write_text(json.dumps([run]))
+            self.assertEqual(self.invoke("verify-decisions", "--runs", str(runs_path), "--output", str(root/"invalid")), 2)
+            self.assertFalse((root/"invalid/verification.json").exists())
+
     def test_run_and_sweep_artifacts(self):
         with tempfile.TemporaryDirectory() as folder:
             config = Path(folder)/"config.json"
