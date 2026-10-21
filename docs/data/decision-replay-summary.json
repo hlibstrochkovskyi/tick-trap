@@ -1,0 +1,1411 @@
+{
+  "source": {
+    "schema_version": 1,
+    "project": "tick-trap",
+    "version": "0.2.0",
+    "created_utc": "2026-10-21T22:51:58.600902+00:00",
+    "python": "3.12.13 (main, Jun 11 2026, 04:03:26) [Clang 22.1.3 ]",
+    "platform": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+    "machine": "x86_64",
+    "processor": "",
+    "logical_cpu_count": 12,
+    "dependencies": "Python standard library only",
+    "argv": [
+      "scripts/reproduce-decision-replay.py",
+      "--output",
+      "results/decision-replay-final"
+    ],
+    "source_sha256": "e84fc71903afa8ad10105b19e4860e09b328ba2c7dde00c85459efe5cc10791b",
+    "git_commit": "33ba2cedcfaf45e7e7363109cc569a4826e8d479",
+    "git_status": "",
+    "configuration_sha256": "6a345ca4f8ea0f6b74bc5eb03992aa05f946c25c4dfc927ea4f7217338f34565",
+    "configuration": {
+      "input_archive": "docs/data/audit-evidence.tar.gz",
+      "input_manifest": "docs/data/audit-manifest.json",
+      "runs_member": "auxiliary-baselines/runs.json",
+      "metadata_member": "auxiliary-baselines/metadata.json",
+      "generated": {
+        "base": {
+          "p": [
+            -2,
+            0
+          ],
+          "v": [
+            0,
+            0
+          ],
+          "goal": [
+            -2,
+            0
+          ],
+          "horizon": "0.1"
+        },
+        "cases": [
+          {
+            "name": "stationary_nominal",
+            "method": "nominal"
+          },
+          {
+            "name": "stationary_hocbf",
+            "method": "hocbf"
+          },
+          {
+            "name": "stationary_endpoint",
+            "method": "endpoint_candidates"
+          },
+          {
+            "name": "stationary_segment",
+            "method": "segment_candidates"
+          },
+          {
+            "name": "stationary_zocbf",
+            "method": "zocbf_candidates"
+          },
+          {
+            "name": "stationary_sacbf",
+            "method": "sacbf_candidates"
+          },
+          {
+            "name": "stationary_relaxed_sacbf",
+            "method": "sacbf_relaxed_candidates"
+          },
+          {
+            "name": "stationary_high_order_minimum",
+            "method": "high_order_trajectory_candidates"
+          },
+          {
+            "name": "stationary_high_order_sign",
+            "method": "high_order_sign_candidates"
+          },
+          {
+            "name": "stationary_auxiliary",
+            "method": "auxiliary_sign_candidates"
+          },
+          {
+            "name": "stationary_trajectory",
+            "method": "trajectory_candidates"
+          },
+          {
+            "name": "stationary_backup",
+            "method": "backup_candidates"
+          },
+          {
+            "name": "candidate_limit",
+            "method": "trajectory_candidates",
+            "max_candidates": 0
+          },
+          {
+            "name": "qp_infeasible",
+            "method": "hocbf",
+            "p": [
+              2,
+              0
+            ],
+            "v": [
+              -1,
+              0
+            ],
+            "a_max": "0.1",
+            "obstacles": [
+              {
+                "center": [
+                  0,
+                  0
+                ],
+                "radius": 1
+              }
+            ]
+          },
+          {
+            "name": "outside_high_order_domain",
+            "method": "hocbf",
+            "v": [
+              10,
+              0
+            ]
+          },
+          {
+            "name": "backup_lattice_initialization",
+            "method": "backup_candidates",
+            "v": [
+              "1/3",
+              0
+            ]
+          },
+          {
+            "name": "initially_unsafe",
+            "method": "nominal",
+            "p": [
+              0,
+              0
+            ]
+          },
+          {
+            "name": "finite_search_exhausted",
+            "method": "endpoint_candidates",
+            "p": [
+              "1.01",
+              0
+            ],
+            "v": [
+              -1,
+              0
+            ],
+            "a_max": "0.1",
+            "obstacles": [
+              {
+                "center": [
+                  0,
+                  0
+                ],
+                "radius": 1
+              }
+            ]
+          },
+          {
+            "name": "unresolved_polynomial_search",
+            "method": "trajectory_candidates",
+            "p": [
+              "0.04",
+              0
+            ],
+            "v": [
+              -1,
+              0
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  -1,
+                  0
+                ],
+                "radius": 1
+              }
+            ],
+            "nominal_policy": "constant",
+            "nominal": [
+              10,
+              0
+            ],
+            "a_max": "10",
+            "duration": "0.2",
+            "horizon": "0.2",
+            "max_subdivisions": 0
+          },
+          {
+            "name": "valid_comparison_oracle_unknown",
+            "method": "auxiliary_sign_candidates",
+            "p": [
+              "-0.3",
+              "1.06"
+            ],
+            "v": [
+              1,
+              0
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  0,
+                  0
+                ],
+                "radius": 1
+              }
+            ],
+            "nominal_policy": "constant",
+            "nominal": [
+              0,
+              0
+            ],
+            "lambda1": "3",
+            "a_max": "1",
+            "duration": "1",
+            "horizon": "2",
+            "max_subdivisions": 0,
+            "oracle_max_subdivisions": 0,
+            "max_candidates": 1
+          },
+          {
+            "name": "uncertified_execution_stops",
+            "method": "nominal",
+            "p": [
+              "-0.3",
+              "1.06"
+            ],
+            "v": [
+              1,
+              0
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  0,
+                  0
+                ],
+                "radius": 1
+              }
+            ],
+            "nominal_policy": "constant",
+            "nominal": [
+              0,
+              0
+            ],
+            "lambda1": "3",
+            "a_max": "1",
+            "duration": "1",
+            "horizon": "2",
+            "max_subdivisions": 0,
+            "oracle_max_subdivisions": 0
+          },
+          {
+            "name": "faithful_collision_record",
+            "method": "endpoint_candidates",
+            "p": [
+              "0.04",
+              0
+            ],
+            "v": [
+              -1,
+              0
+            ],
+            "obstacles": [
+              {
+                "center": [
+                  -1,
+                  0
+                ],
+                "radius": 1
+              }
+            ],
+            "nominal_policy": "constant",
+            "nominal": [
+              10,
+              0
+            ],
+            "a_max": "10",
+            "duration": "0.2",
+            "horizon": "0.2"
+          },
+          {
+            "name": "backup_prefix_and_terminal_hold",
+            "method": "backup_candidates",
+            "v": [
+              1,
+              0
+            ],
+            "horizon": "0.6",
+            "max_candidates": 0
+          },
+          {
+            "name": "rejected_candidate_prefix",
+            "method": "sacbf_candidates",
+            "p": [
+              "-0.6",
+              "0.3"
+            ],
+            "nominal_policy": "constant",
+            "nominal": [
+              "2.6",
+              "0.4"
+            ]
+          }
+        ]
+      }
+    },
+    "clock": {
+      "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+      "resolution_seconds": 1e-09,
+      "monotonic": true
+    },
+    "arithmetic": "exact rational inputs and dynamics; floats are display/learning estimates",
+    "safety_boundary": "nonnegative clearance; contact at zero is permitted",
+    "timing_scope": "Generated records retain incidental clocks; decision replay excludes clocks, deadlines and floating display estimates"
+  },
+  "input_dependencies": {
+    "archive": "docs/data/audit-evidence.tar.gz",
+    "sha256": "88c0f95a58d49927cd0b335857649e9689c15d1b3244147a8b4d66aecad9c3ad",
+    "manifest_sha256": "633a80885ddc6f8021449a3ae0c70d719b4a3d761a22cf3eccec43932eaf1faf",
+    "runs_member": "auxiliary-baselines/runs.json",
+    "metadata_member": "auxiliary-baselines/metadata.json",
+    "source_git_commit": "8aa08b50cd0d59a10b67f48c51c3c9e6a74bca34"
+  },
+  "cohorts": {
+    "archived": {
+      "verification": {
+        "status": "verified",
+        "runs": 24,
+        "declared_coverage_checked": true,
+        "decision_updates": 1800,
+        "failed_decisions": 0,
+        "checked_candidates": 3153,
+        "physical_artifact_replay": {
+          "runs": 24,
+          "executed_holds": 1800,
+          "retained_plans": 0,
+          "unsafe_intervals": 0,
+          "unknown_intervals": 0,
+          "sampling_aware_holds": 600,
+          "auxiliary_safe_checks": 1200,
+          "auxiliary_unknown_checks": 0,
+          "high_order_reference_holds": 600,
+          "high_order_reference_certificates": 2400,
+          "auxiliary_reference_holds": 600,
+          "auxiliary_reference_certificates": 1200,
+          "derived_safe_offline_unknown": 0,
+          "status": "verified",
+          "unique_certificate_replays": 4712,
+          "scope": "artifact consistency under the reported exact model; uses the existing polynomial certifier"
+        },
+        "groups": [
+          {
+            "method": "auxiliary_sign_candidates",
+            "runs": 8,
+            "decision_updates": 600,
+            "executed_holds": 600,
+            "failed_decisions": 0,
+            "checked_candidates": 943,
+            "terminations": {
+              "horizon": 8
+            }
+          },
+          {
+            "method": "high_order_sign_candidates",
+            "runs": 8,
+            "decision_updates": 600,
+            "executed_holds": 600,
+            "failed_decisions": 0,
+            "checked_candidates": 943,
+            "terminations": {
+              "horizon": 8
+            }
+          },
+          {
+            "method": "sacbf_relaxed_candidates",
+            "runs": 8,
+            "decision_updates": 600,
+            "executed_holds": 600,
+            "failed_decisions": 0,
+            "checked_candidates": 1267,
+            "terminations": {
+              "horizon": 8
+            }
+          }
+        ],
+        "per_run": [
+          {
+            "run_index": 0,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "101ad3ca33ffc9dd9f1dbb6073914575bcbfb2b84122f2aafcf948d43e32b2d3",
+            "decision_updates": 160,
+            "executed_holds": 160,
+            "failed_decisions": 0,
+            "checked_candidates": 304,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 160
+            }
+          },
+          {
+            "run_index": 1,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "7cfd02854cab18d902fc581a5f3bac0494532394724c93941c350fe58bd139d4",
+            "decision_updates": 160,
+            "executed_holds": 160,
+            "failed_decisions": 0,
+            "checked_candidates": 198,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 160
+            }
+          },
+          {
+            "run_index": 2,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "ba1d6c304326bae7884f5c223bb8d9a95ba5fe62ff1fd11a0e0980a9f97f3c88",
+            "decision_updates": 80,
+            "executed_holds": 80,
+            "failed_decisions": 0,
+            "checked_candidates": 187,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 80
+            }
+          },
+          {
+            "run_index": 3,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "7325751f87ba4ce5a7263c2f81c03f41f8d0ea3d977a9ba4239fa6894afb84b6",
+            "decision_updates": 80,
+            "executed_holds": 80,
+            "failed_decisions": 0,
+            "checked_candidates": 114,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 80
+            }
+          },
+          {
+            "run_index": 4,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "884a5bbd2c75985ec945dbe81ff52d05bb5f94419f65f4ee9e0efb3a0352b083",
+            "decision_updates": 40,
+            "executed_holds": 40,
+            "failed_decisions": 0,
+            "checked_candidates": 104,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 40
+            }
+          },
+          {
+            "run_index": 5,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "31fc89b2c51456d5364123e5917258dc9aa140311980fd97fcdb38004b92ef5e",
+            "decision_updates": 40,
+            "executed_holds": 40,
+            "failed_decisions": 0,
+            "checked_candidates": 62,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 40
+            }
+          },
+          {
+            "run_index": 6,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "7bec246a22cace9f767f4c53b24b6bf211e89dd6ef1e82bcee40e6cdd40be62a",
+            "decision_updates": 20,
+            "executed_holds": 20,
+            "failed_decisions": 0,
+            "checked_candidates": 230,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": false,
+            "control_sources": {
+              "filter": 20
+            }
+          },
+          {
+            "run_index": 7,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "480739bada738d22847fd30a665e557163365c35afe1f957183f05964597dc93",
+            "decision_updates": 20,
+            "executed_holds": 20,
+            "failed_decisions": 0,
+            "checked_candidates": 68,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": false,
+            "control_sources": {
+              "filter": 20
+            }
+          },
+          {
+            "run_index": 8,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "3107627242df5f74079307e701744d3db742dae801d199907242f2f8b77cc7de",
+            "decision_updates": 160,
+            "executed_holds": 160,
+            "failed_decisions": 0,
+            "checked_candidates": 288,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 160
+            }
+          },
+          {
+            "run_index": 9,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "8d0e4eaf856d6b5e292fa9a89ec9c93cc2172bd0c02c7ac53228ce2cbf6bf2aa",
+            "decision_updates": 160,
+            "executed_holds": 160,
+            "failed_decisions": 0,
+            "checked_candidates": 200,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 160
+            }
+          },
+          {
+            "run_index": 10,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "ca04475d6a35203a53654a934de269ef3544f83abd1f4bfb7bfb857256f08209",
+            "decision_updates": 80,
+            "executed_holds": 80,
+            "failed_decisions": 0,
+            "checked_candidates": 161,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 80
+            }
+          },
+          {
+            "run_index": 11,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "3dfb686b32ac1129524729b4246c1540f6aa1aa2eeba444f6ce54354b26dfdbc",
+            "decision_updates": 80,
+            "executed_holds": 80,
+            "failed_decisions": 0,
+            "checked_candidates": 101,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 80
+            }
+          },
+          {
+            "run_index": 12,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "7335c5d2ead23999ab75acdcfb4eb5593c9fa4e258a2f9c39109cabd7e5b90bd",
+            "decision_updates": 40,
+            "executed_holds": 40,
+            "failed_decisions": 0,
+            "checked_candidates": 75,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 40
+            }
+          },
+          {
+            "run_index": 13,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "6e074c6fc31f8deaca89bec0c6ae60aaea296f3412609854ff14afa39074322b",
+            "decision_updates": 40,
+            "executed_holds": 40,
+            "failed_decisions": 0,
+            "checked_candidates": 51,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 40
+            }
+          },
+          {
+            "run_index": 14,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "910c04835fb659677a3257cefa8ff4414ea713bd0dee3f2c727543f10bd6bf19",
+            "decision_updates": 20,
+            "executed_holds": 20,
+            "failed_decisions": 0,
+            "checked_candidates": 40,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 20
+            }
+          },
+          {
+            "run_index": 15,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "9894d1bcf32e1e153510d3d01bc059324aecafcb8e515bde6ecf7eb4fbfd1d22",
+            "decision_updates": 20,
+            "executed_holds": 20,
+            "failed_decisions": 0,
+            "checked_candidates": 27,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 20
+            }
+          },
+          {
+            "run_index": 16,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "eb3804f7fdadb798114d20ffaebedf7e4540ca377148633f73d1b167ce396ffb",
+            "decision_updates": 160,
+            "executed_holds": 160,
+            "failed_decisions": 0,
+            "checked_candidates": 288,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 160
+            }
+          },
+          {
+            "run_index": 17,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "87209acdc2cdb7c4bc9e3651dfa6cd773a3544f328ecee762d09565d197be889",
+            "decision_updates": 160,
+            "executed_holds": 160,
+            "failed_decisions": 0,
+            "checked_candidates": 200,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 160
+            }
+          },
+          {
+            "run_index": 18,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "cf3b38f27ad2012ddab9bf102611d92bfcbd1809a19451c9c7aaa8dd426812ec",
+            "decision_updates": 80,
+            "executed_holds": 80,
+            "failed_decisions": 0,
+            "checked_candidates": 161,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 80
+            }
+          },
+          {
+            "run_index": 19,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "5cdad175c90be04fca33ebdf7a0cbee7f08d71059883f14bb384f3943ce9a079",
+            "decision_updates": 80,
+            "executed_holds": 80,
+            "failed_decisions": 0,
+            "checked_candidates": 101,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 80
+            }
+          },
+          {
+            "run_index": 20,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "5320b8dc2d284488040adb419a6ae171fdf36411abce004afee5d55055cefa7e",
+            "decision_updates": 40,
+            "executed_holds": 40,
+            "failed_decisions": 0,
+            "checked_candidates": 75,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 40
+            }
+          },
+          {
+            "run_index": 21,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "eea7abf66478f0219c483d58f3e2bb0b348fa8a283632fd5e78d7dd05d5422ca",
+            "decision_updates": 40,
+            "executed_holds": 40,
+            "failed_decisions": 0,
+            "checked_candidates": 51,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 40
+            }
+          },
+          {
+            "run_index": 22,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "6a3b5e550f131b11674e176387d923a84e4788198f33b7b31fc2813400821e08",
+            "decision_updates": 20,
+            "executed_holds": 20,
+            "failed_decisions": 0,
+            "checked_candidates": 40,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 20
+            }
+          },
+          {
+            "run_index": 23,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "f506b39fd285f936fcfb6444dc23b89186ddcdd7cbd53dccc6a5c20a5ea8f304",
+            "decision_updates": 20,
+            "executed_holds": 20,
+            "failed_decisions": 0,
+            "checked_candidates": 27,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 20
+            }
+          }
+        ],
+        "excluded_timing_fields": {
+          "run": [
+            "initial_viability_check_ns",
+            "controller_initialization_ns",
+            "solve_ns_total",
+            "certification_ns_total",
+            "deadline_misses"
+          ],
+          "record": [
+            "solve_ns",
+            "deadline_missed",
+            "offline_proof_replay_ns",
+            "certification_ns",
+            "estimation_ns",
+            "continuation_check_ns"
+          ],
+          "obstacle": [
+            "certification_ns",
+            "estimation_ns"
+          ]
+        },
+        "excluded_display_fields": {
+          "run": [
+            "minimum_clearance_estimate"
+          ],
+          "record": [
+            "action"
+          ],
+          "state": [
+            "p",
+            "v"
+          ],
+          "obstacle": [
+            "minimum_estimate",
+            "time_estimate",
+            "critical_times_estimate",
+            "clearance_estimate"
+          ]
+        },
+        "scope": "Strict scientific-record regeneration under the current declared planar implementation, including candidate order, failed decisions, nominal policy, retained plans and task flags. Uses the same runner/controllers and certificate engine; not independent program verification, physical-model validation, timing authentication or an execution-policy change."
+      },
+      "verification_sha256": "ce1c18ef0d55c0caa74451ebedd8ba8ac5865e163cb7c41e12283e25534b6387",
+      "checking_metadata_sha256": "5707e2dccdf604e65cb8e80cd7a38467696b82a31999cd2aff5a64d767c9decc",
+      "runs_sha256": "3426eeeda627cd0cf3745739aaea8ac062bca8b34bdda2fccf4f696036f16b5d",
+      "input_metadata_sha256": "fb9da0e8c1d826f7c44d223e93f249b5835dda2171db3778fe4bbf9b882497d4",
+      "input_source_commit": "8aa08b50cd0d59a10b67f48c51c3c9e6a74bca34"
+    },
+    "generated": {
+      "verification": {
+        "status": "verified",
+        "runs": 24,
+        "declared_coverage_checked": true,
+        "decision_updates": 29,
+        "failed_decisions": 6,
+        "checked_candidates": 69,
+        "physical_artifact_replay": {
+          "runs": 24,
+          "executed_holds": 23,
+          "retained_plans": 7,
+          "unsafe_intervals": 1,
+          "unknown_intervals": 2,
+          "sampling_aware_holds": 3,
+          "auxiliary_safe_checks": 3,
+          "auxiliary_unknown_checks": 0,
+          "high_order_reference_holds": 2,
+          "high_order_reference_certificates": 4,
+          "auxiliary_reference_holds": 3,
+          "auxiliary_reference_certificates": 3,
+          "derived_safe_offline_unknown": 1,
+          "status": "verified",
+          "unique_certificate_replays": 19,
+          "scope": "artifact consistency under the reported exact model; uses the existing polynomial certifier"
+        },
+        "groups": [
+          {
+            "method": "auxiliary_sign_candidates",
+            "runs": 2,
+            "decision_updates": 3,
+            "executed_holds": 3,
+            "failed_decisions": 0,
+            "checked_candidates": 3,
+            "terminations": {
+              "horizon": 2
+            }
+          },
+          {
+            "method": "backup_candidates",
+            "runs": 3,
+            "decision_updates": 8,
+            "executed_holds": 7,
+            "failed_decisions": 1,
+            "checked_candidates": 1,
+            "terminations": {
+              "horizon": 2,
+              "initialization_failed": 1
+            }
+          },
+          {
+            "method": "endpoint_candidates",
+            "runs": 3,
+            "decision_updates": 3,
+            "executed_holds": 2,
+            "failed_decisions": 1,
+            "checked_candidates": 27,
+            "terminations": {
+              "horizon": 1,
+              "search_exhausted": 1,
+              "collision_interval": 1
+            }
+          },
+          {
+            "method": "high_order_sign_candidates",
+            "runs": 1,
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "terminations": {
+              "horizon": 1
+            }
+          },
+          {
+            "method": "high_order_trajectory_candidates",
+            "runs": 1,
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "terminations": {
+              "horizon": 1
+            }
+          },
+          {
+            "method": "hocbf",
+            "runs": 3,
+            "decision_updates": 3,
+            "executed_holds": 1,
+            "failed_decisions": 2,
+            "checked_candidates": 0,
+            "terminations": {
+              "horizon": 1,
+              "infeasible": 1,
+              "outside_domain": 1
+            }
+          },
+          {
+            "method": "nominal",
+            "runs": 3,
+            "decision_updates": 2,
+            "executed_holds": 2,
+            "failed_decisions": 0,
+            "checked_candidates": 0,
+            "terminations": {
+              "horizon": 1,
+              "initially_unsafe": 1,
+              "oracle_unresolved": 1
+            }
+          },
+          {
+            "method": "sacbf_candidates",
+            "runs": 2,
+            "decision_updates": 2,
+            "executed_holds": 2,
+            "failed_decisions": 0,
+            "checked_candidates": 7,
+            "terminations": {
+              "horizon": 2
+            }
+          },
+          {
+            "method": "sacbf_relaxed_candidates",
+            "runs": 1,
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "terminations": {
+              "horizon": 1
+            }
+          },
+          {
+            "method": "segment_candidates",
+            "runs": 1,
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "terminations": {
+              "horizon": 1
+            }
+          },
+          {
+            "method": "trajectory_candidates",
+            "runs": 3,
+            "decision_updates": 3,
+            "executed_holds": 1,
+            "failed_decisions": 2,
+            "checked_candidates": 26,
+            "terminations": {
+              "horizon": 1,
+              "budget_exhausted": 1,
+              "uncertified": 1
+            }
+          },
+          {
+            "method": "zocbf_candidates",
+            "runs": 1,
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "terminations": {
+              "horizon": 1
+            }
+          }
+        ],
+        "per_run": [
+          {
+            "run_index": 0,
+            "method": "nominal",
+            "scientific_sha256": "ffe5eacf90b76c2dae81819a7236a60fe91c6d735ceacfc31fcdc65f9d3230cf",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 0,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 1,
+            "method": "hocbf",
+            "scientific_sha256": "1220603cf069da972341258b466de2a6f809fb33d1f4b31530c06bdbed61cbe0",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 0,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 2,
+            "method": "endpoint_candidates",
+            "scientific_sha256": "2593b1c0632001fdcd3bf238d697280e0ab547f397b160ab11ec8b45ad56ace4",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 3,
+            "method": "segment_candidates",
+            "scientific_sha256": "69a212bd351f8c18ef9a6ccf13ada507b138f2c8b32c22242cf41c016d91110e",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 4,
+            "method": "zocbf_candidates",
+            "scientific_sha256": "c535166a376fa37db5329c3c50a015d44e57cb8d5905dbb71f8517c6aeab671c",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 5,
+            "method": "sacbf_candidates",
+            "scientific_sha256": "ec86831a19717a76708e58777bda53eb9c2d57c8b5c994f0194db8c8995823c6",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 6,
+            "method": "sacbf_relaxed_candidates",
+            "scientific_sha256": "b10bcacdcf96f0e2e845983dba7a7ea70a679bef954dd74197ee94d337c0959a",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 7,
+            "method": "high_order_trajectory_candidates",
+            "scientific_sha256": "baf455e3a7d0122c3c70bbace974c98b468ec2b0e888c797aeb70bbea0bd733d",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 8,
+            "method": "high_order_sign_candidates",
+            "scientific_sha256": "9773ea899d8375c9053ab10ee5af2a300b745e814ac036ce9b986df9b3a288ac",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 9,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "5dc611757d7acafaa98d8a34c254140d751375455ac76af35d7b1ecc12ca3098",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 10,
+            "method": "trajectory_candidates",
+            "scientific_sha256": "33c304957865b3a6aca9cc8b7700f927ec2ac8b2de291851e6a0f8b05759c8b5",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 11,
+            "method": "backup_candidates",
+            "scientific_sha256": "41cefb2527dd83b39f46b16876d9ed3f6ff3e3b4800ffb7d93b8baa933432eab",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": true,
+            "control_sources": {
+              "certified_candidate": 1
+            }
+          },
+          {
+            "run_index": 12,
+            "method": "trajectory_candidates",
+            "scientific_sha256": "ff825995b414472e4f5b7552a8c4d86cf28295f5d6de09f848f67511ec14c8fe",
+            "decision_updates": 1,
+            "executed_holds": 0,
+            "failed_decisions": 1,
+            "checked_candidates": 0,
+            "termination": "budget_exhausted",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": true,
+            "control_sources": {}
+          },
+          {
+            "run_index": 13,
+            "method": "hocbf",
+            "scientific_sha256": "a8969ec8cf02f864afe16ce6120846d9819b3c83192c6f91021d3b6b762fba61",
+            "decision_updates": 1,
+            "executed_holds": 0,
+            "failed_decisions": 1,
+            "checked_candidates": 0,
+            "termination": "infeasible",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": false,
+            "control_sources": {}
+          },
+          {
+            "run_index": 14,
+            "method": "hocbf",
+            "scientific_sha256": "47b5bbe87f02fb6b1605a5bc63300ebbb5e367c942cfa6a1c5d3c96889b91e97",
+            "decision_updates": 1,
+            "executed_holds": 0,
+            "failed_decisions": 1,
+            "checked_candidates": 0,
+            "termination": "outside_domain",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": false,
+            "control_sources": {}
+          },
+          {
+            "run_index": 15,
+            "method": "backup_candidates",
+            "scientific_sha256": "bc642333d5b9f0c349593c6f8fdda6a7e39be0147004afddc59b89f96c02e61b",
+            "decision_updates": 1,
+            "executed_holds": 0,
+            "failed_decisions": 1,
+            "checked_candidates": 0,
+            "termination": "initialization_failed",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": false,
+            "control_sources": {}
+          },
+          {
+            "run_index": 16,
+            "method": "nominal",
+            "scientific_sha256": "00fe7378fb4c41e0da40429e11a9997ad8796e726f76e2d2287708a0cbe57c3c",
+            "decision_updates": 0,
+            "executed_holds": 0,
+            "failed_decisions": 0,
+            "checked_candidates": 0,
+            "termination": "initially_unsafe",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": false,
+            "control_sources": {}
+          },
+          {
+            "run_index": 17,
+            "method": "endpoint_candidates",
+            "scientific_sha256": "c12f7a456f59a6d917a66b17afcaf0f309507ff4404aeba9fa58e3688dc49252",
+            "decision_updates": 1,
+            "executed_holds": 0,
+            "failed_decisions": 1,
+            "checked_candidates": 25,
+            "termination": "search_exhausted",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": false,
+            "control_sources": {}
+          },
+          {
+            "run_index": 18,
+            "method": "trajectory_candidates",
+            "scientific_sha256": "0ff9c6a843e22931317c2e65ccba02111f9c853d4ec13d29ab9f63f3cc40391e",
+            "decision_updates": 1,
+            "executed_holds": 0,
+            "failed_decisions": 1,
+            "checked_candidates": 25,
+            "termination": "uncertified",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": false,
+            "control_sources": {}
+          },
+          {
+            "run_index": 19,
+            "method": "auxiliary_sign_candidates",
+            "scientific_sha256": "328a6796dfd177e379e9949fe1df22cc151a648ca3302cf0a3e4c0bce59ef596",
+            "decision_updates": 2,
+            "executed_holds": 2,
+            "failed_decisions": 0,
+            "checked_candidates": 2,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": false,
+            "control_sources": {
+              "filter": 2
+            }
+          },
+          {
+            "run_index": 20,
+            "method": "nominal",
+            "scientific_sha256": "8acba812501657f963dd73fc4eec0aaf35e7cd518a86e71915797ee3ac01e8ec",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 0,
+            "termination": "oracle_unresolved",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": false,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 21,
+            "method": "endpoint_candidates",
+            "scientific_sha256": "e26ea55a15b713c4d2ca6cd3fa6542a5a2f8af17cd7a2624a11b2064782b2cb2",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 1,
+            "termination": "collision_interval",
+            "completed_safe_horizon": false,
+            "goal_reached_at_end": false,
+            "control_sources": {
+              "filter": 1
+            }
+          },
+          {
+            "run_index": 22,
+            "method": "backup_candidates",
+            "scientific_sha256": "40be404c09dde632b28aa3a5f44304bc772bfb36c53a0cd2827e6b347db2f25b",
+            "decision_updates": 6,
+            "executed_holds": 6,
+            "failed_decisions": 0,
+            "checked_candidates": 0,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": false,
+            "control_sources": {
+              "stored_continuation": 5,
+              "terminal_hold": 1
+            }
+          },
+          {
+            "run_index": 23,
+            "method": "sacbf_candidates",
+            "scientific_sha256": "9b7302adb2fa2d3a712d694c4cd70c4427b7ee4048c5054d54b075a354656a93",
+            "decision_updates": 1,
+            "executed_holds": 1,
+            "failed_decisions": 0,
+            "checked_candidates": 6,
+            "termination": "horizon",
+            "completed_safe_horizon": true,
+            "goal_reached_at_end": false,
+            "control_sources": {
+              "filter": 1
+            }
+          }
+        ],
+        "excluded_timing_fields": {
+          "run": [
+            "initial_viability_check_ns",
+            "controller_initialization_ns",
+            "solve_ns_total",
+            "certification_ns_total",
+            "deadline_misses"
+          ],
+          "record": [
+            "solve_ns",
+            "deadline_missed",
+            "offline_proof_replay_ns",
+            "certification_ns",
+            "estimation_ns",
+            "continuation_check_ns"
+          ],
+          "obstacle": [
+            "certification_ns",
+            "estimation_ns"
+          ]
+        },
+        "excluded_display_fields": {
+          "run": [
+            "minimum_clearance_estimate"
+          ],
+          "record": [
+            "action"
+          ],
+          "state": [
+            "p",
+            "v"
+          ],
+          "obstacle": [
+            "minimum_estimate",
+            "time_estimate",
+            "critical_times_estimate",
+            "clearance_estimate"
+          ]
+        },
+        "scope": "Strict scientific-record regeneration under the current declared planar implementation, including candidate order, failed decisions, nominal policy, retained plans and task flags. Uses the same runner/controllers and certificate engine; not independent program verification, physical-model validation, timing authentication or an execution-policy change."
+      },
+      "verification_sha256": "8d8a127b8a2df7f327608a86b4071b36440b61f5341c71e5e9cf69c0023fcb6f",
+      "checking_metadata_sha256": "7126d1389e8cba7850a9a43ad91823413d2921fe0d3ba1545189927d32e47e99",
+      "runs_sha256": "a2ef7a7be2c26fd0729caad2ae6833340bc77462404e5128a5112f417b053293",
+      "input_metadata_sha256": "a962da3348cd00e28181849a1ad6d5d2b189f7dbb028bc766a97e10170c99a53",
+      "input_source_commit": "33ba2cedcfaf45e7e7363109cc569a4826e8d479"
+    }
+  },
+  "generated_case_labels": [
+    "stationary_nominal",
+    "stationary_hocbf",
+    "stationary_endpoint",
+    "stationary_segment",
+    "stationary_zocbf",
+    "stationary_sacbf",
+    "stationary_relaxed_sacbf",
+    "stationary_high_order_minimum",
+    "stationary_high_order_sign",
+    "stationary_auxiliary",
+    "stationary_trajectory",
+    "stationary_backup",
+    "candidate_limit",
+    "qp_infeasible",
+    "outside_high_order_domain",
+    "backup_lattice_initialization",
+    "initially_unsafe",
+    "finite_search_exhausted",
+    "unresolved_polynomial_search",
+    "valid_comparison_oracle_unknown",
+    "uncertified_execution_stops",
+    "faithful_collision_record",
+    "backup_prefix_and_terminal_hold",
+    "rejected_candidate_prefix"
+  ],
+  "generated_method_coverage": [
+    "auxiliary_sign_candidates",
+    "backup_candidates",
+    "endpoint_candidates",
+    "high_order_sign_candidates",
+    "high_order_trajectory_candidates",
+    "hocbf",
+    "nominal",
+    "sacbf_candidates",
+    "sacbf_relaxed_candidates",
+    "segment_candidates",
+    "trajectory_candidates",
+    "zocbf_candidates"
+  ],
+  "all_supported_methods_covered": true,
+  "scope": "Deterministic scientific-record replay and declared cohort coverage. Physical certificates, complete decisions and task flags are checked; reused implementation, excluded clocks/display estimates and model validity retain their documented limits."
+}
