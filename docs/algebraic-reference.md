@@ -49,3 +49,10 @@ rational coefficient growth is not bounded by a Bernstein split allowance or
 a hard execution deadline. Agreement with its own offline reference is not
 an independent validation of the algebraic method; the factored test cases and
 resolved Bernstein comparisons supply separate checks.
+
+The later [independent minimum reference](algebraic-minimum.md) bounds numerical
+minimum values through stationary-root coverage and rational interval Horner.
+It shares this module's exact polynomial arithmetic and Sturm implementation,
+while remaining independent of Bernstein. Its width and sign fields remain
+distinct from this module's complete sign decision; see the
+[550-polynomial validation](validation-minimum-reference.md).

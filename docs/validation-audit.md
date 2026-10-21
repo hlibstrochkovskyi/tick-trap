@@ -3,6 +3,9 @@
 This is the completed audit snapshot. The [subsequent allocation
 replay](validation-allocation.md) explains its shared-budget result with per-query
 evidence and extends the suite to 159 tests, retaining the original study data.
+The later [minimum-reference audit](validation-minimum-reference.md) supplies
+independent numerical value enclosures for the restricted degree-at-most-four
+polynomials; the original snapshot and results below remain unchanged.
 
 This milestone strengthens the existing instrument, without introducing a new
 controller. All 150 tests pass in a fresh clone and virtual environment. The

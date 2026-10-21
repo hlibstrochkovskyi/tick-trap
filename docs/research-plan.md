@@ -65,6 +65,14 @@ is a later extension requiring its own validity argument.
    is faster on most tested controls. Algebra has no comparable subdivision
    allowance; these results do not establish a bounded-runtime replacement or
    a new controller. Optimized external algebra/CCD baselines remain open.
+   The [independent minimum-reference audit](validation-minimum-reference.md)
+   now checks original and matched Bernstein value bounds on 550 distinct planar
+   polynomials using stationary-root boxes and rational interval Horner arithmetic.
+   All 3,300 matched pairs overlap, and both methods reach the tight requested
+   width on every query at the largest allowance. Two exact tangencies still
+   illustrate why value-width accuracy and sign resolution must remain separate.
+   This closes the restricted independent minimum-enclosure gap, not formal
+   program verification, physical validity or a general performance comparison.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.

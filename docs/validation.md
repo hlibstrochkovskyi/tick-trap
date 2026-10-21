@@ -83,9 +83,11 @@ Later evidence is recorded in the [certification audit](validation-audit.md),
 comparison](validation-breeden.md), [approximation contracts](validation-approximation.md)
 and [zero-order contract audit](validation-zocbf.md). The
 [algebraic cost comparison](validation-algebraic.md) adds timed exact signs and
-checks the recorded measurement layout and statistics. These ledgers distinguish
+checks the recorded measurement layout and statistics. The
+[minimum-reference audit](validation-minimum-reference.md) independently
+cross-checks original and matched numerical value bounds. These ledgers distinguish
 exact local arguments, finite experimental results and unreproduced paper
-assumptions. The current suite has 207 passing tests; the earlier counts above
+assumptions. The current suite has 219 passing tests; the earlier counts above
 describe their original snapshots.
 
 ## Reproduce locally

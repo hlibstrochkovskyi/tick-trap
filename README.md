@@ -29,7 +29,10 @@ hold buffers and prediction-error margins on exact prescribed trajectories,
 keeping a valid local argument separate from full theorem assumptions. The
 [algebraic cost comparison](docs/validation-algebraic.md) measures exact Sturm
 signs beside bounded Bernstein checks on the same controls, with replay-checked
-decisions and timing statistics. The current suite passes 207 tests.
+decisions and timing statistics. The [independent minimum reference](docs/validation-minimum-reference.md)
+cross-checks 550 planar polynomials using stationary-root boxes and rational
+interval arithmetic, keeping width accuracy distinct from sign resolution.
+The current suite passes 219 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 
