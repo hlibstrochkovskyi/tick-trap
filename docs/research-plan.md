@@ -59,6 +59,12 @@ is a later extension requiring its own validity argument.
    replay](validation-allocation.md) now traces why some shared-budget decisions
    are lost. These diagnostics preserve every existing predicate and unknown;
    they do not establish a new algorithm or sufficient same-budget improvement.
+   The [algebraic cost comparison](validation-algebraic.md) now measures the
+   independent square-free/Sturm reference alongside those predicates on the
+   same 259 controls. It resolves the exact tangency, while sign-only Bernstein
+   is faster on most tested controls. Algebra has no comparable subdivision
+   allowance; these results do not establish a bounded-runtime replacement or
+   a new controller. Optimized external algebra/CCD baselines remain open.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.

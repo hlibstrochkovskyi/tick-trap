@@ -81,9 +81,11 @@ The subsequent planar control milestone is documented separately in
 Later evidence is recorded in the [certification audit](validation-audit.md),
 [work-allocation replay](validation-allocation.md), [published wall-condition
 comparison](validation-breeden.md), [approximation contracts](validation-approximation.md)
-and [zero-order contract audit](validation-zocbf.md). These ledgers distinguish
+and [zero-order contract audit](validation-zocbf.md). The
+[algebraic cost comparison](validation-algebraic.md) adds timed exact signs and
+checks the recorded measurement layout and statistics. These ledgers distinguish
 exact local arguments, finite experimental results and unreproduced paper
-assumptions. The current suite has 201 passing tests; the earlier counts above
+assumptions. The current suite has 207 passing tests; the earlier counts above
 describe their original snapshots.
 
 ## Reproduce locally

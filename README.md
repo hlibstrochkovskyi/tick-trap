@@ -27,7 +27,9 @@ observations without claiming a Taylor controller reproduction. The
 [zero-order contract audit](docs/validation-zocbf.md) checks state-input pairing,
 hold buffers and prediction-error margins on exact prescribed trajectories,
 keeping a valid local argument separate from full theorem assumptions. The
-current suite passes 201 tests.
+[algebraic cost comparison](docs/validation-algebraic.md) measures exact Sturm
+signs beside bounded Bernstein checks on the same controls, with replay-checked
+decisions and timing statistics. The current suite passes 207 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 
