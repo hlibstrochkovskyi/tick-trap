@@ -1,0 +1,75 @@
+{
+  "source_git_commit": "5a46e9469ad56fe640675a04c66aafd2a654183c",
+  "source_sha256": "9d23e76eb8a22eca7e89eee8cea94fc3f4ba3a6de248336f769406daebec805d",
+  "archive": "algebraic-evidence.tar.gz",
+  "archive_bytes": 1058574,
+  "archive_sha256": "e90628344051b0bec6a01cb4f544e08efbb648ad5216db9a34ca4d0a9552e114",
+  "uncompressed_bytes": 29972321,
+  "files": [
+    {
+      "path": "ci-jobs.json",
+      "bytes": 13439,
+      "sha256": "28881957a0e658ea4a9d3da9d90dc20362a628ed6e9332f001df5e5d9b0cd136"
+    },
+    {
+      "path": "ci-run.json",
+      "bytes": 14516,
+      "sha256": "84682d84c29853e2ba5f1960a5488bc24c1270e59fe28b666bedcc8d623214a9"
+    },
+    {
+      "path": "compact.json",
+      "bytes": 402971,
+      "sha256": "b0ae119cdea80551cb47355a4b2cb5edec7cd0d30f0c1fb421e037015d8771cc"
+    },
+    {
+      "path": "config.json",
+      "bytes": 4799,
+      "sha256": "2143020d9374b34d9b4bba09dc7277eb4b243b79b51ebb3db4020b9f1791e5f3"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 6691,
+      "sha256": "d1ce1f54df1ba70ed58ca4257ee619f7d7366de00b8e8cc5c133f88169efb154"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 6691,
+      "sha256": "d1ce1f54df1ba70ed58ca4257ee619f7d7366de00b8e8cc5c133f88169efb154"
+    },
+    {
+      "path": "replay/audit.json",
+      "bytes": 16317274,
+      "sha256": "6837b81633898096c2f2d058bc473a16a1f6b378f121a037aa7acaae9daf8165"
+    },
+    {
+      "path": "replay/metadata.json",
+      "bytes": 1865,
+      "sha256": "65d90d883ebe05d9eed0d23fa0ffba80454f6648afd2b1acb46bf8561ef6a157"
+    },
+    {
+      "path": "replay/report.md",
+      "bytes": 2269,
+      "sha256": "78b785a2fc6bd53bf2de52be6d256d42d1a4c6794c9bb37e4757187f3423ce1f"
+    },
+    {
+      "path": "replay/summary.csv",
+      "bytes": 1239,
+      "sha256": "b8d05f601d1136b97870d3f3358392d0e4d8a9cbd1cbf16bf0f34cd16721e489"
+    },
+    {
+      "path": "report.md",
+      "bytes": 10335,
+      "sha256": "b58596ee7530b0201478a8f8ecdfd2757036df110b2a5da68b943676e167938a"
+    },
+    {
+      "path": "study.json",
+      "bytes": 13188203,
+      "sha256": "b8fb1ff5a461c957cbb8efd0eaace35f81190b33054293fad9ebc1d52b79eb61"
+    },
+    {
+      "path": "summary.csv",
+      "bytes": 2029,
+      "sha256": "d941d66359b2d5b2590044173a08347c45cd525901fec5758b7ba995f2fe8f34"
+    }
+  ]
+}
