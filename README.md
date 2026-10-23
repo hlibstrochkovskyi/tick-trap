@@ -41,7 +41,10 @@ The [chord contract audit](docs/validation-segments.md) checks the exact deviati
 between a connecting chord and the held-acceleration path, including cases where
 their safety classifications differ in either direction. Its sufficient tube
 implication retains unknowns and remains separate from the published MPC method.
-The current suite passes 249 tests.
+The [matched geometric cost comparison](docs/validation-geometry.md) measures
+tubes, Bernstein checks and exact signs on the same 259 commands. It separates
+geometric acceptance from auxiliary preservation and conditions paired timings
+on the answers returned. The current suite passes 257 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 

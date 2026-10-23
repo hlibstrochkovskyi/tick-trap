@@ -91,6 +91,12 @@ is a later extension requiring its own validity argument.
    prescribed holds. Safe chords can conceal unsafe curves, and unsafe chords
    can accompany safe curves. This is a geometric diagnostic; it does not
    implement SSCBF/MPC or close the full published-proof reading gate.
+   The [matched geometric cost comparison](validation-geometry.md) now measures
+   command/actuator-box tubes, Bernstein checks and exact signs on the original
+   259 commands. It records both decision-conditioned costs and the separate
+   auxiliary property: 20 command-tube acceptances are geometrically safe but
+   auxiliary-unsafe. Geometry-only counts therefore cannot establish an improved
+   high-order filter. No new controller or fallback is introduced.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.

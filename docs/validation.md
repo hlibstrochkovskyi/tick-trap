@@ -92,9 +92,11 @@ choices, task summaries and declared cohort coverage. The
 effects from unchanged physical properties. The
 [chord contract audit](validation-segments.md) checks exact interpolation geometry,
 safe and unsafe curved paths, and conservative tube unknowns while keeping the
-SSCBF proof-reading gate open. These ledgers distinguish
+SSCBF proof-reading gate open. The [matched geometric comparison](validation-geometry.md)
+adds same-command costs and separates geometric certificates from the stronger
+auxiliary path property. These ledgers distinguish
 exact local arguments, finite experimental results and unreproduced paper
-assumptions. The current suite has 249 passing tests; the earlier counts above
+assumptions. The current suite has 257 passing tests; the earlier counts above
 describe their original snapshots.
 
 ## Reproduce locally

@@ -1,0 +1,65 @@
+{
+  "source_git_commit": "08e6e0aa61ce79cf0e686f575e219c3a7177f064",
+  "source_sha256": "69e5f74db70df90764b17fb647f7e5a69d0c71b9ed6ef32906b1baffa99fdb4c",
+  "archive": "geometry-evidence.tar.gz",
+  "archive_bytes": 588568,
+  "archive_sha256": "88d537fc4d42535063d8feeae6cc8cf1d46d7df1f769acbef030657dd442ad85",
+  "uncompressed_bytes": 8658387,
+  "files": [
+    {
+      "path": "ci-jobs.json",
+      "bytes": 13439,
+      "sha256": "f750a427c2981af153264f4f1147bdda571143c91ae06adbd16073587e8c1846"
+    },
+    {
+      "path": "ci-run.json",
+      "bytes": 14498,
+      "sha256": "bedc54267c55b597db61d3a1447fd1edcb2f6f597a5b4ee650d3cac6d71b07ea"
+    },
+    {
+      "path": "compact.json",
+      "bytes": 742773,
+      "sha256": "ffd634ed4a34e9ff31fe47f476bd49af10d85cabdc9f9d04a1f9bf3e27f3e17c"
+    },
+    {
+      "path": "config.json",
+      "bytes": 318,
+      "sha256": "bee22a6d4e7eda4168875882f7ce9cbaa6a396cf95998a4343c9ce47705ad0e4"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 2436,
+      "sha256": "5f579c82ab75e11ef8bcec758b20845ee4aa43a0971dbf32288d719fa1ae3d98"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 1768,
+      "sha256": "21c0327ec894f3f1de2a582c71c71d089c68e90d73624627c961d97218f038ad"
+    },
+    {
+      "path": "report.md",
+      "bytes": 1948,
+      "sha256": "b82b4d2fea75a6144221fef4754e06bdfa27cd68d0944c86c5d12520614a6b42"
+    },
+    {
+      "path": "study.json",
+      "bytes": 7837749,
+      "sha256": "4466b525ea1907c4742452ec9bd586f8c8ed3d44892d8e680ddda2b49a156079"
+    },
+    {
+      "path": "tests.log",
+      "bytes": 41235,
+      "sha256": "eb3f33f6565f04352d2b848f1cb52b7c253d6304e6ef53897f53f4713aa188a1"
+    },
+    {
+      "path": "verification/metadata.json",
+      "bytes": 1683,
+      "sha256": "5b8536616019e395d020834609050d3216020ea446325fad275b264dba7b056b"
+    },
+    {
+      "path": "verification/verification.json",
+      "bytes": 540,
+      "sha256": "93d7ed17de83ad0bb5dacec89d8268b890b1b3e145bd5d2843be230c30bd482c"
+    }
+  ]
+}
