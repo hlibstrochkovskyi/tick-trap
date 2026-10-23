@@ -1,0 +1,19 @@
+{
+  "cases": [
+    {"name": "stationary_outside", "p": ["2", "0"], "v": ["0", "0"], "action": ["0", "0"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "linear_tangent", "p": ["-1", "1"], "v": ["2", "0"], "action": ["0", "0"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "linear_positive", "p": ["-1", "1.0000000000000000000000000000000000000001"], "v": ["2", "0"], "action": ["0", "0"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "linear_negative", "p": ["-1", "0.9999999999999999999999999999999999999999"], "v": ["2", "0"], "action": ["0", "0"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "linear_collision", "p": ["-2", "0"], "v": ["4", "0"], "action": ["0", "0"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "safe_chord_curved_collision", "p": ["0.04", "0"], "v": ["-1", "0"], "action": ["10", "0"], "obstacles": [{"center": ["-1", "0"], "radius": "1"}], "duration": "0.2", "a_max": "10"},
+    {"name": "unsafe_chord_safe_arch", "p": ["-1", "0"], "v": ["2", "4"], "action": ["0", "-8"], "obstacles": [{"center": ["0", "0"], "radius": "0.5"}], "duration": "1", "a_max": "8"},
+    {"name": "tangent_chord_safe_arch", "p": ["-1", "1"], "v": ["2", "4"], "action": ["0", "-8"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "inflated_chord_tangent", "p": ["-1", "2"], "v": ["2", "-4"], "action": ["0", "8"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "inflated_chord_positive", "p": ["-1", "2.0000000000000000000000000000000000000001"], "v": ["2", "-4"], "action": ["0", "8"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "inflated_chord_negative", "p": ["-1", "1.9999999999999999999999999999999999999999"], "v": ["2", "-4"], "action": ["0", "8"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "missing_cross_term_trap", "p": ["-1", "1.5"], "v": ["2", "-4"], "action": ["0", "8"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "negative_sign_before_squaring", "p": ["0", "0"], "v": ["0", "-16"], "action": ["0", "32"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "32"},
+    {"name": "nonsquare_acceleration_norm", "p": ["2", "0"], "v": ["-0.5", "-0.5"], "action": ["1", "1"], "obstacles": [{"center": ["0", "0"], "radius": "1"}], "duration": "1", "a_max": "8"},
+    {"name": "one_unresolved_obstacle", "p": ["-1", "1"], "v": ["2", "4"], "action": ["0", "-8"], "obstacles": [{"center": ["0", "0"], "radius": "1"}, {"center": ["20", "20"], "radius": "1"}], "duration": "1", "a_max": "8"}
+  ]
+}
