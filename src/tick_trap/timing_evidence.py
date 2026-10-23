@@ -8,7 +8,8 @@ from .certification_study import PARAMETER_FREE, STRATEGIES, distribution, paire
 from .numbers import positive
 
 
-def verify_timing_evidence(spec, study):
+def verify_timing_evidence(spec, study, *, parameter_free=PARAMETER_FREE,
+                           proof_count_field="polynomial_checks"):
     """Reconstruct the seeded schedule and aggregates from raw elapsed samples.
 
     Pair with allocation_audit to replay the mathematical decisions. This check
@@ -25,8 +26,8 @@ def verify_timing_evidence(spec, study):
     strategies = spec.get("strategies", list(STRATEGIES[:3]))
     tolerances = [positive(t) for t in spec.get("tolerances", ["1e-10"])]
     budgets, repeats = spec.get("budgets", [256]), spec.get("repeats", 5)
-    settings = ([(s, None, None) for s in strategies if s in PARAMETER_FREE] +
-                [(s, str(t), b) for t in tolerances for b in budgets for s in strategies if s not in PARAMETER_FREE])
+    settings = ([(s, None, None) for s in strategies if s in parameter_free] +
+                [(s, str(t), b) for t in tolerances for b in budgets for s in strategies if s not in parameter_free])
     indexed = {}
     for row in study["measurements"]:
         key = (row["case_index"], row["candidate_index"], row["strategy"], row["tolerance_exact"], row["budget"])
@@ -71,7 +72,7 @@ def verify_timing_evidence(spec, study):
                   "rejected": sum(r["result"]["status"] == "rejected" for r in rows),
                   "unknown": sum(r["result"]["status"] == "unknown" for r in rows),
                   "total_subdivisions": sum(r["result"]["subdivisions"] for r in rows),
-                  "polynomial_checks": sum(len(r["result"].get("proofs", [])) for r in rows),
+                  proof_count_field: sum(len(r["result"].get("proofs", [])) for r in rows),
                   "median_per_control_ns": median(r["predicate_ns_median"] for r in rows),
                   "per_control_median_ns_distribution": distribution([r["predicate_ns_median"] for r in rows]),
                   "all_repeat_ns_distribution": distribution([t for r in rows for t in r["all_predicate_ns"]])}
@@ -81,7 +82,7 @@ def verify_timing_evidence(spec, study):
                                                          r["independent_reference_status"] == truth for r in rows)
         require(all(same(group[k], value) for k, value in counts.items()), "Group statistics disagree with timed rows")
     require(set(groups) == expected_groups, "Unexpected timing group")
-    comparisons = paired_comparisons(study["measurements"], strategies, tolerances, budgets)
+    comparisons = paired_comparisons(study["measurements"], strategies, tolerances, budgets, parameter_free)
     require(same(study["paired_comparisons"], comparisons), "Paired transitions or timing distributions were changed")
     return {"status": "verified", "timed_rows": len(indexed), "elapsed_samples": len(indexed)*repeats,
             "groups": len(groups), "paired_settings": len(comparisons),

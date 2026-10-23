@@ -90,13 +90,13 @@ def distribution(values):
             "p95": quantile(.95), "max": values[-1]}
 
 
-def paired_comparisons(rows, strategies, tolerances, budgets):
+def paired_comparisons(rows, strategies, tolerances, budgets, parameter_free=PARAMETER_FREE):
     comparisons = []
     for tolerance in tolerances:
         for budget in budgets:
             matched = {}
             for row in rows:
-                if row["strategy"] in PARAMETER_FREE or (row["tolerance_exact"], row["budget"]) == (str(tolerance), budget):
+                if row["strategy"] in parameter_free or (row["tolerance_exact"], row["budget"]) == (str(tolerance), budget):
                     matched.setdefault((row["case_index"], row["candidate_index"]), {})[row["strategy"]] = row
             for baseline, candidate in combinations(strategies, 2):
                 transitions, ratios, differences, repeated_ratios = {}, [], [], []
