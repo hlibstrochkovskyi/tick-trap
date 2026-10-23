@@ -1,0 +1,605 @@
+{
+  "source": {
+    "schema_version": 1,
+    "project": "tick-trap",
+    "version": "0.2.0",
+    "created_utc": "2026-10-23T07:23:21.022872+00:00",
+    "python": "3.14.8 (main, Oct  2 2026, 10:23:31) [GCC 16.2.1 20260810]",
+    "platform": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+    "machine": "x86_64",
+    "processor": "",
+    "logical_cpu_count": 12,
+    "dependencies": "Python standard library only",
+    "argv": [
+      "scripts/audit-segments.py",
+      "--output",
+      "results/segment-final"
+    ],
+    "source_sha256": "f7cd0b2de5fe5d7226e15af92b55bf0050af06c2bfd21d7336bb4fac0b015f92",
+    "git_commit": "8bf0983e6694334a9ba4d9f26f782b0302f95816",
+    "git_status": "",
+    "configuration_sha256": "2b5d7594498ab45b23b2c470b708d5429d5b71218aaf68ae1e227035e03442ae",
+    "configuration": {
+      "cases": [
+        {
+          "name": "stationary_outside",
+          "p": [
+            "2",
+            "0"
+          ],
+          "v": [
+            "0",
+            "0"
+          ],
+          "action": [
+            "0",
+            "0"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "linear_tangent",
+          "p": [
+            "-1",
+            "1"
+          ],
+          "v": [
+            "2",
+            "0"
+          ],
+          "action": [
+            "0",
+            "0"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "linear_positive",
+          "p": [
+            "-1",
+            "1.0000000000000000000000000000000000000001"
+          ],
+          "v": [
+            "2",
+            "0"
+          ],
+          "action": [
+            "0",
+            "0"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "linear_negative",
+          "p": [
+            "-1",
+            "0.9999999999999999999999999999999999999999"
+          ],
+          "v": [
+            "2",
+            "0"
+          ],
+          "action": [
+            "0",
+            "0"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "linear_collision",
+          "p": [
+            "-2",
+            "0"
+          ],
+          "v": [
+            "4",
+            "0"
+          ],
+          "action": [
+            "0",
+            "0"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "safe_chord_curved_collision",
+          "p": [
+            "0.04",
+            "0"
+          ],
+          "v": [
+            "-1",
+            "0"
+          ],
+          "action": [
+            "10",
+            "0"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "-1",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "0.2",
+          "a_max": "10"
+        },
+        {
+          "name": "unsafe_chord_safe_arch",
+          "p": [
+            "-1",
+            "0"
+          ],
+          "v": [
+            "2",
+            "4"
+          ],
+          "action": [
+            "0",
+            "-8"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "0.5"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "tangent_chord_safe_arch",
+          "p": [
+            "-1",
+            "1"
+          ],
+          "v": [
+            "2",
+            "4"
+          ],
+          "action": [
+            "0",
+            "-8"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "inflated_chord_tangent",
+          "p": [
+            "-1",
+            "2"
+          ],
+          "v": [
+            "2",
+            "-4"
+          ],
+          "action": [
+            "0",
+            "8"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "inflated_chord_positive",
+          "p": [
+            "-1",
+            "2.0000000000000000000000000000000000000001"
+          ],
+          "v": [
+            "2",
+            "-4"
+          ],
+          "action": [
+            "0",
+            "8"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "inflated_chord_negative",
+          "p": [
+            "-1",
+            "1.9999999999999999999999999999999999999999"
+          ],
+          "v": [
+            "2",
+            "-4"
+          ],
+          "action": [
+            "0",
+            "8"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "missing_cross_term_trap",
+          "p": [
+            "-1",
+            "1.5"
+          ],
+          "v": [
+            "2",
+            "-4"
+          ],
+          "action": [
+            "0",
+            "8"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "negative_sign_before_squaring",
+          "p": [
+            "0",
+            "0"
+          ],
+          "v": [
+            "0",
+            "-16"
+          ],
+          "action": [
+            "0",
+            "32"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "32"
+        },
+        {
+          "name": "nonsquare_acceleration_norm",
+          "p": [
+            "2",
+            "0"
+          ],
+          "v": [
+            "-0.5",
+            "-0.5"
+          ],
+          "action": [
+            "1",
+            "1"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        },
+        {
+          "name": "one_unresolved_obstacle",
+          "p": [
+            "-1",
+            "1"
+          ],
+          "v": [
+            "2",
+            "4"
+          ],
+          "action": [
+            "0",
+            "-8"
+          ],
+          "obstacles": [
+            {
+              "center": [
+                "0",
+                "0"
+              ],
+              "radius": "1"
+            },
+            {
+              "center": [
+                "20",
+                "20"
+              ],
+              "radius": "1"
+            }
+          ],
+          "duration": "1",
+          "a_max": "8"
+        }
+      ]
+    },
+    "clock": {
+      "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+      "resolution_seconds": "1e-09",
+      "monotonic": true
+    },
+    "arithmetic": "exact rational inputs and dynamics; floats are display/learning estimates",
+    "safety_boundary": "nonnegative clearance; contact at zero is permitted",
+    "timing_scope": "No timing samples; deterministic offline geometric contract audit",
+    "audit_script_sha256": "f84dde153cc545266dfbc0353aa9161cfe72fa3e8af636b0e2c1fe35f6f2a53f"
+  },
+  "verification": {
+    "status": "verified",
+    "holds": 15,
+    "obstacle_queries": 16,
+    "sampled_safe_but_trajectory_unsafe": 5,
+    "tube_certified_safe": 6,
+    "tube_unknown_safe": 3,
+    "tube_unknown_unsafe": 6,
+    "scope": "Exact regeneration of inputs, chord minima, tube implications and full independent polynomial sign evidence; not formal program verification"
+  },
+  "source_artifacts": {
+    "audit.json": {
+      "sha256": "144338468a03cc700eb261bbea436950ac99aa56729f6a16ab114ed1925e6a5d"
+    },
+    "metadata.json": {
+      "sha256": "70edfeaf66a14dc1f3a79f7708a1dece2ec8d639e05893e4dcd41b490050d338"
+    }
+  },
+  "verification_artifacts": {
+    "verification.json": {
+      "sha256": "d45ddbfcd6b1316b877604c222c6168429505232eb9f86912515a68978debe45"
+    },
+    "metadata.json": {
+      "sha256": "d05e444eddc579e9c9e93c089dd611e7b0a1ad52941bfe85963d1bc10ce9b27e"
+    }
+  },
+  "counts": {
+    "holds": 15,
+    "obstacle_queries": 16,
+    "sampled_safe_but_trajectory_unsafe": 5,
+    "tube_certified_safe": 6,
+    "tube_unknown_safe": 3,
+    "tube_unknown_unsafe": 6
+  },
+  "chord_to_trajectory": [
+    {
+      "chord": "safe",
+      "trajectory": "safe",
+      "holds": 8
+    },
+    {
+      "chord": "safe",
+      "trajectory": "unsafe",
+      "holds": 3
+    },
+    {
+      "chord": "unsafe",
+      "trajectory": "safe",
+      "holds": 1
+    },
+    {
+      "chord": "unsafe",
+      "trajectory": "unsafe",
+      "holds": 3
+    }
+  ],
+  "cases": [
+    {
+      "name": "stationary_outside",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "safe",
+      "trajectory_status": "safe"
+    },
+    {
+      "name": "linear_tangent",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "safe",
+      "trajectory_status": "safe"
+    },
+    {
+      "name": "linear_positive",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "safe",
+      "trajectory_status": "safe"
+    },
+    {
+      "name": "linear_negative",
+      "sampled_status": "safe",
+      "chord_status": "unsafe",
+      "tube_status": "unknown",
+      "trajectory_status": "unsafe"
+    },
+    {
+      "name": "linear_collision",
+      "sampled_status": "safe",
+      "chord_status": "unsafe",
+      "tube_status": "unknown",
+      "trajectory_status": "unsafe"
+    },
+    {
+      "name": "safe_chord_curved_collision",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "unknown",
+      "trajectory_status": "unsafe"
+    },
+    {
+      "name": "unsafe_chord_safe_arch",
+      "sampled_status": "safe",
+      "chord_status": "unsafe",
+      "tube_status": "unknown",
+      "trajectory_status": "safe"
+    },
+    {
+      "name": "tangent_chord_safe_arch",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "unknown",
+      "trajectory_status": "safe"
+    },
+    {
+      "name": "inflated_chord_tangent",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "safe",
+      "trajectory_status": "safe"
+    },
+    {
+      "name": "inflated_chord_positive",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "safe",
+      "trajectory_status": "safe"
+    },
+    {
+      "name": "inflated_chord_negative",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "unknown",
+      "trajectory_status": "unsafe"
+    },
+    {
+      "name": "missing_cross_term_trap",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "unknown",
+      "trajectory_status": "unsafe"
+    },
+    {
+      "name": "negative_sign_before_squaring",
+      "sampled_status": "unsafe",
+      "chord_status": "unsafe",
+      "tube_status": "unknown",
+      "trajectory_status": "unsafe"
+    },
+    {
+      "name": "nonsquare_acceleration_norm",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "safe",
+      "trajectory_status": "safe"
+    },
+    {
+      "name": "one_unresolved_obstacle",
+      "sampled_status": "safe",
+      "chord_status": "safe",
+      "tube_status": "unknown",
+      "trajectory_status": "safe"
+    }
+  ],
+  "assumptions": {
+    "model": "Exact planar double integrator p_dot=v, v_dot=u; static circular forbidden interiors; radius includes robot size",
+    "initial_set": "The specified exact state; a successful one-hold certificate includes its initial geometric safety, not viability or a high-order filter domain",
+    "actuation": "The specified acceleration is held exactly and lies in the recorded componentwise actuator box",
+    "observation": "Exact state, obstacle center and total collision radius; no measurement or model uncertainty",
+    "numerical": "Exact rational arithmetic; radical-free tube test; separately implemented square-free/Sturm polynomial sign reference; no formal program proof",
+    "execution": "Exactly the specified positive hold duration; zero delay, no disturbance or contact dynamics; boundary contact is permitted"
+  },
+  "scope": "Offline elementary chord-deviation contract on fixed exact holds; no controller changes, viability claim, timings, MPC reproduction or novel algorithm"
+}

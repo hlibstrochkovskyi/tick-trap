@@ -86,6 +86,11 @@ is a later extension requiring its own validity argument.
    counts in every tested case. This identifies a numerical comparison convention,
    not a new controller or runtime improvement. Physical horizons and required
    h-and-psi properties remain unchanged.
+   The [chord contract audit](validation-segments.md) now derives exact
+   chord-to-held-path deviation and checks a standard tube implication on 15
+   prescribed holds. Safe chords can conceal unsafe curves, and unsafe chords
+   can accompany safe curves. This is a geometric diagnostic; it does not
+   implement SSCBF/MPC or close the full published-proof reading gate.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.
@@ -103,7 +108,7 @@ abstract-level reading from becoming a claim of proof reconstruction.
 | [Taylor et al. (2022), v2](https://arxiv.org/html/2203.11470v2) | Definitions 3–8, Theorem 3 proof and synthesis scope examined; exact affine-map and normalized-distance diagnostics implemented | Actual admissible SD-BF family, uniform-domain proof, constructive enlargement and original-system replication; no optimizer reproduction claim |
 | [Tan et al., 2411.17079v2 (2025)](https://arxiv.org/html/2411.17079v2) | Definition 1/Eq. (4), Lemma 1/Eq. (5), Theorem 1 and numerical-model Eqs. (19)–(20) examined; local affine state-input proxy, buffer hierarchy and prediction-error contracts derived and checked | Global existence/recursive feasibility and uniform positive-buffer assumptions; original nonlinear/rollover experiments remain unreproduced |
 | [Liu, Xiao, Belta (2025), v1](https://arxiv.org/html/2511.11897v1) | Section IV, Theorem 2 and relaxation argument examined; linear-gain planar condition and zero-target feasibility envelope implemented with exact candidate-specific bounds | Full slack-penalized QP, bound-estimation recipe, temporal constraints and original experiments remain open |
-| [Pagnini, Malis (2026)](https://www.sciencedirect.com/science/article/abs/pii/S0947358026001354) | Publisher abstract and accessible sections checked; full proof pending | Segment guarantees versus curved physical trajectories |
+| [Pagnini, Malis (2026)](https://www.sciencedirect.com/science/article/abs/pii/S0947358026001354) | Publisher in-press corrected-proof abstract/snippets rechecked 23 October; author-list ECC deposit hal-05578359v1 identified but full text inaccessible; no numbered condition or proof reconstruction | Full source/version comparison and SSCBF/MPC reproduction remain open; the separate local chord/deviation audit is elementary geometry |
 | [Ambadkar et al. (ICLR 2026)](https://proceedings.iclr.cc/paper_files/paper/2026/hash/c1233cb30ef11a3fe6ab10aa96beabaf-Abstract-Conference.html) | Proceedings abstract verified; not reproduced | Predictive shielding under model error and delay |
 | [Begzadic et al. (ACC 2026)](https://portal.fis.tum.de/en/publications/safe-event-triggered-learning-for-sampled-data-systems/) | Institutional publication record and abstract verified; not reproduced | GP validity conditions, event triggers, inter-sample bounds |
 | [Wabersich, Zeilinger, 1812.05506v4 (2021)](https://arxiv.org/html/1812.05506v4) | Nominal construction, model/terminal assumptions and shrinking-plan argument examined in Section 4.1; restricted stored-plan reference implemented | Full MPC problem, uncertain-model theorem and original experiments are not reproduced |

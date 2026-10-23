@@ -89,9 +89,12 @@ cross-checks original and matched numerical value bounds. The
 [decision-replay audit](validation-decision-replay.md) verifies full controller
 choices, task summaries and declared cohort coverage. The
 [representation audit](validation-representation.md) separates numerical scale
-effects from unchanged physical properties. These ledgers distinguish
+effects from unchanged physical properties. The
+[chord contract audit](validation-segments.md) checks exact interpolation geometry,
+safe and unsafe curved paths, and conservative tube unknowns while keeping the
+SSCBF proof-reading gate open. These ledgers distinguish
 exact local arguments, finite experimental results and unreproduced paper
-assumptions. The current suite has 241 passing tests; the earlier counts above
+assumptions. The current suite has 249 passing tests; the earlier counts above
 describe their original snapshots.
 
 ## Reproduce locally

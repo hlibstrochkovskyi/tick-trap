@@ -1,0 +1,65 @@
+{
+  "source_git_commit": "8bf0983e6694334a9ba4d9f26f782b0302f95816",
+  "source_sha256": "f7cd0b2de5fe5d7226e15af92b55bf0050af06c2bfd21d7336bb4fac0b015f92",
+  "archive": "segment-evidence.tar.gz",
+  "archive_bytes": 17650,
+  "archive_sha256": "c866ccc3ec57b659ef811826ff316a5c1e722094350ac44021fa9ba4d1505e0b",
+  "uncompressed_bytes": 160700,
+  "files": [
+    {
+      "path": "audit.json",
+      "bytes": 55901,
+      "sha256": "144338468a03cc700eb261bbea436950ac99aa56729f6a16ab114ed1925e6a5d"
+    },
+    {
+      "path": "ci-jobs.json",
+      "bytes": 13439,
+      "sha256": "050d50385c02a4131a59686ea87ef253d0f398f83bbbab2520193194878443a4"
+    },
+    {
+      "path": "ci-run.json",
+      "bytes": 14484,
+      "sha256": "c1f67aa65f25f7cf84aa0e1e4c11df2a90cdb016237fa0946fbf62935f196a6d"
+    },
+    {
+      "path": "compact.json",
+      "bytes": 14190,
+      "sha256": "0306bf1bc9da867589b35b3958910950719e1233b433f87ff8a24bd3166113a2"
+    },
+    {
+      "path": "config.json",
+      "bytes": 2971,
+      "sha256": "38d7a1a94a082b1bf45f3671c292db409b09edea0816079d6ea08c05756aed28"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 8554,
+      "sha256": "661cd45d57db016c2c0c45aa9407254e2fb0da3f10582c48b2b4d387d115205d"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 8107,
+      "sha256": "70edfeaf66a14dc1f3a79f7708a1dece2ec8d639e05893e4dcd41b490050d338"
+    },
+    {
+      "path": "report.md",
+      "bytes": 1506,
+      "sha256": "03611563a6fc096a945447afdb4611c970d44f46c2629b05d22f6470f9b50876"
+    },
+    {
+      "path": "tests.log",
+      "bytes": 39707,
+      "sha256": "d7c8558b1d0ce5ffd67f6f5f26695c8b7c7460668e0458f9f60f71fe17bd07d1"
+    },
+    {
+      "path": "verification/metadata.json",
+      "bytes": 1493,
+      "sha256": "d05e444eddc579e9c9e93c089dd611e7b0a1ad52941bfe85963d1bc10ce9b27e"
+    },
+    {
+      "path": "verification/verification.json",
+      "bytes": 348,
+      "sha256": "d45ddbfcd6b1316b877604c222c6168429505232eb9f86912515a68978debe45"
+    }
+  ]
+}

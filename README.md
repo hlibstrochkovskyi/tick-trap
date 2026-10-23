@@ -37,7 +37,11 @@ controller choices, rejected searches and task flags against the declared cohort
 The [representation audit](docs/validation-representation.md) measures how fixed
 absolute widths can change unresolved outcomes after barrier rescaling, while
 equivalent original-value widths preserve the tested certificates and work counts.
-The current suite passes 241 tests.
+The [chord contract audit](docs/validation-segments.md) checks the exact deviation
+between a connecting chord and the held-acceleration path, including cases where
+their safety classifications differ in either direction. Its sufficient tube
+implication retains unknowns and remains separate from the published MPC method.
+The current suite passes 249 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 

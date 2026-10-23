@@ -62,6 +62,10 @@ declared candidates; no continuous-input optimality is claimed.
 
 Segment checking is an exact geometric diagnostic, not a reproduction of the
 Segment-Safe MPC paper. A safe chord can coexist with a colliding physical path.
+The [chord contract](segment-contracts.md) derives the exact held-acceleration
+deviation and a sufficient inflated-chord implication, with independent signed
+trajectory cases. This offline diagnostic does not alter `segment_candidates`
+or the termination logic; failed implications remain unknown.
 The endpoint method is likewise a diagnostic, not Taylor et al.'s full method.
 
 For `trajectory_candidates`, a negative witness for any obstacle rejects the
