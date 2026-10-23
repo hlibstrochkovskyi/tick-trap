@@ -128,6 +128,22 @@ Curved-path counterexamples do not refute a theorem restricted to segments.
 Full source access, numbered condition/proof review, domain and feasibility
 comparison, and reconstruction of the original experiments remain open gates.
 
+## Predicate cost and the offline reference
+
+`chord_tube_certificate` evaluates only the rational chord and tube implication.
+It constructs no trajectory polynomial and calls no algebraic oracle. The
+combined `segment_hold_audit` adds the offline sign reference and retains its
+original records. Timing that combined audit would incorrectly charge reference
+work to the sufficient predicate.
+
+The command-specific bound uses `rho²=(u dot u)*T⁴/64`. An actuator-box bound
+can instead use `rho_box²=2*a_max²*T⁴/64`, since each acceleration component
+has magnitude at most `a_max`. This larger bound can lose sufficient
+certifications. It still concerns the prescribed command's own chord: changing
+the command changes the chord, so it does not certify every command using a
+single fixed segment. Both options concern geometry only, without the additional
+`psi=h_dot+lambda*h` path condition of the high-order filters.
+
 ## Reproduce the finite catalog
 
 ```sh

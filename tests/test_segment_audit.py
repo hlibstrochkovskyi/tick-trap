@@ -1,9 +1,10 @@
 from copy import deepcopy
 from fractions import Fraction as F
 import unittest
+from unittest.mock import patch
 
 from tick_trap.dynamics import Circle, PlanarState
-from tick_trap.segment_audit import (segment_contract_study, segment_hold_audit,
+from tick_trap.segment_audit import (chord_tube_certificate, segment_contract_study, segment_hold_audit,
                                      verify_segment_contract_study)
 
 
@@ -76,6 +77,19 @@ class SegmentAuditTests(unittest.TestCase):
         transformed = self.audit((7, 0), (F(1, 2), F(-1, 2)), (-1, 1), center=(7, -2))
         self.assertEqual(record, transformed)
         self.assertEqual(record["tube_status"], "safe")
+
+    def test_tube_predicate_excludes_offline_oracle_and_polynomial_construction(self):
+        state, obstacle = PlanarState((-1, 2), (2, -4)), Circle((0, 0), 1)
+        with patch("tick_trap.segment_audit.exact_sign_reference", side_effect=AssertionError("Offline oracle called")), \
+             patch.object(Circle, "polynomial", side_effect=AssertionError("Path polynomial constructed")):
+            command = chord_tube_certificate(state, (0, 8), obstacle, 1, 8)
+            box = chord_tube_certificate(state, (0, 8), obstacle, 1, 8, "actuator_box")
+        self.assertEqual(command["status"], "safe")
+        self.assertEqual(box["status"], "unknown")
+        self.assertEqual(F(command["deviation_squared_upper_exact"]), 1)
+        self.assertEqual(F(box["deviation_squared_upper_exact"]), 2)
+        with self.assertRaises(ValueError):
+            chord_tube_certificate(state, (0, 8), obstacle, 1, 8, "unverified")
 
     def test_study_keeps_joint_unknown_and_rejects_changed_proof_evidence(self):
         spec = {"cases": [{"name": "two_obstacles", "p": [-1, 1], "v": [2, 4], "action": [0, -8],

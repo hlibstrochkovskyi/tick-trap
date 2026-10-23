@@ -32,26 +32,48 @@ def _exact(value):
     return Fraction(value)
 
 
-def segment_hold_audit(state, action, obstacle, duration, a_max):
-    """Audit one hold without synthesizing or executing an action.
+def chord_tube_certificate(state, action, obstacle, duration, a_max, bound="command"):
+    """Check elementary tube sufficiency without constructing a path polynomial.
 
     L(t) is the chord parameterized over [0,T]. The exact deviation is
     p(t)-L(t) = u*t*(t-T)/2, with squared peak rho²=||u||²*T⁴/64.
+    The actuator-box alternative uses ||u||²<=2*a_max² instead. This bounds
+    deviation of the prescribed path from its own chord; it does not certify
+    every admissible command using one common chord.
     If D is the minimum chord distance, D>=R+rho implies geometric safety.
     Writing A=D²-R²-rho² avoids radicals: A>=0 AND A²>=4*R²*rho².
     Both guards are necessary for this equivalence. Failure means unknown,
-    including when the independent actual-trajectory reference decides a sign.
+    never proof of collision. No independent oracle is called here.
     """
+    if bound not in ("command", "actuator_box"):
+        raise ValueError("Unknown chord-deviation bound")
     duration = positive(_exact(duration), "duration")
     a_max = positive(_exact(a_max), "a_max")
     action = vector2(tuple(_exact(x) for x in action))
     if max(abs(x) for x in action) > a_max:
         raise ValueError("Action lies outside the recorded actuator box")
     margin = segment_minimum(state, action, obstacle, duration)
-    rho_squared = dot(action, action)*duration**4/64
+    acceleration_squared = dot(action, action) if bound == "command" else 2*a_max**2
+    rho_squared = acceleration_squared*duration**4/64
     excess = margin-rho_squared
     squared_slack = excess**2-4*obstacle.radius**2*rho_squared
-    tube_status = "safe" if excess >= 0 and squared_slack >= 0 else "unknown"
+    return {"status": "safe" if excess >= 0 and squared_slack >= 0 else "unknown", "bound": bound,
+            "chord_minimum_barrier_exact": str(margin),
+            "deviation_squared_upper_exact": str(rho_squared),
+            "tube_excess_exact": str(excess), "tube_squared_slack_exact": str(squared_slack)}
+
+
+def segment_hold_audit(state, action, obstacle, duration, a_max):
+    """Combine the command-specific tube check with a separate offline oracle.
+
+    The original exact audit record is retained. Time chord_tube_certificate,
+    rather than this combined audit, when measuring the sufficient condition.
+    """
+    duration = positive(_exact(duration), "duration")
+    action = vector2(tuple(_exact(x) for x in action))
+    tube = chord_tube_certificate(state, action, obstacle, duration, a_max)
+    margin = _exact(tube["chord_minimum_barrier_exact"])
+    tube_status = tube["status"]
     polynomial = obstacle.polynomial(state, action)
     reference = exact_sign_reference(polynomial, duration)
     initial, final = polynomial[0], sum(c*duration**i for i, c in enumerate(polynomial))
@@ -62,9 +84,9 @@ def segment_hold_audit(state, action, obstacle, duration, a_max):
         "sampled_status": "safe" if min(initial, final) >= 0 else "unsafe",
         "chord_minimum_barrier_exact": str(margin),
         "chord_status": "safe" if margin >= 0 else "unsafe",
-        "deviation_squared_peak_exact": str(rho_squared),
+        "deviation_squared_peak_exact": tube["deviation_squared_upper_exact"],
         "deviation_peak_time_exact": str(duration/2),
-        "tube_excess_exact": str(excess), "tube_squared_slack_exact": str(squared_slack),
+        "tube_excess_exact": tube["tube_excess_exact"], "tube_squared_slack_exact": tube["tube_squared_slack_exact"],
         "tube_status": tube_status,
         "trajectory_polynomial_exact": [str(c) for c in polynomial],
         "trajectory_reference": reference,
