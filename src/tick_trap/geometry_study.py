@@ -150,6 +150,28 @@ def evaluate_geometry(method, state, action, obstacles, duration, a_max, toleran
     return {"status": _decision(p["status"] for p in proofs), "subdivisions": used, "proofs": proofs}
 
 
+def outcome_timing(rows, comparison):
+    """Condition descriptive paired costs on the answers actually returned."""
+    baseline, candidate = comparison["baseline"], comparison["candidate"]
+    matched = {}
+    for row in rows:
+        if row["strategy"] not in (baseline, candidate):
+            continue
+        if row["strategy"] in PARAMETER_FREE or (row["tolerance_exact"], row["budget"]) == (comparison["tolerance_exact"], comparison["budget"]):
+            matched.setdefault((row["case_index"], row["candidate_index"]), {})[row["strategy"]] = row
+    buckets = {}
+    for pair in matched.values():
+        a, b = pair[baseline], pair[candidate]
+        buckets.setdefault((a["result"]["status"], b["result"]["status"]), []).append((a, b))
+    return [{"baseline_status": a, "candidate_status": b, "controls": len(pairs),
+             "baseline_median_ns_distribution": distribution([x["predicate_ns_median"] for x, _ in pairs]),
+             "candidate_median_ns_distribution": distribution([y["predicate_ns_median"] for _, y in pairs]),
+             "paired_median_time_ratio": distribution([x["predicate_ns_median"]/y["predicate_ns_median"] for x, y in pairs]),
+             "paired_median_difference_ns": distribution([x["predicate_ns_median"]-y["predicate_ns_median"] for x, y in pairs]),
+             "paired_repeat_time_ratio": distribution([u/v for x, y in pairs for u, v in zip(x["all_predicate_ns"], y["all_predicate_ns"])])}
+            for (a, b), pairs in sorted(buckets.items())]
+
+
 def _assemble(reference, rows, settings):
     methods, widths, budgets, repeats, seed, schedule = settings
     controls = [c for r in reference for c in r["candidates"]]
@@ -177,12 +199,15 @@ def _assemble(reference, rows, settings):
             for truth in ("safe", "unsafe"):
                 group[f"{decision}_{truth}_controls"] = sum(r["result"]["status"] == decision and r["independent_reference_status"] == truth for r in selected)
         groups.append(group)
+    comparisons = paired_comparisons(rows, methods, widths, budgets, PARAMETER_FREE)
+    for comparison in comparisons:
+        comparison["outcome_costs"] = outcome_timing(rows, comparison)
     return {"seed": seed, "repeats": repeats, "strategies": methods, "budget_scope": "per_control",
             "cases": len(reference), "applicable_cases": sum(r["hocbf_applicable"] for r in reference),
             "controls": len(controls), "reference": reference, "measurements": rows, "groups": groups,
             "geometric_truth_counts": dict(Counter(c["geometric_status"] for c in controls)),
             "joint_truth_counts": dict(Counter(c["joint_status"] for c in controls)), "diagnostics": diagnostics,
-            "paired_comparisons": paired_comparisons(rows, methods, widths, budgets, PARAMETER_FREE),
+            "paired_comparisons": comparisons,
             "assumptions": ASSUMPTIONS | {"cohort": "Original HOCBF-domain cohort retained for matching; not a required initial-domain restriction of every geometric predicate"},
             "scope": SCOPE}
 
@@ -235,7 +260,11 @@ def verify_geometry_study(source_spec, source_study, spec, saved):
         raise ValueError("Physical cohort, domain or complete reference evidence changed")
     timing_spec = {"strategies": settings[0], "tolerances": list(map(str, settings[1])), "budgets": settings[2],
                    "repeats": settings[3], "seed": settings[4]}
-    timing = verify_timing_evidence(timing_spec, saved, parameter_free=PARAMETER_FREE,
+    # The generic layout verifier checks its original paired-statistics schema;
+    # the strict full assembly below also regenerates outcome-conditioned costs.
+    generic = saved | {"paired_comparisons": [{k: v for k, v in c.items() if k != "outcome_costs"}
+                                               for c in saved["paired_comparisons"]]}
+    timing = verify_timing_evidence(timing_spec, generic, parameter_free=PARAMETER_FREE,
                                     proof_count_field="obstacle_checks")
     rows, index = [], 0
     for identity, arguments in _identity(reference):

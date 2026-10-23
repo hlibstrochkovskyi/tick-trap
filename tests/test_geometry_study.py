@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from tick_trap.certification_study import certification_study
 from tick_trap.dynamics import Circle, PlanarState
-from tick_trap.geometry_study import evaluate_geometry, geometry_study, verify_geometry_study
+from tick_trap.geometry_study import evaluate_geometry, geometry_study, outcome_timing, verify_geometry_study
 
 
 class GeometryStudyTests(unittest.TestCase):
@@ -68,6 +68,7 @@ class GeometryStudyTests(unittest.TestCase):
             lambda s: s["measurements"][0]["sample_positions"].__setitem__(0, -1),
             lambda s: s["measurements"].pop(),
             lambda s: s["groups"][0].__setitem__("accepted_auxiliary_unsafe_controls", 999),
+            lambda s: s["paired_comparisons"][0]["outcome_costs"][0]["paired_median_time_ratio"].__setitem__("median", 999),
             lambda s: s["diagnostics"]["chord_status"][0].__setitem__("controls", 999),
             lambda s: s.__setitem__("scope", "All future trajectories guaranteed"),
         ]
@@ -105,6 +106,22 @@ class GeometryStudyTests(unittest.TestCase):
                        {"tolerances": ["0.1", "1/10"]}, {"repeats": 0}, {"budget_scope": "per_polynomial"}):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 geometry_study(self.source_spec, self.source, self.spec | change)
+
+    def test_timing_for_matching_acceptances_is_distinct_from_unknown_versus_resolved(self):
+        rows = []
+        for index, a_time, b_time, a_status in ((0, 100, 50, "accepted"), (1, 200, 500, "unknown")):
+            for method, elapsed, status in (("command_tube", a_time, a_status), ("sign", b_time, "accepted")):
+                rows.append({"case_index": 0, "candidate_index": index, "strategy": method,
+                             "tolerance_exact": None if method == "command_tube" else "1/1000000000000",
+                             "budget": None if method == "command_tube" else 64, "result": {"status": status},
+                             "predicate_ns_median": elapsed, "all_predicate_ns": [elapsed, elapsed]})
+        costs = outcome_timing(rows, {"baseline": "command_tube", "candidate": "sign",
+                                     "tolerance_exact": "1/1000000000000", "budget": 64})
+        self.assertEqual([c["controls"] for c in costs], [1, 1])
+        self.assertEqual(costs[0]["paired_median_time_ratio"]["median"], 2)
+        self.assertEqual(costs[1]["paired_median_time_ratio"]["median"], 0.4)
+        self.assertEqual(costs[0]["paired_median_difference_ns"]["median"], 50)
+        self.assertEqual(costs[1]["paired_repeat_time_ratio"]["count"], 2)
 
 
 if __name__ == "__main__":

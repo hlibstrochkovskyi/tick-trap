@@ -85,10 +85,19 @@ interpolation of sorted empirical observations. No confidence interval,
 statistical independence, clock authentication or worst-case runtime is claimed.
 Parameter-free rows are measured once per repeat and reused in every compatible
 tolerance/budget comparison; those repeated tables are not additional samples.
+Each pair also retains costs conditioned on its two decision statuses. In
+particular, a matching-acceptance subset can be examined without mixing its
+times with cases where one method returns unknown and the other resolves a sign.
+This conditioning is descriptive of the selected subset, not a causal estimate
+of certification cost or an independent sample of environments.
 
 All safety decisions and proofs use exact rational arithmetic. Floating point
 is used only for descriptive timing statistics and display. Observation error,
 learned model error, execution delay and hard deadlines are outside this experiment.
+The measured Sturm comparator and offline sign truth use the same algebraic
+implementation; their agreement is replay, not independent algorithm validation.
+The algebraic logic is independent of the Bernstein engine, with separate
+factored-polynomial tests described in the earlier reference audit.
 
 ## Reproduction and verification
 
