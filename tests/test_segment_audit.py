@@ -93,6 +93,10 @@ class SegmentAuditTests(unittest.TestCase):
         for change in ({"cases": []}, {"cases": spec["cases"]*2}):
             with self.assertRaises(ValueError):
                 segment_contract_study(change)
+        moving = deepcopy(spec)
+        moving["cases"][0]["obstacles"][0]["velocity"] = [1, 0]
+        with self.assertRaises(ValueError):
+            segment_contract_study(moving)
 
     def test_invalid_or_inadmissible_hold_is_not_certified(self):
         for changes in ({"duration": 0}, {"duration": 0.5}, {"a_max": True}, {"a_max": 7}):

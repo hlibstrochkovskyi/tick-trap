@@ -88,6 +88,9 @@ def segment_contract_study(spec):
         names.add(name)
         if not isinstance(case["obstacles"], list) or not case["obstacles"]:
             raise ValueError("Each case requires at least one obstacle")
+        if any(not isinstance(o, dict) or set(o) != {"center", "radius"}
+               for o in case["obstacles"]):
+            raise ValueError("Only static circles with center and radius are supported")
         state = PlanarState(tuple(_exact(x) for x in case["p"]),
                             tuple(_exact(x) for x in case["v"]))
         action = vector2(tuple(_exact(x) for x in case["action"]))
