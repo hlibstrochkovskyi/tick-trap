@@ -81,3 +81,6 @@ and recursive feasibility remain separate.
 The experiment is offline. It changes no certifier default, controller,
 comparison argument, stored unknown or fallback action. An equivalent-tolerance
 comparison is not a new safety controller or a claim of publication novelty.
+
+The [archived validation](validation-representation.md) records the complete
+550-polynomial experiment, control-level classifications and exact regeneration.

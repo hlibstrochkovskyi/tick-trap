@@ -79,6 +79,13 @@ is a later extension requiring its own validity argument.
    tasks and a 24-case matrix spanning all twelve planar methods. This adds
    implementation fidelity to physical proof replay; it is not an independent
    program proof or a reproduction of the source papers' experiments.
+   The [representation audit](validation-representation.md) now compares 59,400
+   exact certificate assessments on the same 550 polynomials and 259 controls.
+   Fixed absolute widths can lose resolved classifications after positive barrier
+   rescaling; equivalent original-value widths preserve converted bounds and work
+   counts in every tested case. This identifies a numerical comparison convention,
+   not a new controller or runtime improvement. Physical horizons and required
+   h-and-psi properties remain unchanged.
 4. Select a narrower improvement only after a reproducible limitation and a
    targeted novelty search. State and prove the proposed guarantee, compare with
    the strongest applicable methods, then add a substantive safe-learning study.

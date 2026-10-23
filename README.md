@@ -34,7 +34,10 @@ cross-checks 550 planar polynomials using stationary-root boxes and rational
 interval arithmetic, keeping width accuracy distinct from sign resolution.
 The [decision replay audit](docs/validation-decision-replay.md) also checks full
 controller choices, rejected searches and task flags against the declared cohort.
-The current suite passes 230 tests.
+The [representation audit](docs/validation-representation.md) measures how fixed
+absolute widths can change unresolved outcomes after barrier rescaling, while
+equivalent original-value widths preserve the tested certificates and work counts.
+The current suite passes 241 tests.
 
 ![Exact safe-sample collision counterexample](docs/data/counterexample.svg)
 
