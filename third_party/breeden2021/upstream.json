@@ -1,0 +1,199 @@
+{
+  "repository": "jbreeden-um/phd-code",
+  "commit": "71982ca53deafe552e3524321e18c1fb1341c865",
+  "commit_url": "https://github.com/jbreeden-um/phd-code/commit/71982ca53deafe552e3524321e18c1fb1341c865",
+  "prefix": "2021/L-CSS CBFs for Sampled Data Systems/",
+  "license": "MIT; original copyright and paper/external-software exceptions retained in LICENSE.md",
+  "scope": "Unmodified direct unicycle MATLAB sources and five one-obstacle saved runs, plus project readme and license; no paper PDF, images, symbolic notebooks or full repository clone",
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "upstream_path": "LICENSE.md",
+      "git_blob_sha1": "7fda05b96c75fa2e9a894238e296157f8da468f2",
+      "bytes": 1402,
+      "sha256": "6ac69fee6958083ddcfc603d65e07d22e1d13c2ceab124be60e7b21b8afbe13c"
+    },
+    {
+      "path": "UPSTREAM_README.md",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Readme.md",
+      "git_blob_sha1": "c07939bd2e478303d83460515d9812f2b345f4aa",
+      "bytes": 164,
+      "sha256": "bd9bc6f39db4658872b0d1b9a388cedaf8bbbb8fdd91e42d41c478d5aabb76be"
+    },
+    {
+      "path": "Unicycles/CalculateU.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/CalculateU.m",
+      "git_blob_sha1": "5fcd0be56c4a9a7e3dc301630ea8947406333e0c",
+      "bytes": 3696,
+      "sha256": "ad3886e37586799867caedef61c9fd8a98b8533a4dcfa940a322c73a845441e4"
+    },
+    {
+      "path": "Unicycles/Constraint.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/Constraint.m",
+      "git_blob_sha1": "f925ede346f2dffca8ce97a16966efb58438800f",
+      "bytes": 4912,
+      "sha256": "7c62ad94768b2ad669812edefb4d3b43294577517de09897d170b135520bd877"
+    },
+    {
+      "path": "Unicycles/GradH_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/GradH_func.m",
+      "git_blob_sha1": "000603de268dfc7be660cdc559a1f8c51af75ad8",
+      "bytes": 580,
+      "sha256": "4f294142af3024513ae7e50c5687067345163bfab4f24217bd58457b63c386b7"
+    },
+    {
+      "path": "Unicycles/GradLfH_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/GradLfH_func.m",
+      "git_blob_sha1": "fe82c931b0c34efac0270eb4fd952c2b694270bd",
+      "bytes": 51,
+      "sha256": "01d93c2589b6d151a6f68f6bbb902a327ad86c88cb2d3398b50af6d75f006b6c"
+    },
+    {
+      "path": "Unicycles/GradLgH_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/GradLgH_func.m",
+      "git_blob_sha1": "cf188d84d4bc8c46320db15005e4cc8f5d4170ff",
+      "bytes": 2713,
+      "sha256": "40453e8529e58d013107bd8728ca8a6589c3ddbfca654ae8529bdb65209a4b52"
+    },
+    {
+      "path": "Unicycles/H_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/H_func.m",
+      "git_blob_sha1": "566c1208faaf4e25cbea4bbdb86b8ca746171f79",
+      "bytes": 180,
+      "sha256": "854c7286f1001bc0ac731afb0ee5c036264d56719d1567c2eb75dfd7298284c0"
+    },
+    {
+      "path": "Unicycles/Hddot_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/Hddot_func.m",
+      "git_blob_sha1": "a9e78091399713c6c9765510cb75edd30481de89",
+      "bytes": 865,
+      "sha256": "b7db321e597f65298de34fc93e5c8e891a2c71ef5670774f821777fe4d2ef6ae"
+    },
+    {
+      "path": "Unicycles/LfH_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/LfH_func.m",
+      "git_blob_sha1": "b6f892dda60e0a24fcca1699372d114b9b41473c",
+      "bytes": 39,
+      "sha256": "a3da69457981193e8f89bd4b719287615ffa13fff94f58650eaa9e781e3c0140"
+    },
+    {
+      "path": "Unicycles/LgH_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/LgH_func.m",
+      "git_blob_sha1": "38fd93330c4d8216ccec41a13915c9aa7aab8cc3",
+      "bytes": 558,
+      "sha256": "82f55fd994b16a4a9e6c82a0d117d20721289c96d99990730acdc020f6e0feb4"
+    },
+    {
+      "path": "Unicycles/MakePlots.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/MakePlots.m",
+      "git_blob_sha1": "e8569f8444d83a207b203cc7b822e7a1687f1d21",
+      "bytes": 5557,
+      "sha256": "6fc815caf2a5bba69de93d878d5a588fb45fad838edaa83ae067d13fe2638dd2"
+    },
+    {
+      "path": "Unicycles/OtherNumbers.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/OtherNumbers.m",
+      "git_blob_sha1": "bd94d1eda33ce6ab0977dcbfc07398c493cc5e15",
+      "bytes": 6068,
+      "sha256": "15f6f8c1bbd5d78c2b09ce282f4c71c2c894ba73772aeca95afad60aee813550"
+    },
+    {
+      "path": "Unicycles/PlotOutputs.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/PlotOutputs.m",
+      "git_blob_sha1": "4fa8feca75f674bd4c4509e1722a4f43490db1ad",
+      "bytes": 1498,
+      "sha256": "b865d440179e97092edd8913d3f48caca5a8a2a703063938646759726ddb7f1d"
+    },
+    {
+      "path": "Unicycles/Results/Results_m1gloopt.mat",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/Results/Results_m1gloopt.mat",
+      "git_blob_sha1": "c45e4ca4f3f7c746013dd367fbbc473b13aa181f",
+      "bytes": 208511,
+      "sha256": "dbb677196687a174f3650121f7acffd98bbcca818f55bc5009d3392d52280fe6"
+    },
+    {
+      "path": "Unicycles/Results/Results_m1local.mat",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/Results/Results_m1local.mat",
+      "git_blob_sha1": "c63716e742b3a1476000948e41ad6e8b9e5c7938",
+      "bytes": 40726,
+      "sha256": "6f8f6ae037da5b4dc689d7e9c3b71796e70ac5d840f1223bfc582ce1f1478e3a"
+    },
+    {
+      "path": "Unicycles/Results/Results_m1optim.mat",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/Results/Results_m1optim.mat",
+      "git_blob_sha1": "111216847088aac2a8a39d001f3e8a28396223b3",
+      "bytes": 214037,
+      "sha256": "a5524613b6ac722b678d9f8954cd7a892beb8603381eb1ec58553d4c0896ebd8"
+    },
+    {
+      "path": "Unicycles/Results/Results_m4global.mat",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/Results/Results_m4global.mat",
+      "git_blob_sha1": "1200db4774ee77afc55e5d6f7fac90c0f5b577e3",
+      "bytes": 207325,
+      "sha256": "4e9588fc8f22bfc08d2ebb15a33f7830206e7c320417cb04fac09eeb921689ba"
+    },
+    {
+      "path": "Unicycles/Results/Results_m4optim.mat",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/Results/Results_m4optim.mat",
+      "git_blob_sha1": "537018609a9db77486cb6e125f4e4799b1b2b323",
+      "bytes": 210967,
+      "sha256": "c8b500b4dd604bc08931925f6fb5e1d8e75446977f66d7fa5a01db449a021438"
+    },
+    {
+      "path": "Unicycles/SavedData.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/SavedData.m",
+      "git_blob_sha1": "82166ad4ff1a27b2211078308f6cddb31cab7005",
+      "bytes": 279,
+      "sha256": "7d5b12b18151cc81d7ca1b90fc630ae9b4511de025f7432aa8f53968d3fed5ed"
+    },
+    {
+      "path": "Unicycles/UpdateX.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/UpdateX.m",
+      "git_blob_sha1": "e878bc9fe4f7d4f6fb1f90beaaad2fd9f865fb19",
+      "bytes": 383,
+      "sha256": "7e367749244ed6afef5b94fa12610e034d93c0f85f797813541b4ed67cb89297"
+    },
+    {
+      "path": "Unicycles/aa_RunSim.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/aa_RunSim.m",
+      "git_blob_sha1": "cfabac3fc0878b49971ae40f24bc8e1c232743ae",
+      "bytes": 2623,
+      "sha256": "84aa219614ad0f5112f9e61b9550b3b4ee93fa8bc2fff5b47a3e73d36e033bbc"
+    },
+    {
+      "path": "Unicycles/f_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/f_func.m",
+      "git_blob_sha1": "8eb915ac11dcadc827be07dfb115568053564918",
+      "bytes": 45,
+      "sha256": "2dc52bef6927fa188a9a333fdd26d37ae042b476c3d51eae78ddd7abfeee2d51"
+    },
+    {
+      "path": "Unicycles/g_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/g_func.m",
+      "git_blob_sha1": "a52fa03418c7260dd8b20de4e45694286ccf3463",
+      "bytes": 70,
+      "sha256": "9656ee0910b2af53826803c5bfc942dba4e4dfa25592274780b0b3ee9f3f549d"
+    },
+    {
+      "path": "Unicycles/h0_func.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/h0_func.m",
+      "git_blob_sha1": "7efc90289be0cd2fc00fc837b607b338b76dfb9b",
+      "bytes": 100,
+      "sha256": "2745a0c91b4ddac6dcb1c2b7a154fb513bbf8b25e5f1504d9167e13b4a5891a8"
+    },
+    {
+      "path": "Unicycles/ode01.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/ode01.m",
+      "git_blob_sha1": "8931e54b23cca895485ea0062c9ecaeaa5a0971e",
+      "bytes": 2240,
+      "sha256": "3cf992f963a9bbcd1cee196bc18810ec1d086b4d99dc4931ec5ae871c503862a"
+    },
+    {
+      "path": "Unicycles/wrap_angle.m",
+      "upstream_path": "2021/L-CSS CBFs for Sampled Data Systems/Unicycles/wrap_angle.m",
+      "git_blob_sha1": "53f3af41b53f9b7f4feb707132e2980664d8857f",
+      "bytes": 94,
+      "sha256": "85e918488fe6a9eaff92e97d5af620e19f49014a25d1a0f9c867073570fdf92d"
+    }
+  ]
+}

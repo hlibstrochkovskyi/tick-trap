@@ -1,0 +1,4 @@
+# Keep imported research inputs byte-identical to their recorded upstream hashes.
+third_party/breeden2021/Unicycles/** -text -whitespace
+third_party/breeden2021/LICENSE.md -text -whitespace
+third_party/breeden2021/UPSTREAM_README.md -text -whitespace
